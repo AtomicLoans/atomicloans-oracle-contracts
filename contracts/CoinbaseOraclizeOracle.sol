@@ -2,11 +2,9 @@ pragma solidity >= 0.4.22 < 0.5;
 
 import "./oraclizeAPI.sol";
 import "./WETH.sol";
-import "./SafeMath.sol";
+import "./DSMath.sol";
 
-contract OraclizeOracle is usingOraclize {
-    using SafeMath for uint256;
-    
+contract OraclizeOracle is usingOraclize {    
     uint128 val;
     uint32 public zzz;
     address med;
@@ -61,7 +59,7 @@ contract OraclizeOracle is usingOraclize {
         weth.withdraw(val_);
         values[step] = val_;
         indexes[step] = msg.sender;
-        step = step.add(1);
+        step = add(step, 1);
         last = now;
         update();
     }
