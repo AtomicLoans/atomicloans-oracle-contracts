@@ -1,0 +1,10 @@
+dist: trusty
+sudo: required
+language: node_js
+node_js:
+  - "8"
+before_script:
+  - npm install -g truffle ganache-cli
+script:
+  - CI=false ganache-cli &
+  - CI=false truffle test
