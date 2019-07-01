@@ -6,6 +6,7 @@ import "./CoinpaprikaOraclizeOracle.sol";
 import "./CryptocompareChainlinkOracle.sol";
 import "./KaikoChainlinkOracle.sol";
 import "./ERC20.sol";
+import "./DSMath.sol";
 
 pragma solidity ^0.4.8;
 
