@@ -1,34 +1,15 @@
-import "./BraveNewCoinChainlinkOracle.sol";
-import "./CoinbaseOraclizeOracle.sol";
-import "./CoinGeckoOraclizeOracle.sol";
-import "./CoinMarketCapChainlink.sol";
-import "./CoinpaprikaOraclizeOracle.sol";
-import "./CryptocompareChainlinkOracle.sol";
-import "./KaikoChainlinkOracle.sol";
+// import "./BraveNewCoinChainlinkOracle.sol";
+// import "./CoinbaseOraclizeOracle.sol";
+// import "./CoinGeckoOraclizeOracle.sol";
+// import "./CoinMarketCapChainlink.sol";
+// import "./CoinpaprikaOraclizeOracle.sol";
+// import "./CryptocompareChainlinkOracle.sol";
+// import "./KaikoChainlinkOracle.sol";
 import "./ERC20.sol";
 import "./DSMath.sol";
+import "./DSValue.sol";
 
 pragma solidity ^0.4.8;
-
-contract DSValue is DSMath {
-    bool    has;
-    bytes32 val;
-    function peek() constant returns (bytes32, bool) {
-        return (val,has);
-    }
-    function read() constant returns (bytes32) {
-        var (wut, has) = peek();
-        assert(has);
-        return wut;
-    }
-    function poke(bytes32 wut) {
-        val = wut;
-        has = true;
-    }
-    function void() {
-        has = false;
-    }
-}
 
 contract Medianizer is DSValue {
     event DeployOracle(
@@ -45,33 +26,33 @@ contract Medianizer is DSValue {
     uint96 public min = 0x5;
     
     constructor (address _weth) public {
-    	BraveNewCoinChainlinkOracle braveNewCoinChainlinkOracle = new BraveNewCoinChainlinkOracle(address(this));
-    	set(address(braveNewCoinChainlinkOracle));
-    	emit DeployOracle(address(braveNewCoinChainlinkOracle), 'Chainlink_BraveNewCoin')
+  //   	BraveNewCoinChainlinkOracle braveNewCoinChainlinkOracle = new BraveNewCoinChainlinkOracle(address(this));
+  //   	set(address(braveNewCoinChainlinkOracle));
+  //   	emit DeployOracle(address(braveNewCoinChainlinkOracle), 'Chainlink_BraveNewCoin')
 
-		CoinbaseOraclizeOracle coinbaseOraclizeOracle = new CoinbaseOraclizeOracle(address(this), _weth);
-        set(address(coinbaseOraclizeOracle));
-        emit DeployOracle(address(coinbaseOraclizeOracle), "Oraclize_Coinbase");
+		// CoinbaseOraclizeOracle coinbaseOraclizeOracle = new CoinbaseOraclizeOracle(address(this), _weth);
+  //       set(address(coinbaseOraclizeOracle));
+  //       emit DeployOracle(address(coinbaseOraclizeOracle), "Oraclize_Coinbase");
 
-        CoinGeckoOraclizeOracle coinGeckoOraclizeOracle = new CoinGeckoOraclizeOracle(address(this), _weth);
-        set(address(coinGeckoOraclizeOracle));
-        emit DeployOracle(address(coinGeckoOraclizeOracle), "Oraclize_CoinGecko");
+  //       CoinGeckoOraclizeOracle coinGeckoOraclizeOracle = new CoinGeckoOraclizeOracle(address(this), _weth);
+  //       set(address(coinGeckoOraclizeOracle));
+  //       emit DeployOracle(address(coinGeckoOraclizeOracle), "Oraclize_CoinGecko");
 
-        CoinMarketCapChainlink coinMarketCapChainlink = new CoinMarketCapChainlink(address(this));
-        set(address(coinMarketCapChainlink));
-        emit DeployOracle(address(coinMarketCapChainlink), "Chainlink_CoinMarketCap");
+  //       CoinMarketCapChainlink coinMarketCapChainlink = new CoinMarketCapChainlink(address(this));
+  //       set(address(coinMarketCapChainlink));
+  //       emit DeployOracle(address(coinMarketCapChainlink), "Chainlink_CoinMarketCap");
 
-        CoinpaprikaOraclizeOracle coinpaprikaOraclizeOracle = new CoinpaprikaOraclizeOracle(address(this), _weth);
-        set(address(coinpaprikaOraclizeOracle));
-        emit DeployOracle(address(coinpaprikaOraclizeOracle), "Oraclize_Coinpaprika");
+  //       CoinpaprikaOraclizeOracle coinpaprikaOraclizeOracle = new CoinpaprikaOraclizeOracle(address(this), _weth);
+  //       set(address(coinpaprikaOraclizeOracle));
+  //       emit DeployOracle(address(coinpaprikaOraclizeOracle), "Oraclize_Coinpaprika");
 
-        CryptocompareChainlinkOracle cryptocompareChainlinkOracle = new CryptocompareChainlinkOracle(address(this));
-        set(address(cryptocompareChainlinkOracle));
-        emit DeployOracle(address(cryptocompareChainlinkOracle), "Chainlink_CryptoCompare");
+  //       CryptocompareChainlinkOracle cryptocompareChainlinkOracle = new CryptocompareChainlinkOracle(address(this));
+  //       set(address(cryptocompareChainlinkOracle));
+  //       emit DeployOracle(address(cryptocompareChainlinkOracle), "Chainlink_CryptoCompare");
 
-        KaikoChainlinkOracle kaikoChainlinkOracle = new KaikoChainlinkOracle(address(this));
-        set(address(kaikoChainlinkOracle));
-        emit DeployOracle(address(kaikoChainlinkOracle), "Chainlink_Kaiko");
+  //       KaikoChainlinkOracle kaikoChainlinkOracle = new KaikoChainlinkOracle(address(this));
+  //       set(address(kaikoChainlinkOracle));
+  //       emit DeployOracle(address(kaikoChainlinkOracle), "Chainlink_Kaiko");
     }
 
     function set(address wat) {
@@ -81,7 +62,7 @@ contract Medianizer is DSValue {
         next = nextId;
     }
 
-    function set(bytes12 pos, address wat) note {
+    function set(bytes12 pos, address wat) {
         if (pos == 0x0) throw;
 
         if (wat != 0 && indexes[wat] != 0) throw;
@@ -98,8 +79,8 @@ contract Medianizer is DSValue {
     function push (uint256 amt, ERC20 tok) {
     	if (tokas[address(tok)] == false) {
             tokas[address(tok)] = true;
-            for (uint96 i = 1; i < uint96(next); i++) {
-	    		tok.approve(values[bytes12(i)], 2**256-1);
+            for (uint96 j = 1; j < uint96(next); j++) {
+	    		tok.approve(values[bytes12(j)], 2**256-1);
 	    	}
 	    	tokas[address(tok)] = true;
         }
@@ -112,7 +93,7 @@ contract Medianizer is DSValue {
         poke(0);
     }
 
-    function poke(bytes32) note {
+    function poke(bytes32) {
         (val, has) = compute();
     }
 

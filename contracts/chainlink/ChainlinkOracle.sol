@@ -1,15 +1,15 @@
 pragma solidity >0.4.18;
 
 import "./Chainlinked.sol";
-import "./ERC20.sol";
-import "./DSMath.sol";
+import "../ERC20.sol";
+import "../DSMath.sol";
 
-contract CryptoCompareChainlinkOracle is ChainlinkClient, DSMath {
-    uint32 constant private DELAY = 60; // 15 Minutes
+contract ChainlinkOracle is ChainlinkClient, DSMath {
+    uint32 constant private DELAY = 900; // 15 Minutes
 
     uint128 val;
     uint32 public zzz;
-    uint32 public lag; 
+    uint32 public lag;
     address med;
     address link;
     address owed;
@@ -17,9 +17,6 @@ contract CryptoCompareChainlinkOracle is ChainlinkClient, DSMath {
     uint128 pmt = uint128(2 * LINK); // Payment
     uint128 dis = pmt;               // Disbursement
     ERC20 tok;
-    
-    uint256 gain;
-    uint256 maxr; // Max reward
 
     uint128 constant private prem = 1100000000000000000; // premium 1.1 (10%)
     
@@ -27,9 +24,6 @@ contract CryptoCompareChainlinkOracle is ChainlinkClient, DSMath {
 
     bool posted;
     bool told;
-    
-    uint256 constant private ORACLE_PAYMENT = 1 * LINK;
-    bytes32 constant UINT256_MUL_JOB = bytes32("35e428271aad4506afc4f4089ce98f68");
 
     constructor(address _med)
         public
@@ -79,23 +73,11 @@ contract CryptoCompareChainlinkOracle is ChainlinkClient, DSMath {
     }
 
     function call() internal {
-        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.cur.selector);
-        req.add("endpoint", "price");
-        req.add("fsym", "BTC");
-        req.add("tsyms", "USD");
-        req.add("copyPath", "USD");
-        req.addInt("times", 1000000000000000000);
-        sendChainlinkRequest(req, div(pmt, 2));
+        zzz = uint32(now + 43200);
     }
 
     function chec() internal {
-        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.sup.selector);
-        req.add("endpoint", "price");
-        req.add("fsym", "LINK");
-        req.add("tsyms", "USD");
-        req.add("copyPath", "USD");
-        req.addInt("times", 1000000000000000000);
-        sendChainlinkRequest(req, div(pmt, 2));
+        dis = pmt;
     }
 
     function cur(bytes32 _requestId, uint256 _price) // Currency
@@ -131,14 +113,8 @@ contract CryptoCompareChainlinkOracle is ChainlinkClient, DSMath {
     }
 
     function ward() internal { // Reward
-        gain = wmul(wmul(lval, pmt), prem);
-        if (tok.balanceOf(address(this)) >= gain) {
-            tok.transfer(owed, min(gain, maxr));
+        if (tok.balanceOf(address(this)) >= wmul(wmul(lval, pmt), prem)) {
+            tok.transfer(owed, wmul(wmul(lval, pmt), prem));
         }
-    }
-    
-    function setMax(uint256 maxr_) public {
-        require(msg.sender == med);
-        maxr = maxr_;
     }
 }

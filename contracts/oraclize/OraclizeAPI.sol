@@ -33,7 +33,7 @@ THE SOFTWARE.
 
 pragma solidity >= 0.4.22 < 0.5;// Incompatible compiler version... please select one stated within pragma solidity or use different oraclizeAPI version
 
-import "./Buffer.sol";
+import "../Buffer.sol";
 
 contract OraclizeI {
     address public cbAddress;
