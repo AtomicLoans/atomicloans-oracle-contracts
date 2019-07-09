@@ -5,16 +5,16 @@ import "../Oracle.sol";
 import "../ERC20.sol";
 import "../DSValue.sol";
 
-contract ChainlinkOracle is ChainlinkClient, Oracle {
+contract ChainLink is ChainlinkClient, Oracle {
     ERC20 link;
 
-    constructor(DSValue _med)
+    constructor(DSValue med_, ERC20 link_, address oracle_)
         public
     {
-        med = _med;
-        link = ERC20(0x20fE562d797A42Dcb3399062AE9546cd06f63280);
-        setChainlinkToken(link);
-        setChainlinkOracle(0xc99B3D447826532722E41bc36e644ba3479E4365);
+        med = med_;
+        link = link_;
+        setChainlinkToken(address(link_));
+        setChainlinkOracle(oracle_);
         pmt = uint128(2 * LINK);
         dis = pmt; 
     }

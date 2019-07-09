@@ -1,10 +1,16 @@
 pragma solidity >0.4.18;
 
-import "./ChainlinkOracle.sol";
+import "./ChainLink.sol";
+import "../DSValue.sol";
 
-contract GeminiChainlinkOracle is ChainlinkOracle {
+contract Gemini is ChainLink {
     bytes32 constant UINT256_MUL_JOB = bytes32("9f0406209cf64acda32636018b33de11");
     bytes32 constant UINT256_MUL_JOB__LINK = bytes32("35e428271aad4506afc4f4089ce98f68");
+
+    constructor(DSValue med_, ERC20 link_, address oracle_)
+        public
+        ChainLink(med_, link_, oracle_)
+    {}
 
     function call() internal {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.cur.selector);

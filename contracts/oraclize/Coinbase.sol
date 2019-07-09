@@ -1,8 +1,13 @@
 pragma solidity >0.4.18;
 
-import "./OraclizeOracle.sol";
+import "./Oraclize.sol";
 
-contract CoinbaseOraclizeOracle is OraclizeOracle {
+contract Coinbase is Oraclize {
+    constructor(DSValue med_, DSValue medm_, WETH weth_)
+        public
+        Oraclize(med_, medm_, weth_)
+    {}
+
     function call()
         internal
     {

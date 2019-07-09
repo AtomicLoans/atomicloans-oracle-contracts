@@ -75,12 +75,13 @@ contract usingOraclize {
 
     OraclizeI oraclize;
     modifier oraclizeAPI {
-        if((address(OAR)==0)||(getCodeSize(address(OAR))==0))
-            oraclize_setNetwork(networkID_auto);
+        // if((address(OAR)==0)||(getCodeSize(address(OAR))==0))
+        //     oraclize_setNetwork(networkID_auto);
 
-        if(address(oraclize) != OAR.getAddress())
-            oraclize = OraclizeI(OAR.getAddress());
+        // if(address(oraclize) != OAR.getAddress())
+        //     oraclize = OraclizeI(OAR.getAddress());
 
+        // _;
         _;
     }
     modifier coupon(string code){
@@ -146,7 +147,8 @@ contract usingOraclize {
     }
 
     function oraclize_getPrice(string datasource) oraclizeAPI internal returns (uint){
-        return oraclize.getPrice(datasource);
+        return 3270000000000;
+        // return oraclize.getPrice(datasource);
     }
 
     function oraclize_getPrice(string datasource, uint gaslimit) oraclizeAPI internal returns (uint){
@@ -530,7 +532,8 @@ contract usingOraclize {
         return oraclize.cbAddress();
     }
     function oraclize_setProof(byte proofP) oraclizeAPI internal {
-        return oraclize.setProofType(proofP);
+        uint256 i = 0;
+        // return oraclize.setProofType(proofP);
     }
     function oraclize_setCustomGasPrice(uint gasPrice) oraclizeAPI internal {
         return oraclize.setCustomGasPrice(gasPrice);

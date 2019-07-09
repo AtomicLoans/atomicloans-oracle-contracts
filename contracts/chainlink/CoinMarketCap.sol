@@ -1,9 +1,15 @@
 pragma solidity >0.4.18;
 
-import "./ChainlinkOracle.sol";
+import "./ChainLink.sol";
+import "../DSValue.sol";
 
-contract CoinMarketCapChainlinkOracle is ChainlinkOracle {
+contract CoinMarketCap is ChainLink {
     bytes32 constant UINT256_MUL_JOB = bytes32("ce36a79ea04c4d3ca015d267784417bd");
+
+    constructor(DSValue med_, ERC20 link_, address oracle_)
+        public
+        ChainLink(med_, link_, oracle_)
+    {}
 
     function call() internal {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.cur.selector);

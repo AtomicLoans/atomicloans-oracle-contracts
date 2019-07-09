@@ -5,7 +5,7 @@ import "../Oracle.sol";
 import "../WETH.sol";
 import "../DSValue.sol";
 
-contract OraclizeOracle is usingOraclize, Oracle {
+contract Oraclize is usingOraclize, Oracle {
     WETH weth;
 
     constructor(DSValue med_, DSValue medm_, WETH weth_)
