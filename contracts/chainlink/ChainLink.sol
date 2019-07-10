@@ -1,6 +1,6 @@
 pragma solidity >0.4.18;
 
-import "./Chainlinked.sol";
+import "./ChainlinkedTesting.sol";
 import "../Oracle.sol";
 import "../ERC20.sol";
 import "../DSValue.sol";

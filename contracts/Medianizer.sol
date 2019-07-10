@@ -19,15 +19,7 @@ contract Medianizer is DSValue {
     	own = msg.sender;
     }
 
-    function setMax(uint256 maxr_) {
-    	DSValue(values[bytes12(1)]).setMax(maxr_);
-    	DSValue(values[bytes12(2)]).setMax(maxr_);
-    	DSValue(values[bytes12(3)]).setMax(maxr_);
-    	DSValue(values[bytes12(4)]).setMax(maxr_);
-    	DSValue(values[bytes12(5)]).setMax(maxr_);
-    }
-
-    function set(address[6] addrs) {
+    function set(address[10] addrs) {
     	require(!on);
     	set(addrs[0]);
     	set(addrs[1]);
@@ -35,6 +27,10 @@ contract Medianizer is DSValue {
     	set(addrs[3]);
     	set(addrs[4]);
     	set(addrs[5]);
+    	set(addrs[6]);
+    	set(addrs[7]);
+    	set(addrs[8]);
+    	set(addrs[9]);
     	on = true;
     }
 
@@ -57,6 +53,15 @@ contract Medianizer is DSValue {
         }
 
         values[pos] = wat;
+    }
+
+    function setMax(uint256 maxr_) {
+    	require(on);
+    	DSValue(values[bytes12(1)]).setMax(maxr_);
+    	DSValue(values[bytes12(2)]).setMax(maxr_);
+    	DSValue(values[bytes12(3)]).setMax(maxr_);
+    	DSValue(values[bytes12(4)]).setMax(maxr_);
+    	DSValue(values[bytes12(5)]).setMax(maxr_);
     }
 
     function push (uint256 amt, ERC20 tok) {

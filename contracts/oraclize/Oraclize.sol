@@ -1,6 +1,6 @@
 pragma solidity >0.4.18;
 
-import "./oraclizeAPI.sol";
+import "./oraclizeAPITesting.sol";
 import "../Oracle.sol";
 import "../WETH.sol";
 import "../DSValue.sol";

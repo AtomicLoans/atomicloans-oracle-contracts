@@ -14,7 +14,6 @@ copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
 
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
 
@@ -75,12 +74,13 @@ contract usingOraclize {
 
     OraclizeI oraclize;
     modifier oraclizeAPI {
-        if((address(OAR)==0)||(getCodeSize(address(OAR))==0))
-            oraclize_setNetwork(networkID_auto);
+        // if((address(OAR)==0)||(getCodeSize(address(OAR))==0))
+        //     oraclize_setNetwork(networkID_auto);
 
-        if(address(oraclize) != OAR.getAddress())
-            oraclize = OraclizeI(OAR.getAddress());
+        // if(address(oraclize) != OAR.getAddress())
+        //     oraclize = OraclizeI(OAR.getAddress());
 
+        // _;
         _;
     }
     modifier coupon(string code){
@@ -146,7 +146,8 @@ contract usingOraclize {
     }
 
     function oraclize_getPrice(string datasource) oraclizeAPI internal returns (uint){
-        return oraclize.getPrice(datasource);
+        return 3270000000000;
+        // return oraclize.getPrice(datasource);
     }
 
     function oraclize_getPrice(string datasource, uint gaslimit) oraclizeAPI internal returns (uint){
@@ -154,9 +155,10 @@ contract usingOraclize {
     }
 
     function oraclize_query(string datasource, string arg) oraclizeAPI internal returns (bytes32 id){
-        uint price = oraclize.getPrice(datasource);
-        if (price > 1 ether + tx.gasprice*200000) return 0; // unexpectedly high price
-        return oraclize.query.value(price)(0, datasource, arg);
+        return bytes32(0);
+        // uint price = oraclize.getPrice(datasource);
+        // if (price > 1 ether + tx.gasprice*200000) return 0; // unexpectedly high price
+        // return oraclize.query.value(price)(0, datasource, arg);
     }
     function oraclize_query(uint timestamp, string datasource, string arg) oraclizeAPI internal returns (bytes32 id){
         uint price = oraclize.getPrice(datasource);
@@ -527,10 +529,12 @@ contract usingOraclize {
     }
 
     function oraclize_cbAddress() oraclizeAPI internal returns (address){
-        return oraclize.cbAddress();
+        return msg.sender;
+        // return oraclize.cbAddress();
     }
     function oraclize_setProof(byte proofP) oraclizeAPI internal {
-        return oraclize.setProofType(proofP);
+        uint256 i = 0;
+        // return oraclize.setProofType(proofP);
     }
     function oraclize_setCustomGasPrice(uint gasPrice) oraclizeAPI internal {
         return oraclize.setCustomGasPrice(gasPrice);

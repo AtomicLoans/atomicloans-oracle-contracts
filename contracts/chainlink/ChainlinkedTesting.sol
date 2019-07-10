@@ -1,9 +1,6 @@
-// File: contracts/Chainlink.sol
-
 pragma solidity 0.4.24;
 
 import "../Buffer.sol";
-
 
 /**
  * @title Library for common Chainlink functions
@@ -357,7 +354,7 @@ contract ChainlinkClient {
     _req.nonce = requests;
     pendingRequests[requestId] = _oracle;
     emit ChainlinkRequested(requestId);
-    require(link.transferAndCall(_oracle, _payment, encodeRequest(_req)), "unable to transferAndCall to oracle");
+    // require(link.transferAndCall(_oracle, _payment, encodeRequest(_req)), "unable to transferAndCall to oracle");
     requests += 1;
 
     return requestId;
@@ -518,7 +515,7 @@ contract ChainlinkClient {
    * @param _requestId The request ID for fulfillment
    */
   modifier recordChainlinkFulfillment(bytes32 _requestId) {
-    require(msg.sender == pendingRequests[_requestId], "Source must be the oracle of the request");
+    // require(msg.sender == pendingRequests[_requestId], "Source must be the oracle of the request");
     delete pendingRequests[_requestId];
     emit ChainlinkFulfilled(_requestId);
     _;

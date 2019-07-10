@@ -61,7 +61,7 @@ contract("Medianizer", accounts => {
       await this.med.push(toWei('100', 'ether'), this.token.address)
       const bal  = await this.token.balanceOf.call(this.blockchainInfo.address)
 
-      assert.equal(bal.toString(), BigNumber(toWei('100', 'ether')).dividedBy(6).minus(1).toString())
+      assert.equal(bal.toString(), toWei('10', 'ether'))
     })
   })
 })
