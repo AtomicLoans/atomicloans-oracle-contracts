@@ -7,6 +7,7 @@ import "../DSValue.sol";
 
 contract ChainLink is ChainlinkClient, Oracle {
     ERC20 link;
+    uint256 maxr; // Max reward
 
     constructor(DSValue med_, ERC20 link_, address oracle_)
         public
@@ -16,7 +17,6 @@ contract ChainLink is ChainlinkClient, Oracle {
         setChainlinkToken(address(link_));
         setChainlinkOracle(oracle_);
         pmt = uint128(2 * LINK);
-        dis = pmt; 
     }
 
     function pack(uint128 pmt_, ERC20 tok_) { // payment
@@ -37,7 +37,7 @@ contract ChainLink is ChainlinkClient, Oracle {
     }
 
     function chec() internal {
-        dis = pmt;
+        zzz = uint32(now + 43200);
     }
 
     function cur(bytes32 _requestId, uint256 _price) // Currency
@@ -52,6 +52,13 @@ contract ChainLink is ChainlinkClient, Oracle {
         recordChainlinkFulfillment(_requestId)
     {
         tell(uint128(_price));
+    }
+
+    function ward() internal { // Reward
+        gain = wmul(wmul(lval, pmt), prem);
+        if (tok.balanceOf(address(this)) >= min(maxr, gain) && pmt > 0) {
+            tok.transfer(owed, min(maxr, gain));
+        }
     }
 
     function setMax(uint256 maxr_) public {

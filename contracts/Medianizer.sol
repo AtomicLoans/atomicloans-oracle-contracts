@@ -13,6 +13,20 @@ contract Medianizer is DSValue {
 
     bool on;
 
+    address own;
+
+    constructor() {
+    	own = msg.sender;
+    }
+
+    function setMax(uint256 maxr_) {
+    	DSValue(values[bytes12(1)]).setMax(maxr_);
+    	DSValue(values[bytes12(2)]).setMax(maxr_);
+    	DSValue(values[bytes12(3)]).setMax(maxr_);
+    	DSValue(values[bytes12(4)]).setMax(maxr_);
+    	DSValue(values[bytes12(5)]).setMax(maxr_);
+    }
+
     function set(address[6] addrs) {
     	require(!on);
     	set(addrs[0]);
@@ -54,7 +68,7 @@ contract Medianizer is DSValue {
 	    	tokas[address(tok)] = true;
         }
     	for (uint96 i = 1; i < uint96(next); i++) {
-    		DSValue(values[bytes12(i)]).push(wdiv(uint128(amt), uint128(next)), tok);
+    		tok.transferFrom(msg.sender, values[bytes12(i)], uint(div(uint128(amt), uint128(next) - 1)));
     	}
     }
 

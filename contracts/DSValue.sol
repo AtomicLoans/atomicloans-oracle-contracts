@@ -21,7 +21,7 @@ contract DSValue is DSMath {
         has = true;
     }
 
-    function push(uint128 amt, ERC20 tok) public {
-        tok.transferFrom(msg.sender, address(this), uint256(amt));
+    function setMax(uint256 maxr) public {
+        has = true;
     }
 }
