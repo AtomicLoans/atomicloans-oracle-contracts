@@ -33,6 +33,7 @@ contract Oraclize is usingOraclize, Oracle {
         require(pmt_ == oraclize_getPrice("URL"));
         weth.transferFrom(msg.sender, address(this), uint(pmt_));
         pmt = pmt_;
+        dis = 0;
         lag = uint32(now) + DELAY;
         owed = msg.sender;
         tok = tok_;

@@ -23,6 +23,7 @@ contract ChainLink is ChainlinkClient, Oracle {
         require(uint32(now) > lag);
         link.transferFrom(msg.sender, address(this), uint(pmt_));
         pmt = pmt_;
+        dis = 0;
         lag = uint32(now) + DELAY;
         owed = msg.sender;
         tok = tok_;
@@ -55,8 +56,8 @@ contract ChainLink is ChainlinkClient, Oracle {
     }
 
     function ward() internal { // Reward
-        gain = wmul(wmul(lval, pmt), prem);
-        if (tok.balanceOf(address(this)) >= min(maxr, gain) && pmt > 0) {
+        gain = wmul(wmul(lval, dis), prem);
+        if (tok.balanceOf(address(this)) >= min(maxr, gain) && dis > 0) {
             tok.transfer(owed, min(maxr, gain));
         }
     }

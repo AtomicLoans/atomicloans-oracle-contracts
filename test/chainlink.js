@@ -76,18 +76,18 @@ contract("Chainlink", accounts => {
 
       await this.blockchainInfo.pack(this.bill, this.token.address, { from: updater })
 
-      await this.blockchainInfo.cur(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
+      await this.blockchainInfo.cur(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12656.71', 'ether'), { from: chainlink })
 
       await this.blockchainInfo.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       const read = await this.blockchainInfo.read.call()
-      assert.equal(toWei('12529.71', 'ether'), hexToNumberString(read))
+      assert.equal(toWei('12656.71', 'ether'), hexToNumberString(read))
 
       const eval = await this.blockchainInfo.eval.call()
       assert.equal(toWei('3.19', 'ether'), hexToNumberString(eval))
 
       const peek = await this.blockchainInfo.peek.call()
-      assert.equal(toWei('12529.71', 'ether'), hexToNumberString(peek[0]))
+      assert.equal(toWei('12656.71', 'ether'), hexToNumberString(peek[0]))
       assert.equal(peek[1], true)
     })
 
@@ -100,7 +100,7 @@ contract("Chainlink", accounts => {
 
       const balBefore = await this.token.balanceOf.call(updater)
 
-      await this.blockchainInfo.cur(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
+      await this.blockchainInfo.cur(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12783.31', 'ether'), { from: chainlink })
 
       await this.blockchainInfo.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('5.19', 'ether'), { from: chainlink })
 

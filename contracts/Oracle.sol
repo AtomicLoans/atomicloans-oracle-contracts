@@ -18,6 +18,7 @@ contract Oracle is DSMath {
     uint128 val;                     
     uint128 lval;                    // Link value
     uint128 pmt;                     // Payment
+    uint128 dis;
     uint256 gain;
     bool posted;                     // Currency price posted
     bool told;                       // Payment currency price posted
@@ -56,6 +57,7 @@ contract Oracle is DSMath {
     function pack(uint128 pmt_, ERC20 tok_) { // payment
         require(uint32(now) > lag);
         pmt = pmt_;
+        dis = 0;
         lag = uint32(now) + DELAY;
         owed = msg.sender;
         tok = tok_;
@@ -79,6 +81,7 @@ contract Oracle is DSMath {
 
     function post(uint128 val_, uint32 zzz_) internal
     {
+        if (val_ >= wmul(val, turn) || val_ <= wdiv(val, turn)) { dis = pmt; }
         val = val_;
         zzz = zzz_;
         med.call(abi.encodeWithSignature("poke()"));
@@ -93,8 +96,8 @@ contract Oracle is DSMath {
     }
 
     function ward() internal { // Reward
-        gain = wmul(wmul(lval, pmt), prem);
-        if (tok.balanceOf(address(this)) >= gain && pmt > 0) {
+        gain = wmul(wmul(lval, dis), prem);
+        if (tok.balanceOf(address(this)) >= gain && dis > 0) {
             tok.transfer(owed, gain);
         }
     }

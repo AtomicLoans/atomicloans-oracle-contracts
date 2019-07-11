@@ -82,16 +82,16 @@ contract("Oraclize", accounts => {
 
       await this.coinbase.pack(this.bill, this.token.address, { from: updater })
 
-      await this.coinbase.__callback(asciiToHex("1"), '12529.71')
+      await this.coinbase.__callback(asciiToHex("1"), '12656.71')
 
       const read = await this.coinbase.read.call()
-      assert.equal(toWei('12529.71', 'ether'), hexToNumberString(read))
+      assert.equal(toWei('12656.71', 'ether'), hexToNumberString(read))
 
       const eval = await this.coinbase.eval.call()
       assert.equal(toWei('303.79', 'ether'), hexToNumberString(eval))
 
       const peek = await this.coinbase.peek.call()
-      assert.equal(toWei('12529.71', 'ether'), hexToNumberString(peek[0]))
+      assert.equal(toWei('12656.71', 'ether'), hexToNumberString(peek[0]))
       assert.equal(peek[1], true)
     })
 
@@ -102,11 +102,37 @@ contract("Oraclize", accounts => {
 
       const balBefore = await this.token.balanceOf.call(updater)
 
-      await this.coinbase.__callback(asciiToHex("1"), '12529.71')
+      await this.coinbase.__callback(asciiToHex("1"), '12784.2771')
 
       const balAfter = await this.token.balanceOf.call(updater)
 
       assert.equal(balAfter - balBefore, BigNumber(this.bill.toString()).times(303.79).times(1.1).plus(7808).toString())
+    })
+
+    it('should not reward if price has not changed by 1%', async function() {
+      await time.increase(901)
+
+      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+
+      const balBefore = await this.token.balanceOf.call(updater)
+
+      await this.coinbase.__callback(asciiToHex("1"), '12913.4128')
+
+      const balAfter = await this.token.balanceOf.call(updater)
+
+      assert.equal(balAfter - balBefore, BigNumber(this.bill.toString()).times(303.79).times(1.1).plus(7808).toString())
+
+      await time.increase(901)
+
+      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+
+      const balBefore2 = await this.token.balanceOf.call(updater)
+
+      await this.coinbase.__callback(asciiToHex("1"), '12913.4128')
+
+      const balAfter2 = await this.token.balanceOf.call(updater)
+
+      assert.equal(balAfter2 - balBefore2, 0)
     })
   })
 })
