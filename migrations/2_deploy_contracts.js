@@ -7,7 +7,7 @@ var Gemini = artifacts.require("./chainlink/Gemini.sol");
 var SoChain = artifacts.require("./chainlink/SoChain.sol");
 var Bitstamp = artifacts.require("./oraclize/Bitstamp.sol");
 var Coinbase = artifacts.require("./oraclize/Coinbase.sol");
-var CoinGecko = artifacts.require("./oraclize/CoinGecko.sol");
+var CryptoWatch = artifacts.require("./oraclize/CryptoWatch.sol");
 var Coinpaprika = artifacts.require("./oraclize/Coinpaprika.sol");
 var Kraken = artifacts.require("./oraclize/Kraken.sol");
 var WETH9 = artifacts.require("./WETH9.sol");
@@ -37,19 +37,16 @@ module.exports = function(deployer) {
     var gemini = await Gemini.deployed();
     await deployer.deploy(SoChain, medianizer.address, link.address, oracle);
     var soChain = await SoChain.deployed();
-    
-    await deployer.deploy(Coinbase, medianizer.address, makerMedianizer.address, weth9.address);
-    var coinbase = await Coinbase.deployed();
-
     await deployer.deploy(Bitstamp, medianizer.address, makerMedianizer.address, weth9.address);
     var bitstamp = await Bitstamp.deployed();
-
-    await deployer.deploy(CoinGecko, medianizer.address, makerMedianizer.address, weth9.address);
-    var coinGecko = await CoinGecko.deployed();
+    await deployer.deploy(Coinbase, medianizer.address, makerMedianizer.address, weth9.address);
+    var coinbase = await Coinbase.deployed();
+    await deployer.deploy(CryptoWatch, medianizer.address, makerMedianizer.address, weth9.address);
+    var cryptoWatch = await CryptoWatch.deployed();
     await deployer.deploy(Coinpaprika, medianizer.address, makerMedianizer.address, weth9.address);
     var coinpaprika = await Coinpaprika.deployed();
     await deployer.deploy(Kraken, medianizer.address, makerMedianizer.address, weth9.address);
     var kraken = await Kraken.deployed();
-    await medianizer.set([blockchainInfo.address, coinMarketCap.address, cryptoCompare.address, gemini.address, soChain.address, bitstamp.address, coinbase.address, coinGecko.address, coinpaprika.address, kraken.address]);
+    await medianizer.set([blockchainInfo.address, coinMarketCap.address, cryptoCompare.address, gemini.address, soChain.address, bitstamp.address, coinbase.address, cryptoWatch.address, coinpaprika.address, kraken.address]);
   })
 };

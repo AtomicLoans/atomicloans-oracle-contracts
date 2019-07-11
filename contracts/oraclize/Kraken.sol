@@ -13,6 +13,6 @@ contract Kraken is Oraclize {
     {
         weth.withdraw(pmt);
         require(oraclize_getPrice("URL") <= address(this).balance);
-        oraclize_query("URL", "json(https://api.kraken.com/0/public/Ticker?pair=XBTUSD).result.XXBTZUSD.b[0]");
+        oraclize_query("URL", "json(https://api.kraken.com/0/public/Ticker?pair=XBTUSD).result.XXBTZUSD.c.0");
     }
 }
