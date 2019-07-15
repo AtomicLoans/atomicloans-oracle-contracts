@@ -57,6 +57,7 @@ contract Medianizer is DSValue {
 
     function setMax(uint256 maxr_) {
     	require(on);
+    	require(msg.sender == own);
     	DSValue(values[bytes12(1)]).setMax(maxr_);
     	DSValue(values[bytes12(2)]).setMax(maxr_);
     	DSValue(values[bytes12(3)]).setMax(maxr_);
