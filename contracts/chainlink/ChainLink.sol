@@ -21,7 +21,7 @@ contract ChainLink is ChainlinkClient, Oracle {
 
     function pack(uint128 pmt_, ERC20 tok_) { // payment
         require(uint32(now) > lag);
-        link.transferFrom(msg.sender, address(this), uint(pmt_));
+        require(link.transferFrom(msg.sender, address(this), uint(pmt_)));
         pmt = pmt_;
         dis = 0;
         lag = uint32(now) + DELAY;
@@ -58,7 +58,7 @@ contract ChainLink is ChainlinkClient, Oracle {
     function ward() internal { // Reward
         gain = wmul(wmul(lval, dis), prem);
         if (tok.balanceOf(address(this)) >= min(maxr, gain) && dis > 0) {
-            tok.transfer(owed, min(maxr, gain));
+            require(tok.transfer(owed, min(maxr, gain)));
         }
     }
 

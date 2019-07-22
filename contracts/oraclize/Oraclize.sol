@@ -31,7 +31,7 @@ contract Oraclize is usingOraclize, Oracle {
     function pack(uint128 pmt_, ERC20 tok_) { // payment
         require(uint32(now) > lag);
         require(pmt_ == oraclize_getPrice("URL"));
-        weth.transferFrom(msg.sender, address(this), uint(pmt_));
+        require(weth.transferFrom(msg.sender, address(this), uint(pmt_)));
         pmt = pmt_;
         dis = 0;
         lag = uint32(now) + DELAY;
