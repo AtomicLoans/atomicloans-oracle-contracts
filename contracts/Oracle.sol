@@ -12,16 +12,16 @@ contract Oracle is DSMath {
     DSValue medm;
     ERC20   tok;
 
-    uint32 public zzz;
-    uint32 public lag;
-    address owed;                    // Address owed reward
-    uint128 val;                     
-    uint128 lval;                    // Link value
-    uint128 pmt;                     // Payment
-    uint128 dis;
-    uint256 gain;
-    bool posted;                     // Currency price posted
-    bool told;                       // Payment currency price posted
+    uint32  public zzz;
+    uint32  public lag;
+    address        owed;             // Address owed reward
+    uint128        val;                     
+    uint128 public lval;             // Link value
+    uint128        pmt;              // Payment
+    uint128        dis;
+    uint256        gain;
+    bool           posted;           // Currency price posted
+    bool           told;             // Payment currency price posted
 
     function peek() public view
         returns (bytes32,bool)
@@ -34,12 +34,6 @@ contract Oracle is DSMath {
     {
         assert(now < zzz);
         return bytes32(uint(val));
-    }
-    
-    function eval() public view
-        returns (bytes32)
-    {
-        return bytes32(uint(lval));
     }
 
     function push(uint128 amt, ERC20 tok_) public {

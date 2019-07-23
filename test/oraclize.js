@@ -87,8 +87,8 @@ contract("Oraclize", accounts => {
       const read = await this.coinbase.read.call()
       assert.equal(toWei('12656.71', 'ether'), hexToNumberString(read))
 
-      const eval = await this.coinbase.eval.call()
-      assert.equal(toWei('303.79', 'ether'), hexToNumberString(eval))
+      const lval = await this.coinbase.lval.call()
+      assert.equal(toWei('303.79', 'ether'), lval)
 
       const peek = await this.coinbase.peek.call()
       assert.equal(toWei('12656.71', 'ether'), hexToNumberString(peek[0]))
