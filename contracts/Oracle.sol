@@ -84,7 +84,7 @@ contract Oracle is DSMath {
         if (val_ >= wmul(val, turn) || val_ <= wdiv(val, turn)) { dis = pmt; }
         val = val_;
         zzz = zzz_;
-        med.call(abi.encodeWithSignature("poke()"));
+        med.poke();
         posted = true;
         if (told) { ward(); }
     }

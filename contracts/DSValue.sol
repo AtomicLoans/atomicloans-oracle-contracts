@@ -16,6 +16,10 @@ contract DSValue is DSMath {
         return wut;
     }
 
+    function poke() {
+        poke(0);
+    }
+
     function poke(bytes32 wut) {
         val = wut;
         has = true;
