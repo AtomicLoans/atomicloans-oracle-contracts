@@ -50,23 +50,6 @@ contract Oracle is DSMath {
         return pmt;
     }
     
-    function pack(ERC20 tok_) {
-        pack(uint128(bill()), tok_);   
-    }
-    
-    function pack(uint128 pmt_, ERC20 tok_) { // payment
-        require(uint32(now) > lag);
-        pmt = pmt_;
-        dis = 0;
-        lag = uint32(now) + DELAY;
-        owed = msg.sender;
-        tok = tok_;
-        told = false;
-        posted = false;
-        call();
-        chec();
-    }
-    
     function call()
         internal
     {
