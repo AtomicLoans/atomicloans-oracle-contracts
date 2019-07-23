@@ -1,5 +1,7 @@
 # Atomic Loans Ethereum Contracts
 
+[![Build Status](https://travis-ci.org/AtomicLoans/atomicloans-oracle-contracts.svg?branch=master)](https://travis-ci.org/AtomicLoans/atomicloans-oracle-contracts)
+
 Loan Contracts
 
 ## How to run
