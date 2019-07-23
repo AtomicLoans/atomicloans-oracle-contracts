@@ -1,7 +1,7 @@
 import "./DSMath.sol";
 import "./ERC20.sol";
 
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.26;
 
 contract DSValue is DSMath {
     bool    has;

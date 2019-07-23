@@ -1,7 +1,7 @@
 import "./ERC20.sol";
 import "./DSValue.sol";
 
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.26;
 
 contract Medianizer is DSValue {
     mapping (address => bool)    public tokas;  // Is ERC20 Token Approved
