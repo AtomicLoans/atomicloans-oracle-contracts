@@ -1,6 +1,6 @@
 # Atomic Loans Ethereum Contracts
 
-[![Build Status](https://travis-ci.org/AtomicLoans/atomicloans-oracle-contracts.svg?branch=master)](https://travis-ci.org/AtomicLoans/atomicloans-oracle-contracts)
+[![Build Status](https://travis-ci.org/AtomicLoans/atomicloans-oracle-contracts.svg?branch=master)](https://travis-ci.org/AtomicLoans/atomicloans-oracle-contracts) [![Greenkeeper badge](https://badges.greenkeeper.io/AtomicLoans/atomicloans-oracle-contracts.svg)](https://greenkeeper.io/)
 
 Loan Contracts
 
