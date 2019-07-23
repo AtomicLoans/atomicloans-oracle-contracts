@@ -63,6 +63,11 @@ contract Medianizer is DSValue {
     	DSValue(values[bytes12(3)]).setMax(maxr_);
     	DSValue(values[bytes12(4)]).setMax(maxr_);
     	DSValue(values[bytes12(5)]).setMax(maxr_);
+      DSValue(values[bytes12(6)]).setMax(maxr_);
+      DSValue(values[bytes12(7)]).setMax(maxr_);
+      DSValue(values[bytes12(8)]).setMax(maxr_);
+      DSValue(values[bytes12(9)]).setMax(maxr_);
+      DSValue(values[bytes12(10)]).setMax(maxr_);
     }
 
     function push (uint256 amt, ERC20 tok) {

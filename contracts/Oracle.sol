@@ -101,4 +101,8 @@ contract Oracle is DSMath {
             require(tok.transfer(owed, gain));
         }
     }
+
+    function setMax(uint256 maxr_) public {
+        require(msg.sender == address(med));
+    }
 }
