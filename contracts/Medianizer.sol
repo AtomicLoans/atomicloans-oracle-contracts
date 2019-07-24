@@ -67,12 +67,17 @@ contract Medianizer is DSMath {
       Oracle(values[bytes12(3)]).setMax(maxr_);
       Oracle(values[bytes12(4)]).setMax(maxr_);
       Oracle(values[bytes12(5)]).setMax(maxr_);
+      Oracle(values[bytes12(6)]).setMax(maxr_);
+      Oracle(values[bytes12(7)]).setMax(maxr_);
+      Oracle(values[bytes12(8)]).setMax(maxr_);
+      Oracle(values[bytes12(9)]).setMax(maxr_);
+      Oracle(values[bytes12(10)]).setMax(maxr_);
     }
 
     function peek() constant returns (bytes32, bool) {
         return (val,has);
     }
-    
+
     function read() constant returns (bytes32) {
         var (wut, has) = peek();
         assert(has);
