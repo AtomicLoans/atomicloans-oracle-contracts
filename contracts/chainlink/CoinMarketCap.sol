@@ -1,12 +1,11 @@
 pragma solidity >0.4.18;
 
 import "./ChainLink.sol";
-import "../DSValue.sol";
 
 contract CoinMarketCap is ChainLink {
     bytes32 constant UINT256_MUL_JOB = bytes32("ce36a79ea04c4d3ca015d267784417bd");
 
-    constructor(DSValue med_, ERC20 link_, address oracle_)
+    constructor(Medianizer med_, ERC20 link_, address oracle_)
         public
         ChainLink(med_, link_, oracle_)
     {}

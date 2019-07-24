@@ -1,9 +1,13 @@
 import "./ERC20.sol";
-import "./DSValue.sol";
+import "./Oracle.sol";
+import "./DSMath.sol";
 
 pragma solidity ^0.4.8;
 
-contract Medianizer is DSValue {
+contract Medianizer is DSMath {
+    bool    has;
+    bytes32 val;
+
     mapping (address => bool)    public tokas;  // Is ERC20 Token Approved
     mapping (bytes12 => address) public values;
     mapping (address => bytes12) public indexes;
@@ -58,11 +62,26 @@ contract Medianizer is DSValue {
     function setMax(uint256 maxr_) {
     	require(on);
     	require(msg.sender == own);
-    	DSValue(values[bytes12(1)]).setMax(maxr_);
-    	DSValue(values[bytes12(2)]).setMax(maxr_);
-    	DSValue(values[bytes12(3)]).setMax(maxr_);
-    	DSValue(values[bytes12(4)]).setMax(maxr_);
-    	DSValue(values[bytes12(5)]).setMax(maxr_);
+      Oracle(values[bytes12(1)]).setMax(maxr_);
+      Oracle(values[bytes12(2)]).setMax(maxr_);
+      Oracle(values[bytes12(3)]).setMax(maxr_);
+      Oracle(values[bytes12(4)]).setMax(maxr_);
+      Oracle(values[bytes12(5)]).setMax(maxr_);
+      Oracle(values[bytes12(6)]).setMax(maxr_);
+      Oracle(values[bytes12(7)]).setMax(maxr_);
+      Oracle(values[bytes12(8)]).setMax(maxr_);
+      Oracle(values[bytes12(9)]).setMax(maxr_);
+      Oracle(values[bytes12(10)]).setMax(maxr_);
+    }
+
+    function peek() constant returns (bytes32, bool) {
+        return (val,has);
+    }
+
+    function read() constant returns (bytes32) {
+        var (wut, has) = peek();
+        assert(has);
+        return wut;
     }
 
     function push (uint256 amt, ERC20 tok) {
@@ -91,7 +110,7 @@ contract Medianizer is DSValue {
         uint96 ctr = 0;
         for (uint96 i = 1; i < uint96(next); i++) {
             if (values[bytes12(i)] != 0) {
-                var (wut, wuz) = DSValue(values[bytes12(i)]).peek();
+                var (wut, wuz) = Oracle(values[bytes12(i)]).peek();
                 if (wuz) {
                     if (ctr == 0 || wut >= wuts[ctr - 1]) {
                         wuts[ctr] = wut;

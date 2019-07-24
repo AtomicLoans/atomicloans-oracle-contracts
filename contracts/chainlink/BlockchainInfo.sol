@@ -1,13 +1,12 @@
 pragma solidity >0.4.18;
 
 import "./ChainLink.sol";
-import "../DSValue.sol";
 
 contract BlockchainInfo is ChainLink {
     bytes32 constant UINT256_MUL_JOB = bytes32("9f0406209cf64acda32636018b33de11");
     bytes32 constant UINT256_MUL_JOB__LINK = bytes32("35e428271aad4506afc4f4089ce98f68");
 
-    constructor(DSValue med_, ERC20 link_, address oracle_)
+    constructor(Medianizer med_, ERC20 link_, address oracle_)
         public
         ChainLink(med_, link_, oracle_)
     {}

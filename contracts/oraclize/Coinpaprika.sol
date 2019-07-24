@@ -3,7 +3,7 @@ pragma solidity >0.4.18;
 import "./Oraclize.sol";
 
 contract Coinpaprika is Oraclize {
-    constructor(DSValue med_, DSValue medm_, WETH weth_)
+    constructor(Medianizer med_, Medianizer medm_, WETH weth_)
         public
         Oraclize(med_, medm_, weth_)
     {}

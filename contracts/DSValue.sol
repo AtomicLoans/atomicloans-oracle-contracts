@@ -20,8 +20,4 @@ contract DSValue is DSMath {
         val = wut;
         has = true;
     }
-
-    function setMax(uint256 maxr) public {
-        has = true;
-    }
 }

@@ -3,13 +3,12 @@ pragma solidity >0.4.18;
 import "./ChainlinkedTesting.sol";
 import "../Oracle.sol";
 import "../ERC20.sol";
-import "../DSValue.sol";
 
 contract ChainLink is ChainlinkClient, Oracle {
     ERC20 link;
     uint256 maxr; // Max reward
 
-    constructor(DSValue med_, ERC20 link_, address oracle_)
+    constructor(Medianizer med_, ERC20 link_, address oracle_)
         public
     {
         med = med_;
@@ -33,13 +32,9 @@ contract ChainLink is ChainlinkClient, Oracle {
         chec();
     }
 
-    function call() internal {
-        zzz = uint32(now + 43200);
-    }
+    function call() internal;
 
-    function chec() internal {
-        zzz = uint32(now + 43200);
-    }
+    function chec() internal;
 
     function cur(bytes32 _requestId, uint256 _price) // Currency
         public
