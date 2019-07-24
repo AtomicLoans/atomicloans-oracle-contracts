@@ -1,4 +1,4 @@
-# Atomic Loans Ethereum Contracts
+# Atomic Loans Oracle Contracts
 
 [![Build Status](https://travis-ci.org/AtomicLoans/atomicloans-oracle-contracts.svg?branch=master)](https://travis-ci.org/AtomicLoans/atomicloans-oracle-contracts)
 [![Coverage Status](https://coveralls.io/repos/github/AtomicLoans/atomicloans-oracle-contracts/badge.svg?branch=fix-coveralls)](https://coveralls.io/github/AtomicLoans/atomicloans-oracle-contracts?branch=fix-coveralls)
