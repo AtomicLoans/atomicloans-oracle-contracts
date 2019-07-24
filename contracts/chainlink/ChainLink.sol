@@ -32,13 +32,9 @@ contract ChainLink is ChainlinkClient, Oracle {
         chec();
     }
 
-    function call() internal {
-        zzz = uint32(now + 43200);
-    }
+    function call() internal;
 
-    function chec() internal {
-        zzz = uint32(now + 43200);
-    }
+    function chec() internal;
 
     function cur(bytes32 _requestId, uint256 _price) // Currency
         public
