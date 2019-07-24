@@ -66,16 +66,16 @@ contract Medianizer is DSValue {
     }
 
     function push (uint256 amt, ERC20 tok) {
-    	if (tokas[address(tok)] == false) {
-            tokas[address(tok)] = true;
-            for (uint96 j = 1; j < uint96(next); j++) {
-	    		tok.approve(values[bytes12(j)], 2**256-1);
-	    	}
-	    	tokas[address(tok)] = true;
+      if (tokas[address(tok)] == false) {
+        tokas[address(tok)] = true;
+        for (uint96 j = 1; j < uint96(next); j++) {
+          require(tok.approve(values[bytes12(j)], 2**256-1));
         }
-    	for (uint96 i = 1; i < uint96(next); i++) {
-    		tok.transferFrom(msg.sender, values[bytes12(i)], uint(div(uint128(amt), uint128(next) - 1)));
-    	}
+        tokas[address(tok)] = true;
+      }
+      for (uint96 i = 1; i < uint96(next); i++) {
+      require(tok.transferFrom(msg.sender, values[bytes12(i)], uint(div(uint128(amt), uint128(next) - 1))));
+      }
     }
 
     function poke() {

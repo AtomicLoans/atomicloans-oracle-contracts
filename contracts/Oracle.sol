@@ -43,7 +43,7 @@ contract Oracle is DSMath {
     }
 
     function push(uint128 amt, ERC20 tok_) public {
-        tok_.transferFrom(msg.sender, address(this), uint256(amt));
+        require(tok_.transferFrom(msg.sender, address(this), uint256(amt)));
     }
     
     function bill() public view returns (uint256) {
@@ -98,7 +98,7 @@ contract Oracle is DSMath {
     function ward() internal { // Reward
         gain = wmul(wmul(lval, dis), prem);
         if (tok.balanceOf(address(this)) >= gain && dis > 0) {
-            tok.transfer(owed, gain);
+            require(tok.transfer(owed, gain));
         }
     }
 }
