@@ -1,15 +1,15 @@
 pragma solidity >0.4.18;
 
 import "./DSMath.sol";
-import "./DSValue.sol";
+import "./ERC20.sol";
+import "./Medianizer.sol";
 
 contract Oracle is DSMath {
     uint32  constant public DELAY = 900; // 15 Minutes
     uint128 constant public prem = 1100000000000000000; // premium 1.1 (10%)
     uint128 constant public turn = 1010000000000000000; // minimum price change 1.01 (1%)
 
-    DSValue med;
-    DSValue medm;
+    Medianizer med;
     ERC20   tok;
 
     uint32 public zzz;
@@ -49,35 +49,6 @@ contract Oracle is DSMath {
     function bill() public view returns (uint256) {
         return pmt;
     }
-    
-    function pack(ERC20 tok_) {
-        pack(uint128(bill()), tok_);   
-    }
-    
-    function pack(uint128 pmt_, ERC20 tok_) { // payment
-        require(uint32(now) > lag);
-        pmt = pmt_;
-        dis = 0;
-        lag = uint32(now) + DELAY;
-        owed = msg.sender;
-        tok = tok_;
-        told = false;
-        posted = false;
-        call();
-        chec();
-    }
-    
-    function call()
-        internal
-    {
-        zzz = uint32(now + 43200);
-    }
-    
-    function chec()
-        internal
-    {
-        tell(uint128(medm.read()));
-    }
 
     function post(uint128 val_, uint32 zzz_) internal
     {
@@ -101,4 +72,6 @@ contract Oracle is DSMath {
             require(tok.transfer(owed, gain));
         }
     }
+
+    function setMax(uint256 maxr_) public;
 }

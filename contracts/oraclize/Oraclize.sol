@@ -3,12 +3,12 @@ pragma solidity >0.4.18;
 import "./OraclizeAPITesting.sol";
 import "../Oracle.sol";
 import "../WETH.sol";
-import "../DSValue.sol";
 
 contract Oraclize is usingOraclize, Oracle {
     WETH weth;
+    Medianizer medm;
 
-    constructor(DSValue med_, DSValue medm_, WETH weth_)
+    constructor(Medianizer med_, Medianizer medm_, WETH weth_)
         public
     {
         med = med_;
@@ -42,10 +42,20 @@ contract Oraclize is usingOraclize, Oracle {
         call();
         chec();
     }
+
+    function call() internal;
+
+    function chec() internal {
+        tell(uint128(medm.read()));
+    }
     
     function __callback(bytes32 myid, string result, bytes proof) {
         require(msg.sender == oraclize_cbAddress());
         uint128 res = uint128(parseInt(result, 18));
         post(res, uint32(now + 43200));
+    }
+
+    function setMax(uint256 maxr_) public {
+        require(msg.sender == address(med));
     }
 }
