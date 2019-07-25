@@ -8,11 +8,11 @@ contract Kraken is Oraclize {
         Oraclize(med_, medm_, weth_)
     {}
 
-    function call()
-        internal
+    function call(uint128 pmt)
+        internal returns (bytes32 queryId)
     {
         weth.withdraw(pmt);
         require(oraclize_getPrice("URL") <= address(this).balance);
-        oraclize_query("URL", "json(https://api.kraken.com/0/public/Ticker?pair=XBTUSD).result.XXBTZUSD.c.0");
+        queryId = oraclize_query("URL", "json(https://api.kraken.com/0/public/Ticker?pair=XBTUSD).result.XXBTZUSD.c.0");
     }
 }

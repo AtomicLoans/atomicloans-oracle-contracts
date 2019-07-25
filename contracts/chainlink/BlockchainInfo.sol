@@ -11,21 +11,23 @@ contract BlockchainInfo is ChainLink {
         ChainLink(med_, link_, oracle_)
     {}
 
-    function call() internal {
+    function call(uint128 pmt) internal returns (bytes32 queryId) {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.cur.selector);
         req.add("get", "https://blockchain.info/ticker?currency=USD");
         req.add("path", "USD.last");
         req.addInt("times", 1000000000000000000);
-        sendChainlinkRequest(req, div(pmt, 2));
+        queryId = sendChainlinkRequest(req, div(pmt, 2));
     }
 
-    function chec() internal {
+    function chec(uint128 pmt, bytes32 queryId) internal returns (bytes32) {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB__LINK, this, this.sup.selector);
         req.add("endpoint", "price");
         req.add("fsym", "LINK");
         req.add("tsyms", "USD");
         req.add("copyPath", "USD");
         req.addInt("times", 1000000000000000000);
-        sendChainlinkRequest(req, div(pmt, 2));
+        bytes32 linkrId = sendChainlinkRequest(req, div(pmt, 2));
+        linkrs[linkrId] = queryId;
+        return linkrId;
     }
 }

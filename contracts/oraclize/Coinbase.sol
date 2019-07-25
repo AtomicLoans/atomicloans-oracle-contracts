@@ -8,11 +8,11 @@ contract Coinbase is Oraclize {
         Oraclize(med_, medm_, weth_)
     {}
 
-    function call()
-        internal
+    function call(uint128 pmt)
+        internal returns (bytes32 queryId)
     {
         weth.withdraw(pmt);
         require(oraclize_getPrice("URL") <= address(this).balance);
-        oraclize_query("URL", "json(https://api.pro.coinbase.com/products/BTC-USD/ticker).price");
+        queryId = oraclize_query("URL", "json(https://api.pro.coinbase.com/products/BTC-USD/ticker).price");
     }
 }

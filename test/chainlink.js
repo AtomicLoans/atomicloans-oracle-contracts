@@ -96,13 +96,13 @@ contract("Chainlink", accounts => {
 
       await this.med.setMax(toWei('10', 'ether'), { from: own })
 
-      await this.blockchainInfo.pack(this.bill, this.token.address, { from: updater })
+      const tx = await this.blockchainInfo.pack(this.bill, this.token.address, { from: updater })
 
       const balBefore = await this.token.balanceOf.call(updater)
 
-      await this.blockchainInfo.cur(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12783.31', 'ether'), { from: chainlink })
+      await this.blockchainInfo.cur(tx.logs[0].args.id, toWei('12783.31', 'ether'), { from: chainlink })
 
-      await this.blockchainInfo.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('5.19', 'ether'), { from: chainlink })
+      await this.blockchainInfo.sup(tx.logs[1].args.id, toWei('5.19', 'ether'), { from: chainlink })
 
       const balAfter = await this.token.balanceOf.call(updater)
 

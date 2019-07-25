@@ -8,11 +8,11 @@ contract Coinpaprika is Oraclize {
         Oraclize(med_, medm_, weth_)
     {}
 
-    function call()
-        internal
+    function call(uint128 pmt)
+        internal returns (bytes32 queryId)
     {
         weth.withdraw(pmt);
         require(oraclize_getPrice("URL") <= address(this).balance);
-        oraclize_query("URL", "json(https://api.coinpaprika.com/v1/tickers/btc-bitcoin).quotes.USD.price");
+        queryId = oraclize_query("URL", "json(https://api.coinpaprika.com/v1/tickers/btc-bitcoin).quotes.USD.price");
     }
 }
