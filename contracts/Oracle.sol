@@ -67,6 +67,7 @@ contract Oracle is DSMath {
         if (areqs[queryId].tok.balanceOf(address(this)) >= gain && areqs[queryId].dis > 0) {
             require(areqs[queryId].tok.transfer(areqs[queryId].owed, gain));
         }
+        delete(areqs[queryId]);
     }
 
     function setMax(uint256 maxr_) public;

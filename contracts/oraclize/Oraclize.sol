@@ -32,7 +32,7 @@ contract Oraclize is usingOraclize, Oracle {
         require(pmt_ == oraclize_getPrice("URL"));
         require(weth.transferFrom(msg.sender, address(this), uint(pmt_)));
         bytes32 queryId = call(pmt_);
-        chec(pmt_, queryId);
+        tell(queryId, uint128(medm.read()));
         areqs[queryId].owed = msg.sender;
         areqs[queryId].pmt  = pmt_;
         areqs[queryId].tok  = tok_;
@@ -40,10 +40,6 @@ contract Oraclize is usingOraclize, Oracle {
     }
 
     function call(uint128 pmt) internal returns (bytes32);
-
-    function chec(uint128 pmt, bytes32 queryId) internal returns (bytes32) {
-        tell(queryId, uint128(medm.read()));
-    }
     
     function __callback(bytes32 myid, string result, bytes proof) {
         require(msg.sender == oraclize_cbAddress());
