@@ -35,10 +35,6 @@ contract Oracle is DSMath {
         assert(now < zzz);
         return bytes32(uint(val));
     }
-
-    function push(uint128 amt, ERC20 tok_) public {
-        require(tok_.transferFrom(msg.sender, address(this), uint256(amt)));
-    }
     
     function bill() public view returns (uint256) {
         return pmt;
