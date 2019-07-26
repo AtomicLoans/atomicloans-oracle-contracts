@@ -16,7 +16,7 @@ contract Oracle is DSMath {
     uint32 public lag;
     address owed;                    // Address owed reward
     uint128 val;                     
-    uint128 lval;                    // Link value
+    uint128 public lval;             // Link value
     uint128 pmt;                     // Payment
     uint128 dis;
     uint256 gain;
@@ -34,12 +34,6 @@ contract Oracle is DSMath {
     {
         assert(now < zzz);
         return bytes32(uint(val));
-    }
-    
-    function eval() public view
-        returns (bytes32)
-    {
-        return bytes32(uint(lval));
     }
 
     function push(uint128 amt, ERC20 tok_) public {
