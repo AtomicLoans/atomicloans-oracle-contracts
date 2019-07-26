@@ -8,7 +8,6 @@ contract Medianizer is DSMath {
     bool    has;
     bytes32 val;
 
-    mapping (address => bool)    public tokas;  // Is ERC20 Token Approved
     mapping (bytes12 => address) public values;
     mapping (address => bytes12) public indexes;
     bytes12 public next = 0x1;
@@ -85,15 +84,8 @@ contract Medianizer is DSMath {
     }
 
     function push (uint256 amt, ERC20 tok) {
-      if (tokas[address(tok)] == false) {
-        tokas[address(tok)] = true;
-        for (uint96 j = 1; j < uint96(next); j++) {
-          require(tok.approve(values[bytes12(j)], 2**256-1));
-        }
-        tokas[address(tok)] = true;
-      }
       for (uint96 i = 1; i < uint96(next); i++) {
-      require(tok.transferFrom(msg.sender, values[bytes12(i)], uint(div(uint128(amt), uint128(next) - 1))));
+        require(tok.transferFrom(msg.sender, values[bytes12(i)], uint(div(uint128(amt), uint128(next) - 1))));
       }
     }
 
