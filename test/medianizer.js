@@ -27,7 +27,7 @@ var MakerMedianizer = artifacts.require("./DSValue.sol");
 const utils = require('./helpers/Utils.js');
 
 const { rateToSec, numToBytes32 } = utils;
-const { toWei, fromWei, asciiToHex, hexToNumberString, hexToNumber, padLeft, numberToHex } = web3.utils;
+const { toWei, fromWei, asciiToHex, hexToNumberString, hexToNumber, padLeft, padRight, numberToHex } = web3.utils;
 
 const API_ENDPOINT_COIN = "https://atomicloans.io/marketcap/api/v1/"
 const BTC_TO_SAT = 10**8
@@ -107,7 +107,7 @@ contract("Medianizer", accounts => {
       await this.coinMarketCap.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       await this.kraken.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.kraken.__callback(asciiToHex("1"), '12529.71')
+      await this.kraken.__callback(padRight('0x', 64), '12529.71')
 
       const peek = await this.med.peek.call()
       assert.equal(peek[1], false)
@@ -129,10 +129,10 @@ contract("Medianizer", accounts => {
       await this.cryptoCompare.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       await this.bitstamp.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.bitstamp.__callback(asciiToHex("1"), '12529.71')
+      await this.bitstamp.__callback(padRight('0x', 64), '12529.71')
 
       await this.coinbase.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.coinbase.__callback(asciiToHex("1"), '12529.71')
+      await this.coinbase.__callback(padRight('0x', 64), '12529.71')
 
       const read = await this.med.read.call()
 
@@ -163,19 +163,19 @@ contract("Medianizer", accounts => {
       await this.soChain.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       await this.bitstamp.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.bitstamp.__callback(asciiToHex("1"), '12529.71')
+      await this.bitstamp.__callback(padRight('0x', 64), '12529.71')
 
       await this.coinbase.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.coinbase.__callback(asciiToHex("1"), '12529.71')
+      await this.coinbase.__callback(padRight('0x', 64), '12529.71')
 
       await this.cryptoWatch.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.cryptoWatch.__callback(asciiToHex("1"), '12529.71')
+      await this.cryptoWatch.__callback(padRight('0x', 64), '12529.71')
 
       await this.coinpaprika.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.coinpaprika.__callback(asciiToHex("1"), '12529.71')
+      await this.coinpaprika.__callback(padRight('0x', 64), '12529.71')
 
       await this.kraken.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.kraken.__callback(asciiToHex("1"), '12529.71')
+      await this.kraken.__callback(padRight('0x', 64), '12529.71')
 
       const read = await this.med.read.call()
 
@@ -206,19 +206,19 @@ contract("Medianizer", accounts => {
       await this.soChain.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       await this.bitstamp.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.bitstamp.__callback(asciiToHex("1"), '17000')
+      await this.bitstamp.__callback(padRight('0x', 64), '17000')
 
       await this.coinbase.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.coinbase.__callback(asciiToHex("1"), '18000')
+      await this.coinbase.__callback(padRight('0x', 64), '18000')
 
       await this.cryptoWatch.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.cryptoWatch.__callback(asciiToHex("1"), '19000')
+      await this.cryptoWatch.__callback(padRight('0x', 64), '19000')
 
       await this.coinpaprika.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.coinpaprika.__callback(asciiToHex("1"), '20000')
+      await this.coinpaprika.__callback(padRight('0x', 64), '20000')
 
       await this.kraken.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.kraken.__callback(asciiToHex("1"), '21000')
+      await this.kraken.__callback(padRight('0x', 64), '21000')
 
       const read = await this.med.read.call()
 
@@ -249,19 +249,19 @@ contract("Medianizer", accounts => {
       await this.soChain.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       await this.bitstamp.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.bitstamp.__callback(asciiToHex("1"), '12529.71')
+      await this.bitstamp.__callback(padRight('0x', 64), '12529.71')
 
       await this.coinbase.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.coinbase.__callback(asciiToHex("1"), '12529.71')
+      await this.coinbase.__callback(padRight('0x', 64), '12529.71')
 
       await this.cryptoWatch.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.cryptoWatch.__callback(asciiToHex("1"), '12529.71')
+      await this.cryptoWatch.__callback(padRight('0x', 64), '12529.71')
 
       await this.coinpaprika.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.coinpaprika.__callback(asciiToHex("1"), '12529.71')
+      await this.coinpaprika.__callback(padRight('0x', 64), '12529.71')
 
       await this.kraken.pack(this.oraclizeBill, this.token.address, { from: updater })
-      await this.kraken.__callback(asciiToHex("1"), '12529.71')
+      await this.kraken.__callback(padRight('0x', 64), '12529.71')
 
       await time.increase(43300)
 

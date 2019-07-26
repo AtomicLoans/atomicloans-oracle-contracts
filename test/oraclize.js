@@ -72,7 +72,7 @@ contract("Oraclize", accounts => {
 
       await this.coinbase.pack(this.bill, this.token.address, { from: updater })
 
-      await this.coinbase.__callback(asciiToHex("1"), "12529.71")
+      await this.coinbase.__callback(padRight('0x', 64), "12529.71")
 
       await shouldFail.reverting(this.coinbase.pack(this.bill, this.token.address), { from: updater })
     })
@@ -82,7 +82,7 @@ contract("Oraclize", accounts => {
 
       await this.coinbase.pack(this.bill, this.token.address, { from: updater })
 
-      await this.coinbase.__callback(asciiToHex("1"), '12656.71')
+      await this.coinbase.__callback(padRight('0x', 64), '12656.71')
 
       const read = await this.coinbase.read.call()
       assert.equal(toWei('12656.71', 'ether'), hexToNumberString(read))
