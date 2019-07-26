@@ -1,4 +1,4 @@
-const { time, shouldFail, balance } = require('openzeppelin-test-helpers');
+const { time, expectRevert, balance } = require('openzeppelin-test-helpers');
 
 const toSecs        = require('@mblackmblack/to-seconds');
 const { sha256 }    = require('@liquality/crypto')
@@ -74,7 +74,7 @@ contract("Oraclize", accounts => {
 
       await this.coinbase.__callback(padRight('0x', 64), "12529.71")
 
-      await shouldFail.reverting(this.coinbase.pack(this.bill, this.token.address), { from: updater })
+      await expectRevert.unspecified(this.coinbase.pack(this.bill, this.token.address), { from: updater })
     })
 
     it('should succeed in updating price of called once', async function() {

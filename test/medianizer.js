@@ -1,4 +1,4 @@
-const { time, shouldFail, balance } = require('openzeppelin-test-helpers');
+const { time, expectRevert, balance } = require('openzeppelin-test-helpers');
 
 const toSecs        = require('@mblackmblack/to-seconds');
 const { sha256 }    = require('@liquality/crypto')
