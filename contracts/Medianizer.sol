@@ -74,11 +74,11 @@ contract Medianizer is DSMath {
       Oracle(values[bytes12(10)]).setMax(maxr_);
     }
 
-    function peek() constant returns (bytes32, bool) {
+    function peek() public view returns (bytes32, bool) {
         return (val,has);
     }
 
-    function read() constant returns (bytes32) {
+    function read() public returns (bytes32) {
         var (wut, has) = peek();
         assert(has);
         return wut;
@@ -105,7 +105,7 @@ contract Medianizer is DSMath {
         (val, has) = compute();
     }
 
-    function compute() constant returns (bytes32, bool) {
+    function compute() public returns (bytes32, bool) {
         bytes32[] memory wuts = new bytes32[](uint96(next) - 1);
         uint96 ctr = 0;
         for (uint96 i = 1; i < uint96(next); i++) {

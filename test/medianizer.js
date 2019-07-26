@@ -134,7 +134,7 @@ contract("Medianizer", accounts => {
       await this.coinbase.pack(this.oraclizeBill, this.token.address, { from: updater })
       await this.coinbase.__callback(asciiToHex("1"), '12529.71')
 
-      const read = await this.med.read()
+      const read = await this.med.read.call()
 
       assert.equal(read, padLeft(numberToHex(toWei('12529.71', 'ether')), 64))
     })
@@ -177,7 +177,7 @@ contract("Medianizer", accounts => {
       await this.kraken.pack(this.oraclizeBill, this.token.address, { from: updater })
       await this.kraken.__callback(asciiToHex("1"), '12529.71')
 
-      const read = await this.med.read()
+      const read = await this.med.read.call()
 
       assert.equal(read, padLeft(numberToHex(toWei('12529.71', 'ether')), 64))
     })
@@ -220,7 +220,7 @@ contract("Medianizer", accounts => {
       await this.kraken.pack(this.oraclizeBill, this.token.address, { from: updater })
       await this.kraken.__callback(asciiToHex("1"), '21000')
 
-      const read = await this.med.read()
+      const read = await this.med.read.call()
 
       assert.equal(read, padLeft(numberToHex(toWei('16500', 'ether')), 64))
     })
