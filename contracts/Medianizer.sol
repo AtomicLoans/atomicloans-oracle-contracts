@@ -2,7 +2,7 @@ import "./ERC20.sol";
 import "./Oracle.sol";
 import "./DSMath.sol";
 
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.26;
 
 contract Medianizer is DSMath {
     bool    has;
