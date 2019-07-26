@@ -21,7 +21,7 @@ var MakerMedianizer = artifacts.require("./DSValue.sol");
 const utils = require('./helpers/Utils.js');
 
 const { rateToSec, numToBytes32 } = utils;
-const { toWei, fromWei, asciiToHex, hexToNumberString, numberToHex, padLeft } = web3.utils;
+const { toWei, fromWei, asciiToHex, hexToNumberString, numberToHex, padLeft, padRight } = web3.utils;
 
 const API_ENDPOINT_COIN = "https://atomicloans.io/marketcap/api/v1/"
 const BTC_TO_SAT = 10**8
@@ -72,7 +72,7 @@ contract("Oraclize", accounts => {
 
       await this.coinbase.pack(this.bill, this.token.address, { from: updater })
 
-      await this.coinbase.__callback(asciiToHex("1"), "12529.71")
+      await this.coinbase.__callback(padRight('0x', 64), "12529.71")
 
       await shouldFail.reverting(this.coinbase.pack(this.bill, this.token.address), { from: updater })
     })
@@ -82,7 +82,7 @@ contract("Oraclize", accounts => {
 
       await this.coinbase.pack(this.bill, this.token.address, { from: updater })
 
-      await this.coinbase.__callback(asciiToHex("1"), '12656.71')
+      await this.coinbase.__callback(padRight('0x', 64), '12656.71')
 
       const read = await this.coinbase.read.call()
       assert.equal(toWei('12656.71', 'ether'), hexToNumberString(read))
@@ -102,7 +102,7 @@ contract("Oraclize", accounts => {
 
       const balBefore = await this.token.balanceOf.call(updater)
 
-      await this.coinbase.__callback(asciiToHex("1"), '12784.2771')
+      await this.coinbase.__callback(padRight('0x', 64), '12784.2771')
 
       const balAfter = await this.token.balanceOf.call(updater)
 
@@ -116,7 +116,7 @@ contract("Oraclize", accounts => {
 
       const balBefore = await this.token.balanceOf.call(updater)
 
-      await this.coinbase.__callback(asciiToHex("1"), '12913.4128')
+      await this.coinbase.__callback(padRight('0x', 64), '12913.4128')
 
       const balAfter = await this.token.balanceOf.call(updater)
 
@@ -128,7 +128,7 @@ contract("Oraclize", accounts => {
 
       const balBefore2 = await this.token.balanceOf.call(updater)
 
-      await this.coinbase.__callback(asciiToHex("1"), '12913.4128')
+      await this.coinbase.__callback(padRight('0x', 64), '12913.4128')
 
       const balAfter2 = await this.token.balanceOf.call(updater)
 

@@ -14,7 +14,6 @@ contract Oraclize is usingOraclize, Oracle {
         med = med_;
         medm = medm_;
         weth = weth_;
-        pmt = uint128(bill());
         oraclize_setProof(proofType_Android | proofStorage_IPFS);
     }
 
@@ -32,27 +31,21 @@ contract Oraclize is usingOraclize, Oracle {
         require(uint32(now) > lag);
         require(pmt_ == oraclize_getPrice("URL"));
         require(weth.transferFrom(msg.sender, address(this), uint(pmt_)));
-        pmt = pmt_;
-        dis = 0;
+        bytes32 queryId = call(pmt_);
+        tell(queryId, uint128(medm.read()));
+        areqs[queryId].owed = msg.sender;
+        areqs[queryId].pmt  = pmt_;
+        areqs[queryId].tok  = tok_;
         lag = uint32(now) + DELAY;
-        owed = msg.sender;
-        tok = tok_;
-        told = false;
-        posted = false;
-        call();
-        chec();
     }
 
-    function call() internal;
-
-    function chec() internal {
-        tell(uint128(medm.read()));
-    }
+    function call(uint128 pmt) internal returns (bytes32);
     
     function __callback(bytes32 myid, string result, bytes proof) {
         require(msg.sender == oraclize_cbAddress());
+        require(areqs[myid].owed != address(0));
         uint128 res = uint128(parseInt(result, 18));
-        post(res, uint32(now + 43200));
+        post(myid, res, uint32(now + 43200));
     }
 
     function setMax(uint256 maxr_) public {

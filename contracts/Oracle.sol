@@ -10,18 +10,23 @@ contract Oracle is DSMath {
     uint128 constant public turn = 1010000000000000000; // minimum price change 1.01 (1%)
 
     Medianizer med;
-    ERC20   tok;
 
     uint32 public zzz;
     uint32 public lag;
-    address owed;                    // Address owed reward
     uint128 val;                     
     uint128 public lval;             // Link value
-    uint128 pmt;                     // Payment
-    uint128 dis;
     uint256 gain;
-    bool posted;                     // Currency price posted
-    bool told;                       // Payment currency price posted
+
+    mapping(bytes32 => Areq) areqs;
+
+    struct Areq {
+        address owed;
+        uint128 pmt;
+        uint128 dis;
+        ERC20 tok;
+        bool posted;
+        bool told;
+    }
 
     function peek() public view
         returns (bytes32,bool)
@@ -40,31 +45,29 @@ contract Oracle is DSMath {
         require(tok_.transferFrom(msg.sender, address(this), uint256(amt)));
     }
     
-    function bill() public view returns (uint256) {
-        return pmt;
-    }
-
-    function post(uint128 val_, uint32 zzz_) internal
+    function post(bytes32 queryId, uint128 val_, uint32 zzz_) internal
     {
-        if (val_ >= wmul(val, turn) || val_ <= wdiv(val, turn)) { dis = pmt; }
+        areqs[queryId].dis = 0;
+        if (val_ >= wmul(val, turn) || val_ <= wdiv(val, turn)) { areqs[queryId].dis = areqs[queryId].pmt; }
         val = val_;
         zzz = zzz_;
         med.poke();
-        posted = true;
-        if (told) { ward(); }
+        areqs[queryId].posted = true;
+        if (areqs[queryId].told) { ward(queryId); }
     }
 
-    function tell(uint128 lval_) internal {
+    function tell(bytes32 queryId, uint128 lval_) internal {
         lval = lval_;
-        told = true;
-        if (posted) { ward(); }
+        areqs[queryId].told = true;
+        if (areqs[queryId].posted) { ward(queryId); }
     }
 
-    function ward() internal { // Reward
-        gain = wmul(wmul(lval, dis), prem);
-        if (tok.balanceOf(address(this)) >= gain && dis > 0) {
-            require(tok.transfer(owed, gain));
+    function ward(bytes32 queryId) internal { // Reward
+        gain = wmul(wmul(lval, areqs[queryId].dis), prem);
+        if (areqs[queryId].tok.balanceOf(address(this)) >= gain && areqs[queryId].dis > 0) {
+            require(areqs[queryId].tok.transfer(areqs[queryId].owed, gain));
         }
+        delete(areqs[queryId]);
     }
 
     function setMax(uint256 maxr_) public;
