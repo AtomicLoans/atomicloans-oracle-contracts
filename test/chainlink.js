@@ -1,4 +1,4 @@
-const { time, shouldFail, balance } = require('openzeppelin-test-helpers');
+const { time, expectRevert, balance } = require('openzeppelin-test-helpers');
 
 const toSecs        = require('@mblackmblack/to-seconds');
 const { sha256 }    = require('@liquality/crypto')
@@ -68,7 +68,7 @@ contract("Chainlink", accounts => {
 
       await this.blockchainInfo.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
-      await shouldFail.reverting(this.blockchainInfo.pack(this.bill, this.token.address), { from: updater })
+      await expectRevert.unspecified(this.blockchainInfo.pack(this.bill, this.token.address), { from: updater })
     })
 
     it('should succeed in updating price of called once', async function() {
