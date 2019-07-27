@@ -17,6 +17,9 @@
   },
   "scripts": {
     "test": "truffle test",
+    "test:medianizer": "truffle test ./test/medianizer.js",
+    "test:chainlink": "truffle test ./test/chainlink.js",
+    "test:oraclize": "truffle test ./test/oraclize.js",
     "coverage": "npx solidity-coverage"
   },
   "devDependencies": {
