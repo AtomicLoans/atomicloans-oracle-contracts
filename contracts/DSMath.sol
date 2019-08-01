@@ -48,6 +48,7 @@ contract DSMath {
     }
 
     function hdiv(uint128 x, uint128 y) pure internal returns (uint128 z) {
+        assert(y > 0);
         z = x / y;
     }
 
