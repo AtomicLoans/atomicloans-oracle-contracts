@@ -3,8 +3,10 @@ pragma solidity ^0.4.26;
 import "./ChainLink.sol";
 
 contract BlockchainInfo is ChainLink {
-    bytes32 constant UINT256_MUL_JOB = bytes32("9f0406209cf64acda32636018b33de11");
-    bytes32 constant UINT256_MUL_JOB__LINK = bytes32("35e428271aad4506afc4f4089ce98f68");
+    bytes32 constant UINT256_MUL_JOB = bytes32("9f0406209cf64acda32636018b33de11"); // CHAINLINK ROPSTEN
+    // bytes32 constant UINT256_MUL_JOB = bytes32("f291f8597d174f4aa1983b0e27ae160f"); // CHAINLINK MAINNET
+    bytes32 constant UINT256_MUL_JOB__LINK = bytes32("35e428271aad4506afc4f4089ce98f68"); // CRYPTOCOMPARE CHAINLINK ROPSTEN
+    // bytes32 constant UINT256_MUL_JOB__LINK = bytes32("513907f96955437a8ac02a5d70e5bdea"); // CRYPTOCOMPARE CHAINLINK MAINNET
 
     constructor(Medianizer med_, ERC20 link_, address oracle_)
         public
