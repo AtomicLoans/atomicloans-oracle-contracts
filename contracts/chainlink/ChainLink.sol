@@ -1,6 +1,7 @@
 pragma solidity ^0.4.26;
 
-import "./ChainlinkedTesting.sol";
+// import "./Chainlinked.sol"; // MAINNET
+import "./ChainlinkedTesting.sol"; // TESTING
 import "../Oracle.sol";
 import "../ERC20.sol";
 
