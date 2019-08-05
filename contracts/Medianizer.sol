@@ -17,7 +17,7 @@ contract Medianizer is DSMath {
     	own = msg.sender;
     }
 
-    function set(address[10] addrs) {
+    function setOracles(address[10] addrs) {
     	require(!on);
         require(msg.sender == own);
         values.push(Oracle(addrs[0]));
