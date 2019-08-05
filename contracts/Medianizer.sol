@@ -5,8 +5,8 @@ import "./DSMath.sol";
 pragma solidity ^0.4.26;
 
 contract Medianizer is DSMath {
-    bool    has;
-    bytes32 val;
+    bool    hasPrice;
+    bytes32 assetPrice;
     uint256 public min = 5;
     bool on;
     address deployer;
@@ -49,13 +49,13 @@ contract Medianizer is DSMath {
     }
 
     function peek() public view returns (bytes32, bool) {
-        return (val,has);
+        return (assetPrice,hasPrice);
     }
 
     function read() public returns (bytes32) {
-        var (wut, has) = peek();
-        assert(has);
-        return wut;
+        var (assetPrice, hasPrice) = peek();
+        assert(hasPrice);
+        return assetPrice;
     }
 
     function fund (uint256 amount, ERC20 token) {
@@ -69,7 +69,7 @@ contract Medianizer is DSMath {
     }
 
     function poke(bytes32) {
-        (val, has) = compute();
+        (assetPrice, hasPrice) = compute();
     }
 
     function compute() public returns (bytes32, bool) {
@@ -96,7 +96,7 @@ contract Medianizer is DSMath {
             }
         }
 
-        if (ctr < min) return (val, false);
+        if (ctr < min) return (assetPrice, false);
 
         bytes32 value;
         if (ctr % 2 == 0) {
