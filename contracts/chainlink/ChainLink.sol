@@ -7,7 +7,7 @@ import "../ERC20.sol";
 
 contract ChainLink is ChainlinkClient, Oracle {
     ERC20 link;
-    uint256 maxr; // Max reward
+    uint256 maxReward; // Max reward
 
     bytes32 public lastQueryId;
 
@@ -60,13 +60,13 @@ contract ChainLink is ChainlinkClient, Oracle {
 
     function ward(bytes32 queryId) internal { // Reward
         gain = wmul(wmul(lval, areqs[queryId].dis), prem);
-        if (areqs[queryId].tok.balanceOf(address(this)) >= min(maxr, gain) && areqs[queryId].dis > 0) {
-            require(areqs[queryId].tok.transfer(areqs[queryId].owed, min(maxr, gain)));
+        if (areqs[queryId].tok.balanceOf(address(this)) >= min(maxReward, gain) && areqs[queryId].dis > 0) {
+            require(areqs[queryId].tok.transfer(areqs[queryId].owed, min(maxReward, gain)));
         }
     }
 
-    function setMax(uint256 maxr_) public {
+    function setMaxReward(uint256 maxReward_) public {
         require(msg.sender == address(med));
-        maxr = maxr_;
+        maxReward = maxReward_;
     }
 }

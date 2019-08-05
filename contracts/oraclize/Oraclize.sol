@@ -49,7 +49,7 @@ contract Oraclize is usingOraclize, Oracle {
         post(myid, res, uint32(now + 43200));
     }
 
-    function setMax(uint256 maxr_) public {
+    function setMaxReward(uint256 maxReward_) public {
         require(msg.sender == address(med));
     }
 }

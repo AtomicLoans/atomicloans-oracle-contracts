@@ -33,19 +33,19 @@ contract Medianizer is DSMath {
     	on = true;
     }
 
-    function setMax(uint256 maxr_) {
+    function setMaxReward(uint256 maxReward_) {
     	require(on);
     	require(msg.sender == own);
-        values[0].setMax(maxr_);
-        values[1].setMax(maxr_);
-        values[2].setMax(maxr_);
-        values[3].setMax(maxr_);
-        values[4].setMax(maxr_);
-        values[5].setMax(maxr_);
-        values[6].setMax(maxr_);
-        values[7].setMax(maxr_);
-        values[8].setMax(maxr_);
-        values[9].setMax(maxr_);
+        values[0].setMaxReward(maxReward_);
+        values[1].setMaxReward(maxReward_);
+        values[2].setMaxReward(maxReward_);
+        values[3].setMaxReward(maxReward_);
+        values[4].setMaxReward(maxReward_);
+        values[5].setMaxReward(maxReward_);
+        values[6].setMaxReward(maxReward_);
+        values[7].setMaxReward(maxReward_);
+        values[8].setMaxReward(maxReward_);
+        values[9].setMaxReward(maxReward_);
     }
 
     function peek() public view returns (bytes32, bool) {

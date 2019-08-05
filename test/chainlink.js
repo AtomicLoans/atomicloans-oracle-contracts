@@ -94,7 +94,7 @@ contract("Chainlink", accounts => {
     it('should reward correct based on max', async function() {
       await time.increase(901)
 
-      await this.med.setMax(toWei('10', 'ether'), { from: own })
+      await this.med.setMaxReward(toWei('10', 'ether'), { from: own })
 
       const tx = await this.blockchainInfo.pack(this.bill, this.token.address, { from: updater })
 

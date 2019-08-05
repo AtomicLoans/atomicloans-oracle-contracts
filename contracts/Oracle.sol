@@ -66,5 +66,5 @@ contract Oracle is DSMath {
         delete(areqs[queryId]);
     }
 
-    function setMax(uint256 maxr_) public;
+    function setMaxReward(uint256 maxReward_) public;
 }
