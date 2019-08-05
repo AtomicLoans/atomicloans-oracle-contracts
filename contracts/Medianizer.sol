@@ -11,7 +11,7 @@ contract Medianizer is DSMath {
     bool on;
     address deployer;
 
-    Oracle[] public values;
+    Oracle[] public oracles;
 
     constructor() {
     	deployer = msg.sender;
@@ -20,32 +20,32 @@ contract Medianizer is DSMath {
     function setOracles(address[10] addrs) {
     	require(!on);
         require(msg.sender == deployer);
-        values.push(Oracle(addrs[0]));
-        values.push(Oracle(addrs[1]));
-        values.push(Oracle(addrs[2]));
-        values.push(Oracle(addrs[3]));
-        values.push(Oracle(addrs[4]));
-        values.push(Oracle(addrs[5]));
-        values.push(Oracle(addrs[6]));
-        values.push(Oracle(addrs[7]));
-        values.push(Oracle(addrs[8]));
-        values.push(Oracle(addrs[9]));
+        oracles.push(Oracle(addrs[0]));
+        oracles.push(Oracle(addrs[1]));
+        oracles.push(Oracle(addrs[2]));
+        oracles.push(Oracle(addrs[3]));
+        oracles.push(Oracle(addrs[4]));
+        oracles.push(Oracle(addrs[5]));
+        oracles.push(Oracle(addrs[6]));
+        oracles.push(Oracle(addrs[7]));
+        oracles.push(Oracle(addrs[8]));
+        oracles.push(Oracle(addrs[9]));
     	on = true;
     }
 
     function setMaxReward(uint256 maxReward_) {
     	require(on);
     	require(msg.sender == deployer);
-        values[0].setMaxReward(maxReward_);
-        values[1].setMaxReward(maxReward_);
-        values[2].setMaxReward(maxReward_);
-        values[3].setMaxReward(maxReward_);
-        values[4].setMaxReward(maxReward_);
-        values[5].setMaxReward(maxReward_);
-        values[6].setMaxReward(maxReward_);
-        values[7].setMaxReward(maxReward_);
-        values[8].setMaxReward(maxReward_);
-        values[9].setMaxReward(maxReward_);
+        oracles[0].setMaxReward(maxReward_);
+        oracles[1].setMaxReward(maxReward_);
+        oracles[2].setMaxReward(maxReward_);
+        oracles[3].setMaxReward(maxReward_);
+        oracles[4].setMaxReward(maxReward_);
+        oracles[5].setMaxReward(maxReward_);
+        oracles[6].setMaxReward(maxReward_);
+        oracles[7].setMaxReward(maxReward_);
+        oracles[8].setMaxReward(maxReward_);
+        oracles[9].setMaxReward(maxReward_);
     }
 
     function peek() public view returns (bytes32, bool) {
@@ -59,8 +59,8 @@ contract Medianizer is DSMath {
     }
 
     function push (uint256 amt, ERC20 tok) {
-      for (uint256 i = 0; i < values.length; i++) {
-        require(tok.transferFrom(msg.sender, address(values[i]), uint(div(uint128(amt), uint128(values.length)))));
+      for (uint256 i = 0; i < oracles.length; i++) {
+        require(tok.transferFrom(msg.sender, address(oracles[i]), uint(div(uint128(amt), uint128(oracles.length)))));
       }
     }
 
@@ -73,11 +73,11 @@ contract Medianizer is DSMath {
     }
 
     function compute() public returns (bytes32, bool) {
-        bytes32[] memory wuts = new bytes32[](values.length);
+        bytes32[] memory wuts = new bytes32[](oracles.length);
         uint256 ctr = 0;
-        for (uint256 i = 0; i < values.length; i++) {
-            if (address(values[i]) != 0) {
-                var (wut, wuz) = values[i].peek();
+        for (uint256 i = 0; i < oracles.length; i++) {
+            if (address(oracles[i]) != 0) {
+                var (wut, wuz) = oracles[i].peek();
                 if (wuz) {
                     if (ctr == 0 || wut >= wuts[ctr - 1]) {
                         wuts[ctr] = wut;
