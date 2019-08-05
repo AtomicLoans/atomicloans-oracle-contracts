@@ -83,8 +83,8 @@ contract("Chainlink", accounts => {
       const read = await this.blockchainInfo.read.call()
       assert.equal(toWei('12656.71', 'ether'), hexToNumberString(read))
 
-      const lval = await this.blockchainInfo.lval.call()
-      assert.equal(toWei('3.19', 'ether'), lval)
+      const paymentTokenPrice = await this.blockchainInfo.paymentTokenPrice.call()
+      assert.equal(toWei('3.19', 'ether'), paymentTokenPrice)
 
       const peek = await this.blockchainInfo.peek.call()
       assert.equal(toWei('12656.71', 'ether'), hexToNumberString(peek[0]))
