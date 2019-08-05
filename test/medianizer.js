@@ -85,10 +85,10 @@ contract("Medianizer", accounts => {
     await this.weth.approve(this.coinpaprika.address,    toWei('1', 'ether'), { from: updater })
     await this.weth.approve(this.kraken.address,         toWei('1', 'ether'), { from: updater })
 
-    await this.med.push(toWei('100', 'ether'), this.token.address)
+    await this.med.fund(toWei('100', 'ether'), this.token.address)
   })
 
-  describe('push', function() {
+  describe('fund', function() {
     it('should send funds to all oracle contracts', async function() {
       const bal  = await this.token.balanceOf.call(this.blockchainInfo.address)
 

@@ -58,9 +58,9 @@ contract Medianizer is DSMath {
         return wut;
     }
 
-    function push (uint256 amt, ERC20 tok) {
+    function fund (uint256 amount, ERC20 token) {
       for (uint256 i = 0; i < oracles.length; i++) {
-        require(tok.transferFrom(msg.sender, address(oracles[i]), uint(div(uint128(amt), uint128(oracles.length)))));
+        require(token.transferFrom(msg.sender, address(oracles[i]), uint(div(uint128(amount), uint128(oracles.length)))));
       }
     }
 

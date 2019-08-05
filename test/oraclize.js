@@ -61,7 +61,7 @@ contract("Oraclize", accounts => {
 
     await this.token.approve(this.med.address, toWei('100', 'ether'))
 
-    await this.med.push(toWei('100', 'ether'), this.token.address)
+    await this.med.fund(toWei('100', 'ether'), this.token.address)
 
     await this.weth.approve(this.coinbase.address, toWei('1', 'ether'), { from: updater })
   })

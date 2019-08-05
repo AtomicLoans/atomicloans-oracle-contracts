@@ -55,7 +55,7 @@ contract("Chainlink", accounts => {
 
     await this.token.approve(this.med.address, toWei('100', 'ether'))
 
-    await this.med.push(toWei('100', 'ether'), this.token.address)
+    await this.med.fund(toWei('100', 'ether'), this.token.address)
 
     await this.link.approve(this.blockchainInfo.address, toWei('100', 'ether'), { from: updater })
   })
