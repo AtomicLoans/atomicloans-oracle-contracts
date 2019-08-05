@@ -9,17 +9,17 @@ contract Medianizer is DSMath {
     bytes32 val;
     uint256 public min = 5;
     bool on;
-    address own;
+    address deployer;
 
     Oracle[] public values;
 
     constructor() {
-    	own = msg.sender;
+    	deployer = msg.sender;
     }
 
     function setOracles(address[10] addrs) {
     	require(!on);
-        require(msg.sender == own);
+        require(msg.sender == deployer);
         values.push(Oracle(addrs[0]));
         values.push(Oracle(addrs[1]));
         values.push(Oracle(addrs[2]));
@@ -35,7 +35,7 @@ contract Medianizer is DSMath {
 
     function setMaxReward(uint256 maxReward_) {
     	require(on);
-    	require(msg.sender == own);
+    	require(msg.sender == deployer);
         values[0].setMaxReward(maxReward_);
         values[1].setMaxReward(maxReward_);
         values[2].setMaxReward(maxReward_);
