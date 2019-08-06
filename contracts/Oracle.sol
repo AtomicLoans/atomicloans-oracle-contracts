@@ -24,8 +24,8 @@ contract Oracle is DSMath {
         uint128 payment;
         uint128 disbursement;
         ERC20 token;
-        bool posted;
-        bool told;
+        bool assetPriceSet;
+        bool paymentTokenPriceSet;
     }
 
     function peek() public view
@@ -41,21 +41,21 @@ contract Oracle is DSMath {
         return bytes32(uint(assetPrice));
     }
     
-    function post(bytes32 queryId, uint128 assetPrice_, uint32 expiry_) internal
+    function setAssetPrice(bytes32 queryId, uint128 assetPrice_, uint32 expiry_) internal
     {
         asyncRequests[queryId].disbursement = 0;
         if (assetPrice_ >= wmul(assetPrice, turn) || assetPrice_ <= wdiv(assetPrice, turn)) { asyncRequests[queryId].disbursement = asyncRequests[queryId].payment; }
         assetPrice = assetPrice_;
         expiry = expiry_;
         med.poke();
-        asyncRequests[queryId].posted = true;
-        if (asyncRequests[queryId].told) { ward(queryId); }
+        asyncRequests[queryId].assetPriceSet = true;
+        if (asyncRequests[queryId].paymentTokenPriceSet) { ward(queryId); }
     }
 
-    function tell(bytes32 queryId, uint128 paymentTokenPrice_) internal {
+    function setPaymentTokenPrice(bytes32 queryId, uint128 paymentTokenPrice_) internal {
         paymentTokenPrice = paymentTokenPrice_;
-        asyncRequests[queryId].told = true;
-        if (asyncRequests[queryId].posted) { ward(queryId); }
+        asyncRequests[queryId].paymentTokenPriceSet = true;
+        if (asyncRequests[queryId].assetPriceSet) { ward(queryId); }
     }
 
     function ward(bytes32 queryId) internal { // Reward

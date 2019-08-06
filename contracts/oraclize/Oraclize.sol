@@ -33,7 +33,7 @@ contract Oraclize is usingOraclize, Oracle {
         require(payment_ == oraclize_getPrice("URL"));
         require(weth.transferFrom(msg.sender, address(this), uint(payment_)));
         bytes32 queryId = call(payment_);
-        tell(queryId, uint128(medm.read()));
+        setPaymentTokenPrice(queryId, uint128(medm.read()));
         asyncRequests[queryId].rewardee = msg.sender;
         asyncRequests[queryId].payment  = payment_;
         asyncRequests[queryId].token    = token_;
@@ -46,7 +46,7 @@ contract Oraclize is usingOraclize, Oracle {
         require(msg.sender == oraclize_cbAddress());
         require(asyncRequests[myid].rewardee != address(0));
         uint128 res = uint128(parseInt(result, 18));
-        post(myid, res, uint32(now + 43200));
+        setAssetPrice(myid, res, uint32(now + 43200));
     }
 
     function setMaxReward(uint256 maxReward_) public {
