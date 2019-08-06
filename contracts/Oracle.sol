@@ -21,8 +21,8 @@ contract Oracle is DSMath {
 
     struct AsyncRequest {
         address rewardee;
-        uint128 pmt;
-        uint128 dis;
+        uint128 payment;
+        uint128 disbursement;
         ERC20 tok;
         bool posted;
         bool told;
@@ -43,8 +43,8 @@ contract Oracle is DSMath {
     
     function post(bytes32 queryId, uint128 assetPrice_, uint32 expiry_) internal
     {
-        asyncRequests[queryId].dis = 0;
-        if (assetPrice_ >= wmul(assetPrice, turn) || assetPrice_ <= wdiv(assetPrice, turn)) { asyncRequests[queryId].dis = asyncRequests[queryId].pmt; }
+        asyncRequests[queryId].disbursement = 0;
+        if (assetPrice_ >= wmul(assetPrice, turn) || assetPrice_ <= wdiv(assetPrice, turn)) { asyncRequests[queryId].disbursement = asyncRequests[queryId].payment; }
         assetPrice = assetPrice_;
         expiry = expiry_;
         med.poke();
@@ -59,8 +59,8 @@ contract Oracle is DSMath {
     }
 
     function ward(bytes32 queryId) internal { // Reward
-        rewardAmount = wmul(wmul(paymentTokenPrice, asyncRequests[queryId].dis), prem);
-        if (asyncRequests[queryId].tok.balanceOf(address(this)) >= rewardAmount && asyncRequests[queryId].dis > 0) {
+        rewardAmount = wmul(wmul(paymentTokenPrice, asyncRequests[queryId].disbursement), prem);
+        if (asyncRequests[queryId].tok.balanceOf(address(this)) >= rewardAmount && asyncRequests[queryId].disbursement > 0) {
             require(asyncRequests[queryId].tok.transfer(asyncRequests[queryId].rewardee, rewardAmount));
         }
         delete(asyncRequests[queryId]);
