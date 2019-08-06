@@ -11,8 +11,8 @@ contract Oracle is DSMath {
 
     Medianizer med;
 
-    uint32 public zzz;
-    uint32 public lag;
+    uint32 public expiry;
+    uint32 public timeout;
     uint128 assetPrice;                     
     uint128 public paymentTokenPrice;
     uint256 gain;
@@ -31,22 +31,22 @@ contract Oracle is DSMath {
     function peek() public view
         returns (bytes32,bool)
     {
-        return (bytes32(uint(assetPrice)), now < zzz);
+        return (bytes32(uint(assetPrice)), now < expiry);
     }
 
     function read() public view
         returns (bytes32)
     {
-        assert(now < zzz);
+        assert(now < expiry);
         return bytes32(uint(assetPrice));
     }
     
-    function post(bytes32 queryId, uint128 assetPrice_, uint32 zzz_) internal
+    function post(bytes32 queryId, uint128 assetPrice_, uint32 expiry_) internal
     {
         areqs[queryId].dis = 0;
         if (assetPrice_ >= wmul(assetPrice, turn) || assetPrice_ <= wdiv(assetPrice, turn)) { areqs[queryId].dis = areqs[queryId].pmt; }
         assetPrice = assetPrice_;
-        zzz = zzz_;
+        expiry = expiry_;
         med.poke();
         areqs[queryId].posted = true;
         if (areqs[queryId].told) { ward(queryId); }

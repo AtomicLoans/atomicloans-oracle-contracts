@@ -29,7 +29,7 @@ contract Oraclize is usingOraclize, Oracle {
     }
     
     function pack(uint128 pmt_, ERC20 tok_) { // payment
-        require(uint32(now) > lag);
+        require(uint32(now) > timeout);
         require(pmt_ == oraclize_getPrice("URL"));
         require(weth.transferFrom(msg.sender, address(this), uint(pmt_)));
         bytes32 queryId = call(pmt_);
@@ -37,7 +37,7 @@ contract Oraclize is usingOraclize, Oracle {
         areqs[queryId].owed = msg.sender;
         areqs[queryId].pmt  = pmt_;
         areqs[queryId].tok  = tok_;
-        lag = uint32(now) + DELAY;
+        timeout = uint32(now) + DELAY;
     }
 
     function call(uint128 pmt) internal returns (bytes32);
