@@ -21,7 +21,7 @@ contract Gemini is ChainLink {
         queryId = sendChainlinkRequest(req, div(payment, 2));
     }
 
-    function chec(uint128 payment, bytes32 queryId) internal returns (bytes32) {
+    function getPaymentTokenPrice(uint128 payment, bytes32 queryId) internal returns (bytes32) {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB__LINK, this, this.sup.selector);
         req.add("endpoint", "price");
         req.add("fsym", "LINK");

@@ -32,7 +32,7 @@ contract ChainLink is ChainlinkClient, Oracle {
         require(link.transferFrom(msg.sender, address(this), uint(payment_)));
         bytes32 queryId = getAssetPrice(payment_);
         lastQueryId = queryId;
-        bytes32 linkrId = chec(payment_, queryId);
+        bytes32 linkrId = getPaymentTokenPrice(payment_, queryId);
         linkrs[linkrId] = queryId;
         asyncRequests[queryId].rewardee = msg.sender;
         asyncRequests[queryId].payment  = payment_;
@@ -42,7 +42,7 @@ contract ChainLink is ChainlinkClient, Oracle {
 
     function getAssetPrice(uint128 payment) internal returns (bytes32);
 
-    function chec(uint128 payment, bytes32 queryId) internal returns (bytes32);
+    function getPaymentTokenPrice(uint128 payment, bytes32 queryId) internal returns (bytes32);
 
     function cur(bytes32 _requestId, uint256 _price) // Currency
         public
