@@ -44,14 +44,14 @@ contract ChainLink is ChainlinkClient, Oracle {
 
     function getPaymentTokenPrice(uint128 payment, bytes32 queryId) internal returns (bytes32);
 
-    function cur(bytes32 _requestId, uint256 _price) // Currency
+    function returnAssetPrice(bytes32 _requestId, uint256 _price) // Currency
         public
         recordChainlinkFulfillment(_requestId)
     {
         setAssetPrice(_requestId, uint128(_price), uint32(now + 43200));
     }
     
-    function sup(bytes32 _requestId, uint256 _price) // Supply Currency
+    function returnPaymentTokenPrice(bytes32 _requestId, uint256 _price) // Supply Currency
         public
         recordChainlinkFulfillment(_requestId)
     {

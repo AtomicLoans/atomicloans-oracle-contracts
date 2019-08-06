@@ -14,7 +14,7 @@ contract SoChain is ChainLink {
     {}
 
     function getAssetPrice(uint128 payment) internal returns (bytes32 queryId) {
-        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.cur.selector);
+        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.returnAssetPrice.selector);
         req.add("get", "https://chain.so/api/v2/get_info/BTC");
         req.add("path", "data.price");
         req.addInt("times", 1000000000000000000);
@@ -22,7 +22,7 @@ contract SoChain is ChainLink {
     }
 
     function getPaymentTokenPrice(uint128 payment, bytes32 queryId) internal returns (bytes32) {
-        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB__LINK, this, this.sup.selector);
+        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB__LINK, this, this.returnPaymentTokenPrice.selector);
         req.add("endpoint", "price");
         req.add("fsym", "LINK");
         req.add("tsyms", "USD");

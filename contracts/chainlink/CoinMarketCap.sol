@@ -12,7 +12,7 @@ contract CoinMarketCap is ChainLink {
     {}
 
     function getAssetPrice(uint128 payment) internal returns (bytes32 queryId) {
-        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.cur.selector);
+        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.returnAssetPrice.selector);
         req.add("sym", "BTC");
         req.add("convert", "USD");
         string[] memory path = new string[](5);
@@ -27,7 +27,7 @@ contract CoinMarketCap is ChainLink {
     }
 
     function getPaymentTokenPrice(uint128 payment, bytes32 queryId) internal returns (bytes32) {
-        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.sup.selector);
+        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.returnPaymentTokenPrice.selector);
         req.add("sym", "LINK");
         req.add("convert", "USD");
         string[] memory path = new string[](5);

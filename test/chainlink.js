@@ -64,9 +64,9 @@ contract("Chainlink", accounts => {
     it('should fail if trying to pack twice before 15 minutes is up', async function() {
       await this.blockchainInfo.pack(this.bill, this.token.address, { from: updater })
 
-      await this.blockchainInfo.cur(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
+      await this.blockchainInfo.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
 
-      await this.blockchainInfo.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
+      await this.blockchainInfo.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       await expectRevert.unspecified(this.blockchainInfo.pack(this.bill, this.token.address), { from: updater })
     })
@@ -76,9 +76,9 @@ contract("Chainlink", accounts => {
 
       await this.blockchainInfo.pack(this.bill, this.token.address, { from: updater })
 
-      await this.blockchainInfo.cur(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12656.71', 'ether'), { from: chainlink })
+      await this.blockchainInfo.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12656.71', 'ether'), { from: chainlink })
 
-      await this.blockchainInfo.sup(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
+      await this.blockchainInfo.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       const read = await this.blockchainInfo.read.call()
       assert.equal(toWei('12656.71', 'ether'), hexToNumberString(read))
@@ -100,9 +100,9 @@ contract("Chainlink", accounts => {
 
       const balBefore = await this.token.balanceOf.call(updater)
 
-      await this.blockchainInfo.cur(tx.logs[0].args.id, toWei('12783.31', 'ether'), { from: chainlink })
+      await this.blockchainInfo.returnAssetPrice(tx.logs[0].args.id, toWei('12783.31', 'ether'), { from: chainlink })
 
-      await this.blockchainInfo.sup(tx.logs[1].args.id, toWei('5.19', 'ether'), { from: chainlink })
+      await this.blockchainInfo.returnPaymentTokenPrice(tx.logs[1].args.id, toWei('5.19', 'ether'), { from: chainlink })
 
       const balAfter = await this.token.balanceOf.call(updater)
 

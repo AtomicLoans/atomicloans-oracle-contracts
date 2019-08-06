@@ -12,7 +12,7 @@ contract CryptoCompare is ChainLink {
     {}
 
     function getAssetPrice(uint128 payment) internal returns (bytes32 queryId) {
-        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.cur.selector);
+        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.returnAssetPrice.selector);
         req.add("endpoint", "price");
         req.add("fsym", "BTC");
         req.add("tsyms", "USD");
@@ -22,7 +22,7 @@ contract CryptoCompare is ChainLink {
     }
 
     function getPaymentTokenPrice(uint128 payment, bytes32 queryId) internal returns (bytes32) {
-        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.sup.selector);
+        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.returnPaymentTokenPrice.selector);
         req.add("endpoint", "price");
         req.add("fsym", "LINK");
         req.add("tsyms", "USD");
