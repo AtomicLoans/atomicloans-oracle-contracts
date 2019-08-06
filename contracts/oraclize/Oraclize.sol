@@ -24,11 +24,11 @@ contract Oraclize is usingOraclize, Oracle {
         return oraclize_getPrice("URL");
     }
     
-    function pack(ERC20 tok_) {
-        pack(uint128(bill()), tok_);   
+    function pack(ERC20 token_) {
+        pack(uint128(bill()), token_);   
     }
     
-    function pack(uint128 payment_, ERC20 tok_) { // payment
+    function pack(uint128 payment_, ERC20 token_) { // payment
         require(uint32(now) > timeout);
         require(payment_ == oraclize_getPrice("URL"));
         require(weth.transferFrom(msg.sender, address(this), uint(payment_)));
@@ -36,7 +36,7 @@ contract Oraclize is usingOraclize, Oracle {
         tell(queryId, uint128(medm.read()));
         asyncRequests[queryId].rewardee = msg.sender;
         asyncRequests[queryId].payment  = payment_;
-        asyncRequests[queryId].tok      = tok_;
+        asyncRequests[queryId].token    = token_;
         timeout = uint32(now) + DELAY;
     }
 

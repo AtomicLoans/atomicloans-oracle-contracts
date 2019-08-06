@@ -23,7 +23,7 @@ contract Oracle is DSMath {
         address rewardee;
         uint128 payment;
         uint128 disbursement;
-        ERC20 tok;
+        ERC20 token;
         bool posted;
         bool told;
     }
@@ -60,8 +60,8 @@ contract Oracle is DSMath {
 
     function ward(bytes32 queryId) internal { // Reward
         rewardAmount = wmul(wmul(paymentTokenPrice, asyncRequests[queryId].disbursement), prem);
-        if (asyncRequests[queryId].tok.balanceOf(address(this)) >= rewardAmount && asyncRequests[queryId].disbursement > 0) {
-            require(asyncRequests[queryId].tok.transfer(asyncRequests[queryId].rewardee, rewardAmount));
+        if (asyncRequests[queryId].token.balanceOf(address(this)) >= rewardAmount && asyncRequests[queryId].disbursement > 0) {
+            require(asyncRequests[queryId].token.transfer(asyncRequests[queryId].rewardee, rewardAmount));
         }
         delete(asyncRequests[queryId]);
     }
