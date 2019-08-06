@@ -59,9 +59,9 @@ contract ChainLink is ChainlinkClient, Oracle {
     }
 
     function ward(bytes32 queryId) internal { // Reward
-        gain = wmul(wmul(paymentTokenPrice, areqs[queryId].dis), prem);
-        if (areqs[queryId].tok.balanceOf(address(this)) >= min(maxReward, gain) && areqs[queryId].dis > 0) {
-            require(areqs[queryId].tok.transfer(areqs[queryId].owed, min(maxReward, gain)));
+        rewardAmount = wmul(wmul(paymentTokenPrice, areqs[queryId].dis), prem);
+        if (areqs[queryId].tok.balanceOf(address(this)) >= min(maxReward, rewardAmount) && areqs[queryId].dis > 0) {
+            require(areqs[queryId].tok.transfer(areqs[queryId].owed, min(maxReward, rewardAmount)));
         }
     }
 

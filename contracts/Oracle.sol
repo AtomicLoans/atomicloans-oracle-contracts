@@ -15,7 +15,7 @@ contract Oracle is DSMath {
     uint32 public timeout;
     uint128 assetPrice;                     
     uint128 public paymentTokenPrice;
-    uint256 gain;
+    uint256 rewardAmount;
 
     mapping(bytes32 => Areq) areqs;
 
@@ -59,9 +59,9 @@ contract Oracle is DSMath {
     }
 
     function ward(bytes32 queryId) internal { // Reward
-        gain = wmul(wmul(paymentTokenPrice, areqs[queryId].dis), prem);
-        if (areqs[queryId].tok.balanceOf(address(this)) >= gain && areqs[queryId].dis > 0) {
-            require(areqs[queryId].tok.transfer(areqs[queryId].owed, gain));
+        rewardAmount = wmul(wmul(paymentTokenPrice, areqs[queryId].dis), prem);
+        if (areqs[queryId].tok.balanceOf(address(this)) >= rewardAmount && areqs[queryId].dis > 0) {
+            require(areqs[queryId].tok.transfer(areqs[queryId].owed, rewardAmount));
         }
         delete(areqs[queryId]);
     }
