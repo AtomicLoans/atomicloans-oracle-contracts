@@ -32,7 +32,7 @@ contract Oraclize is usingOraclize, Oracle {
         require(uint32(now) > timeout);
         require(payment_ == oraclize_getPrice("URL"));
         require(weth.transferFrom(msg.sender, address(this), uint(payment_)));
-        bytes32 queryId = call(payment_);
+        bytes32 queryId = getAssetPrice(payment_);
         setPaymentTokenPrice(queryId, uint128(medm.read()));
         asyncRequests[queryId].rewardee = msg.sender;
         asyncRequests[queryId].payment  = payment_;
@@ -40,7 +40,7 @@ contract Oraclize is usingOraclize, Oracle {
         timeout = uint32(now) + DELAY;
     }
 
-    function call(uint128 payment) internal returns (bytes32);
+    function getAssetPrice(uint128 payment) internal returns (bytes32);
     
     function __callback(bytes32 myid, string result, bytes proof) {
         require(msg.sender == oraclize_cbAddress());

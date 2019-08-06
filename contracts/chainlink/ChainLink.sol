@@ -30,7 +30,7 @@ contract ChainLink is ChainlinkClient, Oracle {
     function pack(uint128 payment_, ERC20 token_) { // payment
         require(uint32(now) > timeout);
         require(link.transferFrom(msg.sender, address(this), uint(payment_)));
-        bytes32 queryId = call(payment_);
+        bytes32 queryId = getAssetPrice(payment_);
         lastQueryId = queryId;
         bytes32 linkrId = chec(payment_, queryId);
         linkrs[linkrId] = queryId;
@@ -40,7 +40,7 @@ contract ChainLink is ChainlinkClient, Oracle {
         timeout = uint32(now) + DELAY;
     }
 
-    function call(uint128 payment) internal returns (bytes32);
+    function getAssetPrice(uint128 payment) internal returns (bytes32);
 
     function chec(uint128 payment, bytes32 queryId) internal returns (bytes32);
 

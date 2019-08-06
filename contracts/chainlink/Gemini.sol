@@ -13,7 +13,7 @@ contract Gemini is ChainLink {
         ChainLink(med_, link_, oracle_)
     {}
 
-    function call(uint128 payment) internal returns (bytes32 queryId) {
+    function getAssetPrice(uint128 payment) internal returns (bytes32 queryId) {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.cur.selector);
         req.add("get", "https://api.gemini.com/v1/pubticker/btcusd");
         req.add("path", "last");

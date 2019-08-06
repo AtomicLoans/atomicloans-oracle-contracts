@@ -8,7 +8,7 @@ contract Coinpaprika is Oraclize {
         Oraclize(med_, medm_, weth_)
     {}
 
-    function call(uint128 payment)
+    function getAssetPrice(uint128 payment)
         internal returns (bytes32 queryId)
     {
         weth.withdraw(payment);

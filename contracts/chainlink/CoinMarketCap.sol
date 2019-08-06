@@ -11,7 +11,7 @@ contract CoinMarketCap is ChainLink {
         ChainLink(med_, link_, oracle_)
     {}
 
-    function call(uint128 payment) internal returns (bytes32 queryId) {
+    function getAssetPrice(uint128 payment) internal returns (bytes32 queryId) {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.cur.selector);
         req.add("sym", "BTC");
         req.add("convert", "USD");
