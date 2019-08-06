@@ -62,19 +62,19 @@ contract("Chainlink", accounts => {
 
   describe('pack', function() {
     it('should fail if trying to pack twice before 15 minutes is up', async function() {
-      await this.blockchainInfo.pack(this.bill, this.token.address, { from: updater })
+      await this.blockchainInfo.update(this.bill, this.token.address, { from: updater })
 
       await this.blockchainInfo.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
 
       await this.blockchainInfo.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
-      await expectRevert.unspecified(this.blockchainInfo.pack(this.bill, this.token.address), { from: updater })
+      await expectRevert.unspecified(this.blockchainInfo.update(this.bill, this.token.address), { from: updater })
     })
 
     it('should succeed in updating price of called once', async function() {
       await time.increase(901)
 
-      await this.blockchainInfo.pack(this.bill, this.token.address, { from: updater })
+      await this.blockchainInfo.update(this.bill, this.token.address, { from: updater })
 
       await this.blockchainInfo.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12656.71', 'ether'), { from: chainlink })
 
@@ -96,7 +96,7 @@ contract("Chainlink", accounts => {
 
       await this.med.setMaxReward(toWei('10', 'ether'), { from: own })
 
-      const tx = await this.blockchainInfo.pack(this.bill, this.token.address, { from: updater })
+      const tx = await this.blockchainInfo.update(this.bill, this.token.address, { from: updater })
 
       const balBefore = await this.token.balanceOf.call(updater)
 

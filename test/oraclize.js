@@ -70,17 +70,17 @@ contract("Oraclize", accounts => {
     it('should fail if trying to pack twice before 15 minutes is up', async function() {
       assert.equal(true, true)
 
-      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+      await this.coinbase.update(this.bill, this.token.address, { from: updater })
 
       await this.coinbase.__callback(padRight('0x', 64), "12529.71")
 
-      await expectRevert.unspecified(this.coinbase.pack(this.bill, this.token.address), { from: updater })
+      await expectRevert.unspecified(this.coinbase.update(this.bill, this.token.address), { from: updater })
     })
 
     it('should succeed in updating price of called once', async function() {
       await time.increase(901)
 
-      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+      await this.coinbase.update(this.bill, this.token.address, { from: updater })
 
       await this.coinbase.__callback(padRight('0x', 64), '12656.71')
 
@@ -98,7 +98,7 @@ contract("Oraclize", accounts => {
     it('should reward correctly', async function() {
       await time.increase(901)
 
-      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+      await this.coinbase.update(this.bill, this.token.address, { from: updater })
 
       const balBefore = await this.token.balanceOf.call(updater)
 
@@ -112,7 +112,7 @@ contract("Oraclize", accounts => {
     it('should not reward if price has not changed by 1%', async function() {
       await time.increase(901)
 
-      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+      await this.coinbase.update(this.bill, this.token.address, { from: updater })
 
       const balBefore = await this.token.balanceOf.call(updater)
 
@@ -124,7 +124,7 @@ contract("Oraclize", accounts => {
 
       await time.increase(901)
 
-      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+      await this.coinbase.update(this.bill, this.token.address, { from: updater })
 
       const balBefore2 = await this.token.balanceOf.call(updater)
 

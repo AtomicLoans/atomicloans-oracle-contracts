@@ -24,11 +24,7 @@ contract Oraclize is usingOraclize, Oracle {
         return oraclize_getPrice("URL");
     }
     
-    function pack(ERC20 token_) {
-        pack(uint128(bill()), token_);   
-    }
-    
-    function pack(uint128 payment_, ERC20 token_) { // payment
+    function update(uint128 payment_, ERC20 token_) { // payment
         require(uint32(now) > timeout);
         require(payment_ == oraclize_getPrice("URL"));
         require(weth.transferFrom(msg.sender, address(this), uint(payment_)));

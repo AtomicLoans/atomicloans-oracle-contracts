@@ -27,7 +27,7 @@ contract ChainLink is ChainlinkClient, Oracle {
         return asyncRequests[lastQueryId].payment;
     }
 
-    function pack(uint128 payment_, ERC20 token_) { // payment
+    function update(uint128 payment_, ERC20 token_) { // payment
         require(uint32(now) > timeout);
         require(link.transferFrom(msg.sender, address(this), uint(payment_)));
         bytes32 queryId = getAssetPrice(payment_);
