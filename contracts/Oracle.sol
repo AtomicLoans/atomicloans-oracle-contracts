@@ -17,9 +17,9 @@ contract Oracle is DSMath {
     uint128 public paymentTokenPrice;
     uint256 rewardAmount;
 
-    mapping(bytes32 => Areq) areqs;
+    mapping(bytes32 => AsyncRequest) asyncRequests;
 
-    struct Areq {
+    struct AsyncRequest {
         address owed;
         uint128 pmt;
         uint128 dis;
@@ -43,27 +43,27 @@ contract Oracle is DSMath {
     
     function post(bytes32 queryId, uint128 assetPrice_, uint32 expiry_) internal
     {
-        areqs[queryId].dis = 0;
-        if (assetPrice_ >= wmul(assetPrice, turn) || assetPrice_ <= wdiv(assetPrice, turn)) { areqs[queryId].dis = areqs[queryId].pmt; }
+        asyncRequests[queryId].dis = 0;
+        if (assetPrice_ >= wmul(assetPrice, turn) || assetPrice_ <= wdiv(assetPrice, turn)) { asyncRequests[queryId].dis = asyncRequests[queryId].pmt; }
         assetPrice = assetPrice_;
         expiry = expiry_;
         med.poke();
-        areqs[queryId].posted = true;
-        if (areqs[queryId].told) { ward(queryId); }
+        asyncRequests[queryId].posted = true;
+        if (asyncRequests[queryId].told) { ward(queryId); }
     }
 
     function tell(bytes32 queryId, uint128 paymentTokenPrice_) internal {
         paymentTokenPrice = paymentTokenPrice_;
-        areqs[queryId].told = true;
-        if (areqs[queryId].posted) { ward(queryId); }
+        asyncRequests[queryId].told = true;
+        if (asyncRequests[queryId].posted) { ward(queryId); }
     }
 
     function ward(bytes32 queryId) internal { // Reward
-        rewardAmount = wmul(wmul(paymentTokenPrice, areqs[queryId].dis), prem);
-        if (areqs[queryId].tok.balanceOf(address(this)) >= rewardAmount && areqs[queryId].dis > 0) {
-            require(areqs[queryId].tok.transfer(areqs[queryId].owed, rewardAmount));
+        rewardAmount = wmul(wmul(paymentTokenPrice, asyncRequests[queryId].dis), prem);
+        if (asyncRequests[queryId].tok.balanceOf(address(this)) >= rewardAmount && asyncRequests[queryId].dis > 0) {
+            require(asyncRequests[queryId].tok.transfer(asyncRequests[queryId].owed, rewardAmount));
         }
-        delete(areqs[queryId]);
+        delete(asyncRequests[queryId]);
     }
 
     function setMaxReward(uint256 maxReward_) public;

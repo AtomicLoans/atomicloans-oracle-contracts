@@ -34,9 +34,9 @@ contract Oraclize is usingOraclize, Oracle {
         require(weth.transferFrom(msg.sender, address(this), uint(pmt_)));
         bytes32 queryId = call(pmt_);
         tell(queryId, uint128(medm.read()));
-        areqs[queryId].owed = msg.sender;
-        areqs[queryId].pmt  = pmt_;
-        areqs[queryId].tok  = tok_;
+        asyncRequests[queryId].owed = msg.sender;
+        asyncRequests[queryId].pmt  = pmt_;
+        asyncRequests[queryId].tok  = tok_;
         timeout = uint32(now) + DELAY;
     }
 
@@ -44,7 +44,7 @@ contract Oraclize is usingOraclize, Oracle {
     
     function __callback(bytes32 myid, string result, bytes proof) {
         require(msg.sender == oraclize_cbAddress());
-        require(areqs[myid].owed != address(0));
+        require(asyncRequests[myid].owed != address(0));
         uint128 res = uint128(parseInt(result, 18));
         post(myid, res, uint32(now + 43200));
     }

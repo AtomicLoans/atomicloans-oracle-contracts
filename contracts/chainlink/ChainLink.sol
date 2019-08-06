@@ -20,11 +20,11 @@ contract ChainLink is ChainlinkClient, Oracle {
         link = link_;
         setChainlinkToken(address(link_));
         setChainlinkOracle(oracle_);
-        areqs[lastQueryId].pmt = uint128(2 * LINK);
+        asyncRequests[lastQueryId].pmt = uint128(2 * LINK);
     }
 
     function bill() public view returns (uint256) {
-        return areqs[lastQueryId].pmt;
+        return asyncRequests[lastQueryId].pmt;
     }
 
     function pack(uint128 pmt_, ERC20 tok_) { // payment
@@ -34,9 +34,9 @@ contract ChainLink is ChainlinkClient, Oracle {
         lastQueryId = queryId;
         bytes32 linkrId = chec(pmt_, queryId);
         linkrs[linkrId] = queryId;
-        areqs[queryId].owed = msg.sender;
-        areqs[queryId].pmt  = pmt_;
-        areqs[queryId].tok  = tok_;
+        asyncRequests[queryId].owed = msg.sender;
+        asyncRequests[queryId].pmt  = pmt_;
+        asyncRequests[queryId].tok  = tok_;
         timeout = uint32(now) + DELAY;
     }
 
@@ -59,9 +59,9 @@ contract ChainLink is ChainlinkClient, Oracle {
     }
 
     function ward(bytes32 queryId) internal { // Reward
-        rewardAmount = wmul(wmul(paymentTokenPrice, areqs[queryId].dis), prem);
-        if (areqs[queryId].tok.balanceOf(address(this)) >= min(maxReward, rewardAmount) && areqs[queryId].dis > 0) {
-            require(areqs[queryId].tok.transfer(areqs[queryId].owed, min(maxReward, rewardAmount)));
+        rewardAmount = wmul(wmul(paymentTokenPrice, asyncRequests[queryId].dis), prem);
+        if (asyncRequests[queryId].tok.balanceOf(address(this)) >= min(maxReward, rewardAmount) && asyncRequests[queryId].dis > 0) {
+            require(asyncRequests[queryId].tok.transfer(asyncRequests[queryId].owed, min(maxReward, rewardAmount)));
         }
     }
 
