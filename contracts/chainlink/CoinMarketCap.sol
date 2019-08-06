@@ -38,8 +38,8 @@ contract CoinMarketCap is ChainLink {
         path[4] = "price";
         req.addStringArray("copyPath", path);
         req.addInt("times", 1000000000000000000);
-        bytes32 linkrId = sendChainlinkRequest(req, div(payment, 2));
-        linkrs[linkrId] = queryId;
-        return linkrId;
+        bytes32 linkId = sendChainlinkRequest(req, div(payment, 2));
+        linkIdToQueryId[linkId] = queryId;
+        return linkId;
     }
 }
