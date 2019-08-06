@@ -11,8 +11,8 @@ contract CoinMarketCap is ChainLink {
         ChainLink(med_, link_, oracle_)
     {}
 
-    function call(uint128 pmt) internal returns (bytes32 queryId) {
-        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.cur.selector);
+    function getAssetPrice(uint128 payment) internal returns (bytes32 queryId) {
+        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.returnAssetPrice.selector);
         req.add("sym", "BTC");
         req.add("convert", "USD");
         string[] memory path = new string[](5);
@@ -23,11 +23,11 @@ contract CoinMarketCap is ChainLink {
         path[4] = "price";
         req.addStringArray("copyPath", path);
         req.addInt("times", 1000000000000000000);
-        queryId = sendChainlinkRequest(req, div(pmt, 2));
+        queryId = sendChainlinkRequest(req, div(payment, 2));
     }
 
-    function chec(uint128 pmt, bytes32 queryId) internal returns (bytes32) {
-        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.sup.selector);
+    function getPaymentTokenPrice(uint128 payment, bytes32 queryId) internal returns (bytes32) {
+        Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.returnPaymentTokenPrice.selector);
         req.add("sym", "LINK");
         req.add("convert", "USD");
         string[] memory path = new string[](5);
@@ -38,7 +38,7 @@ contract CoinMarketCap is ChainLink {
         path[4] = "price";
         req.addStringArray("copyPath", path);
         req.addInt("times", 1000000000000000000);
-        bytes32 linkrId = sendChainlinkRequest(req, div(pmt, 2));
+        bytes32 linkrId = sendChainlinkRequest(req, div(payment, 2));
         linkrs[linkrId] = queryId;
         return linkrId;
     }

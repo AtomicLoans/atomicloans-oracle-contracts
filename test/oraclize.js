@@ -61,7 +61,7 @@ contract("Oraclize", accounts => {
 
     await this.token.approve(this.med.address, toWei('100', 'ether'))
 
-    await this.med.push(toWei('100', 'ether'), this.token.address)
+    await this.med.fund(toWei('100', 'ether'), this.token.address)
 
     await this.weth.approve(this.coinbase.address, toWei('1', 'ether'), { from: updater })
   })
@@ -70,25 +70,25 @@ contract("Oraclize", accounts => {
     it('should fail if trying to pack twice before 15 minutes is up', async function() {
       assert.equal(true, true)
 
-      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+      await this.coinbase.update(this.bill, this.token.address, { from: updater })
 
       await this.coinbase.__callback(padRight('0x', 64), "12529.71")
 
-      await expectRevert.unspecified(this.coinbase.pack(this.bill, this.token.address), { from: updater })
+      await expectRevert.unspecified(this.coinbase.update(this.bill, this.token.address), { from: updater })
     })
 
     it('should succeed in updating price of called once', async function() {
       await time.increase(901)
 
-      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+      await this.coinbase.update(this.bill, this.token.address, { from: updater })
 
       await this.coinbase.__callback(padRight('0x', 64), '12656.71')
 
       const read = await this.coinbase.read.call()
       assert.equal(toWei('12656.71', 'ether'), hexToNumberString(read))
 
-      const lval = await this.coinbase.lval.call()
-      assert.equal(toWei('303.79', 'ether'), lval)
+      const paymentTokenPrice = await this.coinbase.paymentTokenPrice.call()
+      assert.equal(toWei('303.79', 'ether'), paymentTokenPrice)
 
       const peek = await this.coinbase.peek.call()
       assert.equal(toWei('12656.71', 'ether'), hexToNumberString(peek[0]))
@@ -98,7 +98,7 @@ contract("Oraclize", accounts => {
     it('should reward correctly', async function() {
       await time.increase(901)
 
-      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+      await this.coinbase.update(this.bill, this.token.address, { from: updater })
 
       const balBefore = await this.token.balanceOf.call(updater)
 
@@ -112,7 +112,7 @@ contract("Oraclize", accounts => {
     it('should not reward if price has not changed by 1%', async function() {
       await time.increase(901)
 
-      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+      await this.coinbase.update(this.bill, this.token.address, { from: updater })
 
       const balBefore = await this.token.balanceOf.call(updater)
 
@@ -124,7 +124,7 @@ contract("Oraclize", accounts => {
 
       await time.increase(901)
 
-      await this.coinbase.pack(this.bill, this.token.address, { from: updater })
+      await this.coinbase.update(this.bill, this.token.address, { from: updater })
 
       const balBefore2 = await this.token.balanceOf.call(updater)
 

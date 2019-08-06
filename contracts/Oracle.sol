@@ -11,60 +11,60 @@ contract Oracle is DSMath {
 
     Medianizer med;
 
-    uint32 public zzz;
-    uint32 public lag;
-    uint128 val;                     
-    uint128 public lval;             // Link value
-    uint256 gain;
+    uint32 public expiry;
+    uint32 public timeout;
+    uint128 assetPrice;                     
+    uint128 public paymentTokenPrice;
+    uint256 rewardAmount;
 
-    mapping(bytes32 => Areq) areqs;
+    mapping(bytes32 => AsyncRequest) asyncRequests;
 
-    struct Areq {
-        address owed;
-        uint128 pmt;
-        uint128 dis;
-        ERC20 tok;
-        bool posted;
-        bool told;
+    struct AsyncRequest {
+        address rewardee;
+        uint128 payment;
+        uint128 disbursement;
+        ERC20 token;
+        bool assetPriceSet;
+        bool paymentTokenPriceSet;
     }
 
     function peek() public view
         returns (bytes32,bool)
     {
-        return (bytes32(uint(val)), now < zzz);
+        return (bytes32(uint(assetPrice)), now < expiry);
     }
 
     function read() public view
         returns (bytes32)
     {
-        assert(now < zzz);
-        return bytes32(uint(val));
+        assert(now < expiry);
+        return bytes32(uint(assetPrice));
     }
     
-    function post(bytes32 queryId, uint128 val_, uint32 zzz_) internal
+    function setAssetPrice(bytes32 queryId, uint128 assetPrice_, uint32 expiry_) internal
     {
-        areqs[queryId].dis = 0;
-        if (val_ >= wmul(val, turn) || val_ <= wdiv(val, turn)) { areqs[queryId].dis = areqs[queryId].pmt; }
-        val = val_;
-        zzz = zzz_;
+        asyncRequests[queryId].disbursement = 0;
+        if (assetPrice_ >= wmul(assetPrice, turn) || assetPrice_ <= wdiv(assetPrice, turn)) { asyncRequests[queryId].disbursement = asyncRequests[queryId].payment; }
+        assetPrice = assetPrice_;
+        expiry = expiry_;
         med.poke();
-        areqs[queryId].posted = true;
-        if (areqs[queryId].told) { ward(queryId); }
+        asyncRequests[queryId].assetPriceSet = true;
+        if (asyncRequests[queryId].paymentTokenPriceSet) { reward(queryId); }
     }
 
-    function tell(bytes32 queryId, uint128 lval_) internal {
-        lval = lval_;
-        areqs[queryId].told = true;
-        if (areqs[queryId].posted) { ward(queryId); }
+    function setPaymentTokenPrice(bytes32 queryId, uint128 paymentTokenPrice_) internal {
+        paymentTokenPrice = paymentTokenPrice_;
+        asyncRequests[queryId].paymentTokenPriceSet = true;
+        if (asyncRequests[queryId].assetPriceSet) { reward(queryId); }
     }
 
-    function ward(bytes32 queryId) internal { // Reward
-        gain = wmul(wmul(lval, areqs[queryId].dis), prem);
-        if (areqs[queryId].tok.balanceOf(address(this)) >= gain && areqs[queryId].dis > 0) {
-            require(areqs[queryId].tok.transfer(areqs[queryId].owed, gain));
+    function reward(bytes32 queryId) internal { // Reward
+        rewardAmount = wmul(wmul(paymentTokenPrice, asyncRequests[queryId].disbursement), prem);
+        if (asyncRequests[queryId].token.balanceOf(address(this)) >= rewardAmount && asyncRequests[queryId].disbursement > 0) {
+            require(asyncRequests[queryId].token.transfer(asyncRequests[queryId].rewardee, rewardAmount));
         }
-        delete(areqs[queryId]);
+        delete(asyncRequests[queryId]);
     }
 
-    function setMax(uint256 maxr_) public;
+    function setMaxReward(uint256 maxReward_) public;
 }

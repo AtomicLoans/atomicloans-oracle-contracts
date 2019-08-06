@@ -24,32 +24,28 @@ contract Oraclize is usingOraclize, Oracle {
         return oraclize_getPrice("URL");
     }
     
-    function pack(ERC20 tok_) {
-        pack(uint128(bill()), tok_);   
-    }
-    
-    function pack(uint128 pmt_, ERC20 tok_) { // payment
-        require(uint32(now) > lag);
-        require(pmt_ == oraclize_getPrice("URL"));
-        require(weth.transferFrom(msg.sender, address(this), uint(pmt_)));
-        bytes32 queryId = call(pmt_);
-        tell(queryId, uint128(medm.read()));
-        areqs[queryId].owed = msg.sender;
-        areqs[queryId].pmt  = pmt_;
-        areqs[queryId].tok  = tok_;
-        lag = uint32(now) + DELAY;
+    function update(uint128 payment_, ERC20 token_) { // payment
+        require(uint32(now) > timeout);
+        require(payment_ == oraclize_getPrice("URL"));
+        require(weth.transferFrom(msg.sender, address(this), uint(payment_)));
+        bytes32 queryId = getAssetPrice(payment_);
+        setPaymentTokenPrice(queryId, uint128(medm.read()));
+        asyncRequests[queryId].rewardee = msg.sender;
+        asyncRequests[queryId].payment  = payment_;
+        asyncRequests[queryId].token    = token_;
+        timeout = uint32(now) + DELAY;
     }
 
-    function call(uint128 pmt) internal returns (bytes32);
+    function getAssetPrice(uint128 payment) internal returns (bytes32);
     
     function __callback(bytes32 myid, string result, bytes proof) {
         require(msg.sender == oraclize_cbAddress());
-        require(areqs[myid].owed != address(0));
+        require(asyncRequests[myid].rewardee != address(0));
         uint128 res = uint128(parseInt(result, 18));
-        post(myid, res, uint32(now + 43200));
+        setAssetPrice(myid, res, uint32(now + 43200));
     }
 
-    function setMax(uint256 maxr_) public {
+    function setMaxReward(uint256 maxReward_) public {
         require(msg.sender == address(med));
     }
 }

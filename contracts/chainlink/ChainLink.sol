@@ -7,7 +7,7 @@ import "../ERC20.sol";
 
 contract ChainLink is ChainlinkClient, Oracle {
     ERC20 link;
-    uint256 maxr; // Max reward
+    uint256 maxReward; // Max reward
 
     bytes32 public lastQueryId;
 
@@ -20,53 +20,53 @@ contract ChainLink is ChainlinkClient, Oracle {
         link = link_;
         setChainlinkToken(address(link_));
         setChainlinkOracle(oracle_);
-        areqs[lastQueryId].pmt = uint128(2 * LINK);
+        asyncRequests[lastQueryId].payment = uint128(2 * LINK);
     }
 
     function bill() public view returns (uint256) {
-        return areqs[lastQueryId].pmt;
+        return asyncRequests[lastQueryId].payment;
     }
 
-    function pack(uint128 pmt_, ERC20 tok_) { // payment
-        require(uint32(now) > lag);
-        require(link.transferFrom(msg.sender, address(this), uint(pmt_)));
-        bytes32 queryId = call(pmt_);
+    function update(uint128 payment_, ERC20 token_) { // payment
+        require(uint32(now) > timeout);
+        require(link.transferFrom(msg.sender, address(this), uint(payment_)));
+        bytes32 queryId = getAssetPrice(payment_);
         lastQueryId = queryId;
-        bytes32 linkrId = chec(pmt_, queryId);
+        bytes32 linkrId = getPaymentTokenPrice(payment_, queryId);
         linkrs[linkrId] = queryId;
-        areqs[queryId].owed = msg.sender;
-        areqs[queryId].pmt  = pmt_;
-        areqs[queryId].tok  = tok_;
-        lag = uint32(now) + DELAY;
+        asyncRequests[queryId].rewardee = msg.sender;
+        asyncRequests[queryId].payment  = payment_;
+        asyncRequests[queryId].token    = token_;
+        timeout = uint32(now) + DELAY;
     }
 
-    function call(uint128 pmt) internal returns (bytes32);
+    function getAssetPrice(uint128 payment) internal returns (bytes32);
 
-    function chec(uint128 pmt, bytes32 queryId) internal returns (bytes32);
+    function getPaymentTokenPrice(uint128 payment, bytes32 queryId) internal returns (bytes32);
 
-    function cur(bytes32 _requestId, uint256 _price) // Currency
+    function returnAssetPrice(bytes32 _requestId, uint256 _price) // Currency
         public
         recordChainlinkFulfillment(_requestId)
     {
-        post(_requestId, uint128(_price), uint32(now + 43200));
+        setAssetPrice(_requestId, uint128(_price), uint32(now + 43200));
     }
     
-    function sup(bytes32 _requestId, uint256 _price) // Supply Currency
+    function returnPaymentTokenPrice(bytes32 _requestId, uint256 _price) // Supply Currency
         public
         recordChainlinkFulfillment(_requestId)
     {
-        tell(linkrs[_requestId], uint128(_price));
+        setPaymentTokenPrice(linkrs[_requestId], uint128(_price));
     }
 
-    function ward(bytes32 queryId) internal { // Reward
-        gain = wmul(wmul(lval, areqs[queryId].dis), prem);
-        if (areqs[queryId].tok.balanceOf(address(this)) >= min(maxr, gain) && areqs[queryId].dis > 0) {
-            require(areqs[queryId].tok.transfer(areqs[queryId].owed, min(maxr, gain)));
+    function reward(bytes32 queryId) internal { // Reward
+        rewardAmount = wmul(wmul(paymentTokenPrice, asyncRequests[queryId].disbursement), prem);
+        if (asyncRequests[queryId].token.balanceOf(address(this)) >= min(maxReward, rewardAmount) && asyncRequests[queryId].disbursement > 0) {
+            require(asyncRequests[queryId].token.transfer(asyncRequests[queryId].rewardee, min(maxReward, rewardAmount)));
         }
     }
 
-    function setMax(uint256 maxr_) public {
+    function setMaxReward(uint256 maxReward_) public {
         require(msg.sender == address(med));
-        maxr = maxr_;
+        maxReward = maxReward_;
     }
 }

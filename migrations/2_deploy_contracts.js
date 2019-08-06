@@ -47,6 +47,6 @@ module.exports = function(deployer) {
     var coinpaprika = await Coinpaprika.deployed();
     await deployer.deploy(Kraken, medianizer.address, makerMedianizer.address, weth9.address);
     var kraken = await Kraken.deployed();
-    await medianizer.set([blockchainInfo.address, coinMarketCap.address, cryptoCompare.address, gemini.address, soChain.address, bitstamp.address, coinbase.address, cryptoWatch.address, coinpaprika.address, kraken.address]);
+    await medianizer.setOracles([blockchainInfo.address, coinMarketCap.address, cryptoCompare.address, gemini.address, soChain.address, bitstamp.address, coinbase.address, cryptoWatch.address, coinpaprika.address, kraken.address]);
   })
 };

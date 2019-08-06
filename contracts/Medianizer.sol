@@ -5,62 +5,62 @@ import "./DSMath.sol";
 pragma solidity ^0.4.26;
 
 contract Medianizer is DSMath {
-    bool    has;
-    bytes32 val;
-    uint256 public min = 5;
+    bool    hasPrice;
+    bytes32 assetPrice;
+    uint256 public minOraclesRequired = 5;
     bool on;
-    address own;
+    address deployer;
 
-    Oracle[] public values;
+    Oracle[] public oracles;
 
     constructor() {
-    	own = msg.sender;
+    	deployer = msg.sender;
     }
 
-    function set(address[10] addrs) {
+    function setOracles(address[10] addrs) {
     	require(!on);
-        require(msg.sender == own);
-        values.push(Oracle(addrs[0]));
-        values.push(Oracle(addrs[1]));
-        values.push(Oracle(addrs[2]));
-        values.push(Oracle(addrs[3]));
-        values.push(Oracle(addrs[4]));
-        values.push(Oracle(addrs[5]));
-        values.push(Oracle(addrs[6]));
-        values.push(Oracle(addrs[7]));
-        values.push(Oracle(addrs[8]));
-        values.push(Oracle(addrs[9]));
+        require(msg.sender == deployer);
+        oracles.push(Oracle(addrs[0]));
+        oracles.push(Oracle(addrs[1]));
+        oracles.push(Oracle(addrs[2]));
+        oracles.push(Oracle(addrs[3]));
+        oracles.push(Oracle(addrs[4]));
+        oracles.push(Oracle(addrs[5]));
+        oracles.push(Oracle(addrs[6]));
+        oracles.push(Oracle(addrs[7]));
+        oracles.push(Oracle(addrs[8]));
+        oracles.push(Oracle(addrs[9]));
     	on = true;
     }
 
-    function setMax(uint256 maxr_) {
+    function setMaxReward(uint256 maxReward_) {
     	require(on);
-    	require(msg.sender == own);
-        values[0].setMax(maxr_);
-        values[1].setMax(maxr_);
-        values[2].setMax(maxr_);
-        values[3].setMax(maxr_);
-        values[4].setMax(maxr_);
-        values[5].setMax(maxr_);
-        values[6].setMax(maxr_);
-        values[7].setMax(maxr_);
-        values[8].setMax(maxr_);
-        values[9].setMax(maxr_);
+    	require(msg.sender == deployer);
+        oracles[0].setMaxReward(maxReward_);
+        oracles[1].setMaxReward(maxReward_);
+        oracles[2].setMaxReward(maxReward_);
+        oracles[3].setMaxReward(maxReward_);
+        oracles[4].setMaxReward(maxReward_);
+        oracles[5].setMaxReward(maxReward_);
+        oracles[6].setMaxReward(maxReward_);
+        oracles[7].setMaxReward(maxReward_);
+        oracles[8].setMaxReward(maxReward_);
+        oracles[9].setMaxReward(maxReward_);
     }
 
     function peek() public view returns (bytes32, bool) {
-        return (val,has);
+        return (assetPrice,hasPrice);
     }
 
     function read() public returns (bytes32) {
-        var (wut, has) = peek();
-        assert(has);
-        return wut;
+        var (assetPrice, hasPrice) = peek();
+        assert(hasPrice);
+        return assetPrice;
     }
 
-    function push (uint256 amt, ERC20 tok) {
-      for (uint256 i = 0; i < values.length; i++) {
-        require(tok.transferFrom(msg.sender, address(values[i]), uint(div(uint128(amt), uint128(values.length)))));
+    function fund (uint256 amount, ERC20 token) {
+      for (uint256 i = 0; i < oracles.length; i++) {
+        require(token.transferFrom(msg.sender, address(oracles[i]), uint(div(uint128(amount), uint128(oracles.length)))));
       }
     }
 
@@ -69,15 +69,15 @@ contract Medianizer is DSMath {
     }
 
     function poke(bytes32) {
-        (val, has) = compute();
+        (assetPrice, hasPrice) = compute();
     }
 
     function compute() public returns (bytes32, bool) {
-        bytes32[] memory wuts = new bytes32[](values.length);
+        bytes32[] memory wuts = new bytes32[](oracles.length);
         uint256 ctr = 0;
-        for (uint256 i = 0; i < values.length; i++) {
-            if (address(values[i]) != 0) {
-                var (wut, wuz) = values[i].peek();
+        for (uint256 i = 0; i < oracles.length; i++) {
+            if (address(oracles[i]) != 0) {
+                var (wut, wuz) = oracles[i].peek();
                 if (wuz) {
                     if (ctr == 0 || wut >= wuts[ctr - 1]) {
                         wuts[ctr] = wut;
@@ -96,7 +96,7 @@ contract Medianizer is DSMath {
             }
         }
 
-        if (ctr < min) return (val, false);
+        if (ctr < minOraclesRequired) return (assetPrice, false);
 
         bytes32 value;
         if (ctr % 2 == 0) {
