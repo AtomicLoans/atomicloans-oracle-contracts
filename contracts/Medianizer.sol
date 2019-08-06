@@ -7,7 +7,7 @@ pragma solidity ^0.4.26;
 contract Medianizer is DSMath {
     bool    hasPrice;
     bytes32 assetPrice;
-    uint256 public min = 5;
+    uint256 public minOraclesRequired = 5;
     bool on;
     address deployer;
 
@@ -96,7 +96,7 @@ contract Medianizer is DSMath {
             }
         }
 
-        if (ctr < min) return (assetPrice, false);
+        if (ctr < minOraclesRequired) return (assetPrice, false);
 
         bytes32 value;
         if (ctr % 2 == 0) {
