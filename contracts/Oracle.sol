@@ -49,16 +49,16 @@ contract Oracle is DSMath {
         expiry = expiry_;
         med.poke();
         asyncRequests[queryId].assetPriceSet = true;
-        if (asyncRequests[queryId].paymentTokenPriceSet) { ward(queryId); }
+        if (asyncRequests[queryId].paymentTokenPriceSet) { reward(queryId); }
     }
 
     function setPaymentTokenPrice(bytes32 queryId, uint128 paymentTokenPrice_) internal {
         paymentTokenPrice = paymentTokenPrice_;
         asyncRequests[queryId].paymentTokenPriceSet = true;
-        if (asyncRequests[queryId].assetPriceSet) { ward(queryId); }
+        if (asyncRequests[queryId].assetPriceSet) { reward(queryId); }
     }
 
-    function ward(bytes32 queryId) internal { // Reward
+    function reward(bytes32 queryId) internal { // Reward
         rewardAmount = wmul(wmul(paymentTokenPrice, asyncRequests[queryId].disbursement), prem);
         if (asyncRequests[queryId].token.balanceOf(address(this)) >= rewardAmount && asyncRequests[queryId].disbursement > 0) {
             require(asyncRequests[queryId].token.transfer(asyncRequests[queryId].rewardee, rewardAmount));
