@@ -34,9 +34,9 @@ contract ChainLink is ChainlinkClient, Oracle {
         lastQueryId = queryId;
         bytes32 linkrId = chec(pmt_, queryId);
         linkrs[linkrId] = queryId;
-        asyncRequests[queryId].owed = msg.sender;
-        asyncRequests[queryId].pmt  = pmt_;
-        asyncRequests[queryId].tok  = tok_;
+        asyncRequests[queryId].rewardee = msg.sender;
+        asyncRequests[queryId].pmt      = pmt_;
+        asyncRequests[queryId].tok      = tok_;
         timeout = uint32(now) + DELAY;
     }
 
@@ -61,7 +61,7 @@ contract ChainLink is ChainlinkClient, Oracle {
     function ward(bytes32 queryId) internal { // Reward
         rewardAmount = wmul(wmul(paymentTokenPrice, asyncRequests[queryId].dis), prem);
         if (asyncRequests[queryId].tok.balanceOf(address(this)) >= min(maxReward, rewardAmount) && asyncRequests[queryId].dis > 0) {
-            require(asyncRequests[queryId].tok.transfer(asyncRequests[queryId].owed, min(maxReward, rewardAmount)));
+            require(asyncRequests[queryId].tok.transfer(asyncRequests[queryId].rewardee, min(maxReward, rewardAmount)));
         }
     }
 

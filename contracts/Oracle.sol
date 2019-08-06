@@ -20,7 +20,7 @@ contract Oracle is DSMath {
     mapping(bytes32 => AsyncRequest) asyncRequests;
 
     struct AsyncRequest {
-        address owed;
+        address rewardee;
         uint128 pmt;
         uint128 dis;
         ERC20 tok;
@@ -61,7 +61,7 @@ contract Oracle is DSMath {
     function ward(bytes32 queryId) internal { // Reward
         rewardAmount = wmul(wmul(paymentTokenPrice, asyncRequests[queryId].dis), prem);
         if (asyncRequests[queryId].tok.balanceOf(address(this)) >= rewardAmount && asyncRequests[queryId].dis > 0) {
-            require(asyncRequests[queryId].tok.transfer(asyncRequests[queryId].owed, rewardAmount));
+            require(asyncRequests[queryId].tok.transfer(asyncRequests[queryId].rewardee, rewardAmount));
         }
         delete(asyncRequests[queryId]);
     }
