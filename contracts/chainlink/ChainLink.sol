@@ -11,7 +11,7 @@ contract ChainLink is ChainlinkClient, Oracle {
 
     bytes32 public lastQueryId;
 
-    mapping(bytes32 => bytes32) linkrs;
+    mapping(bytes32 => bytes32) linkIdToQueryId;
 
     constructor(Medianizer med_, ERC20 link_, address oracle_)
         public
@@ -32,8 +32,8 @@ contract ChainLink is ChainlinkClient, Oracle {
         require(link.transferFrom(msg.sender, address(this), uint(payment_)));
         bytes32 queryId = getAssetPrice(payment_);
         lastQueryId = queryId;
-        bytes32 linkrId = getPaymentTokenPrice(payment_, queryId);
-        linkrs[linkrId] = queryId;
+        bytes32 linkId = getPaymentTokenPrice(payment_, queryId);
+        linkIdToQueryId[linkId] = queryId;
         asyncRequests[queryId].rewardee = msg.sender;
         asyncRequests[queryId].payment  = payment_;
         asyncRequests[queryId].token    = token_;
@@ -55,7 +55,7 @@ contract ChainLink is ChainlinkClient, Oracle {
         public
         recordChainlinkFulfillment(_requestId)
     {
-        setPaymentTokenPrice(linkrs[_requestId], uint128(_price));
+        setPaymentTokenPrice(linkIdToQueryId[_requestId], uint128(_price));
     }
 
     function reward(bytes32 queryId) internal { // Reward

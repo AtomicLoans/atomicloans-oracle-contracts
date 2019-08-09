@@ -28,8 +28,8 @@ contract Gemini is ChainLink {
         req.add("tsyms", "USD");
         req.add("copyPath", "USD");
         req.addInt("times", 1000000000000000000);
-        bytes32 linkrId = sendChainlinkRequest(req, div(payment, 2));
-        linkrs[linkrId] = queryId;
-        return linkrId;
+        bytes32 linkId = sendChainlinkRequest(req, div(payment, 2));
+        linkIdToQueryId[linkId] = queryId;
+        return linkId;
     }
 }
