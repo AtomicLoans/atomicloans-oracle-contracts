@@ -1,15 +1,15 @@
 pragma solidity ^0.4.26;
 
-// import "./OraclizeAPI.sol"; // MAINNET
-import "./OraclizeAPITesting.sol"; // TESTING
+import "./OraclizeAPI.sol"; // MAINNET / TESTNET
+// import "./OraclizeAPITesting.sol"; // TESTING
 import "../Oracle.sol";
 import "../WETH.sol";
 
 contract Oraclize is usingOraclize, Oracle {
     WETH weth;
-    Medianizer medm;
+    MedianizerInterface medm;
 
-    constructor(Medianizer med_, Medianizer medm_, WETH weth_)
+    constructor(MedianizerInterface med_, MedianizerInterface medm_, WETH weth_)
         public
     {
         med = med_;

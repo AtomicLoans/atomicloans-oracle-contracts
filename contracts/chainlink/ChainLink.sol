@@ -1,7 +1,7 @@
 pragma solidity ^0.4.26;
 
-// import "./Chainlinked.sol"; // MAINNET
-import "./ChainlinkedTesting.sol"; // TESTING
+import "./Chainlinked.sol"; // MAINNET / TESTNET
+// import "./ChainlinkedTesting.sol"; // TESTING
 import "../Oracle.sol";
 import "../ERC20.sol";
 
@@ -13,7 +13,7 @@ contract ChainLink is ChainlinkClient, Oracle {
 
     mapping(bytes32 => bytes32) linkIdToQueryId;
 
-    constructor(Medianizer med_, ERC20 link_, address oracle_)
+    constructor(MedianizerInterface med_, ERC20 link_, address oracle_)
         public
     {
         med = med_;

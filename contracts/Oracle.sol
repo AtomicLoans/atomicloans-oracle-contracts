@@ -2,14 +2,14 @@ pragma solidity ^0.4.26;
 
 import "./DSMath.sol";
 import "./ERC20.sol";
-import "./Medianizer.sol";
+import "./MedianizerInterface.sol";
 
 contract Oracle is DSMath {
     uint32  constant public DELAY = 900; // 15 Minutes
     uint128 constant public prem = 1100000000000000000; // premium 1.1 (10%)
     uint128 constant public turn = 1010000000000000000; // minimum price change 1.01 (1%)
 
-    Medianizer med;
+    MedianizerInterface med;
 
     uint32 public expiry;
     uint32 public timeout;

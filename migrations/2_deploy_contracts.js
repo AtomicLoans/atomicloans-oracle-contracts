@@ -16,17 +16,20 @@ var MakerMedianizer = artifacts.require("./DSValue.sol");
 
 module.exports = function(deployer) {
   deployer.then(async () => {
-    await deployer.deploy(ExampleCoin);
-    await deployer.deploy(ExampleLink);
-    var link = await ExampleLink.deployed();
-    const oracle = '0xc99B3D447826532722E41bc36e644ba3479E4365'
+    // await deployer.deploy(ExampleCoin); // LOCAL
+    // await deployer.deploy(ExampleLink); // LOCAL
+    // var link = await ExampleLink.deployed(); // LOCAL
+    const link = { address: '0xa36085f69e2889c224210f603d836748e7dc0088' } // KOVAN
+    // const oracle = '0xc99B3D447826532722E41bc36e644ba3479E4365' // ROPSTEN
+    const oracle = '0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e' // KOVAN
     await deployer.deploy(WETH9);
     var weth9 = await WETH9.deployed();
     await deployer.deploy(Medianizer);
     var medianizer = await Medianizer.deployed();
-    await deployer.deploy(MakerMedianizer);
-    var makerMedianizer = await MakerMedianizer.deployed();
-    await makerMedianizer.poke('0x0000000000000000000000000000000000000000000000108ee6a12edb308000')
+    // await deployer.deploy(MakerMedianizer); // LOCAL
+    // var makerMedianizer = await MakerMedianizer.deployed(); // LOCAL
+    // await makerMedianizer.poke('0x0000000000000000000000000000000000000000000000108ee6a12edb308000') // LOCAL
+    const makerMedianizer = { address: '0xA944bd4b25C9F186A846fd5668941AA3d3B8425F' } // KOVAN
     await deployer.deploy(BlockchainInfo, medianizer.address, link.address, oracle);
     var blockchainInfo = await BlockchainInfo.deployed();
     await deployer.deploy(CoinMarketCap, medianizer.address, link.address, oracle);

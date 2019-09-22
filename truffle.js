@@ -1,5 +1,5 @@
 var HDWalletProvider = require("truffle-hdwallet-provider");
-var mnemonic = "";
+require('dotenv').config();
 
 module.exports = {
   networks: {
@@ -15,12 +15,12 @@ module.exports = {
       gas: 0xfffffffffff,
       gasPrice: 0x01
     },
-    goerli: {
+    kovan: {
       provider: function() {
-        return new HDWalletProvider(mnemonic, "https://goerli.infura.io/v3/53bcde36e0404a6da87b71e780783f79")
+        return new HDWalletProvider(`${process.env.MNEMONIC}`, "https://kovan.infura.io/v3/53bcde36e0404a6da87b71e780783f79")
       },
-      network_id: 4,
-      gas: 4690000,
+      network_id: 42,
+      gas: 6690000,
       skipDryRun: true
     }
   },
@@ -35,5 +35,11 @@ module.exports = {
         evmVersion: 'byzantium'
       },
     },
+  },
+  plugins: [
+    'truffle-plugin-verify'
+  ],
+  api_keys: {
+    etherscan: process.env.ETHERSCAN_API_KEY
   }
 };

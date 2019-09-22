@@ -58,17 +58,17 @@ contract Medianizer is DSMath {
         return assetPrice;
     }
 
-    function fund (uint256 amount, ERC20 token) {
+    function fund (uint256 amount, ERC20 token) public {
       for (uint256 i = 0; i < oracles.length; i++) {
         require(token.transferFrom(msg.sender, address(oracles[i]), uint(div(uint128(amount), uint128(oracles.length)))));
       }
     }
 
-    function poke() {
+    function poke() public {
         poke(0);
     }
 
-    function poke(bytes32) {
+    function poke(bytes32) public {
         (assetPrice, hasPrice) = compute();
     }
 
