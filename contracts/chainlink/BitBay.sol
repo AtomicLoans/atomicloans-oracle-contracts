@@ -2,7 +2,7 @@ pragma solidity ^0.4.26;
 
 import "./ChainLink.sol";
 
-contract SoChain is ChainLink {
+contract BitBay is ChainLink {
     bytes32 constant UINT256_MUL_JOB = bytes32("29fa9aa13bf1468788b7cc4a500a45b8"); // CHAINLINK KOVAN
     // bytes32 constant UINT256_MUL_JOB = bytes32("80fecd06d2e14c67a22cee5f9728e067"); // FIEWS ROPSTEN
     // bytes32 constant UINT256_MUL_JOB = bytes32("98839fc3b550436bbe752f82d7521843"); // FIEWS MAINNET
@@ -17,8 +17,8 @@ contract SoChain is ChainLink {
 
     function getAssetPrice(uint128 payment) internal returns (bytes32 queryId) {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.returnAssetPrice.selector);
-        req.add("get", "https://chain.so/api/v2/get_info/BTC.json");
-        req.add("path", "data.price");
+        req.add("get", "https://bitbay.net/API/Public/btcusd/ticker.json");
+        req.add("path", "last");
         req.addInt("times", 1000000000000000000);
         queryId = sendChainlinkRequest(req, div(payment, 2));
     }
