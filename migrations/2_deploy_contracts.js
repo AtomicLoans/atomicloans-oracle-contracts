@@ -22,8 +22,8 @@ module.exports = function(deployer) {
     const link = { address: '0xa36085f69e2889c224210f603d836748e7dc0088' } // KOVAN
     // const oracle = '0xc99B3D447826532722E41bc36e644ba3479E4365' // ROPSTEN
     const oracle = '0x2f90A6D021db21e1B2A077c5a37B3C7E75D15b7e' // KOVAN
-    await deployer.deploy(WETH9);
-    var weth9 = await WETH9.deployed();
+    await deployer.deploy(WETH9); // LOCAL & KOVAN
+    var weth9 = await WETH9.deployed(); // LOCAL & KOVAN
     await deployer.deploy(Medianizer);
     var medianizer = await Medianizer.deployed();
     // await deployer.deploy(MakerMedianizer); // LOCAL
