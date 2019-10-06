@@ -3,9 +3,8 @@ pragma solidity ^0.4.26;
 import "./ChainLink.sol";
 
 contract CoinMarketCap is ChainLink {
-    bytes32 constant UINT256_MUL_JOB = bytes32("cbb45ecb040340389e49b77704184e5a"); // COINMARKETCAP CHAINLINK KOVAN
-    // bytes32 constant UINT256_MUL_JOB = bytes32("ce36a79ea04c4d3ca015d267784417bd"); // COINMARKETCAP CHAINLINK ROPSTEN
-    // bytes32 constant UINT256_MUL_JOB = bytes32("f1805afed6a0482bb43702692ff9e061"); // COINMARKETCAP CHAINLINK MAINNET
+    bytes32 constant UINT256_MUL_JOB = bytes32("f1805afed6a0482bb43702692ff9e061"); // COINMARKETCAP CHAINLINK MAINNET
+    // bytes32 constant UINT256_MUL_JOB = bytes32("cbb45ecb040340389e49b77704184e5a"); // COINMARKETCAP CHAINLINK KOVAN
 
     constructor(MedianizerInterface med_, ERC20 link_, address oracle_)
         public

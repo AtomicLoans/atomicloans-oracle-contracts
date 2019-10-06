@@ -3,12 +3,10 @@ pragma solidity ^0.4.26;
 import "./ChainLink.sol";
 
 contract Gemini is ChainLink {
-    bytes32 constant UINT256_MUL_JOB = bytes32("29fa9aa13bf1468788b7cc4a500a45b8"); // CHAINLINK KOVAN
-    // bytes32 constant UINT256_MUL_JOB = bytes32("c179a8180e034cf5a341488406c32827"); // LINKPOOL ROPSTEN
-    // bytes32 constant UINT256_MUL_JOB = bytes32("1bc4f827ff5942eaaa7540b7dd1e20b9"); // LINKPOOL MAINNET
-    bytes32 constant UINT256_MUL_JOB__LINK = bytes32("7f350c947b0d4d758aadd5acb41d2474"); // CRYPTOCOMPARE CHAINLINK KOVAN
-    // bytes32 constant UINT256_MUL_JOB__LINK = bytes32("35e428271aad4506afc4f4089ce98f68"); // CRYPTOCOMPARE CHAINLINK ROPSTEN
-    // bytes32 constant UINT256_MUL_JOB__LINK = bytes32("513907f96955437a8ac02a5d70e5bdea"); // CRYPTOCOMPARE CHAINLINK MAINNET
+    bytes32 constant UINT256_MUL_JOB = bytes32("f291f8597d174f4aa1983b0e27ae160f"); // CHAINLINK MAINNET
+    // bytes32 constant UINT256_MUL_JOB = bytes32("29fa9aa13bf1468788b7cc4a500a45b8"); // CHAINLINK KOVAN
+    bytes32 constant UINT256_MUL_JOB__LINK = bytes32("513907f96955437a8ac02a5d70e5bdea"); // CRYPTOCOMPARE CHAINLINK MAINNET
+    // bytes32 constant UINT256_MUL_JOB__LINK = bytes32("7f350c947b0d4d758aadd5acb41d2474"); // CRYPTOCOMPARE CHAINLINK KOVAN
 
     constructor(MedianizerInterface med_, ERC20 link_, address oracle_)
         public
