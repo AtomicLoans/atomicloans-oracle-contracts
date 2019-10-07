@@ -26,12 +26,13 @@ module.exports = {
       gas: 6690000,
       skipDryRun: true
     },
-    live: {
+    mainnet: {
       provider: function() {
         return new HDWalletProvider(`${process.env.MNEMONIC}`, "https://mainnet.infura.io/v3/53bcde36e0404a6da87b71e780783f79")
       },
-      network_id: liveNetworkId,
-      gasPrice: toWei('10', 'gwei')
+      network_id: 1,
+      gasPrice: toWei('10', 'gwei'),
+      skipDryRun: true
     }
   },
   compilers: {
