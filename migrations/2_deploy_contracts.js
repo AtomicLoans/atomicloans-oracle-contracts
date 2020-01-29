@@ -13,6 +13,7 @@ var Kraken = artifacts.require("./oraclize/Kraken.sol");
 var WETH9 = artifacts.require("./WETH9.sol");
 var Medianizer = artifacts.require("./Medianizer.sol");
 var MakerMedianizer = artifacts.require("./DSValue.sol");
+var FundOracles = artifacts.require("./FundOracles.sol");
 
 module.exports = function(deployer) {
   deployer.then(async () => {
@@ -27,8 +28,9 @@ module.exports = function(deployer) {
     // await deployer.deploy(WETH9); // LOCAL & KOVAN
     // var weth9 = await WETH9.deployed(); // LOCAL & KOVAN
     const weth9 = { address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2' } // MAINNET
-    await deployer.deploy(Medianizer);
-    var medianizer = await Medianizer.deployed();
+    const linkUniswapExchange = { address: '0xf173214c720f58e03e194085b1db28b50acdeead' } // MAINNET
+    // await deployer.deploy(Medianizer);
+    // var medianizer = await Medianizer.deployed();
     // await deployer.deploy(MakerMedianizer); // LOCAL
     // var makerMedianizer = await MakerMedianizer.deployed(); // LOCAL
     // await makerMedianizer.poke('0x0000000000000000000000000000000000000000000000108ee6a12edb308000') // LOCAL
@@ -55,5 +57,8 @@ module.exports = function(deployer) {
     await deployer.deploy(Kraken, medianizer.address, makerMedianizer.address, weth9.address);
     var kraken = await Kraken.deployed();
     await medianizer.setOracles([blockchainInfo.address, coinMarketCap.address, cryptoCompare.address, gemini.address, bitBay.address, bitstamp.address, coinbase.address, cryptoWatch.address, coinpaprika.address, kraken.address]);
+
+    await deployer.deploy(FundOracles, medianizer.address, link.address, weth9.address, linkUniswapExchange.address) // MAINNET
+    var fundOracles = FundOracles.deployed() // MAINNET
   })
 };
