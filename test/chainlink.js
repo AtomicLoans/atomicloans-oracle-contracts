@@ -12,7 +12,7 @@ var BlockchainInfo = artifacts.require("./chainlink/BlockchainInfo.sol");
 var CoinMarketCap = artifacts.require("./chainlink/CoinMarketCap.sol");
 var CryptoCompare = artifacts.require("./chainlink/CryptoCompare.sol");
 var Gemini = artifacts.require("./chainlink/Gemini.sol");
-var SoChain = artifacts.require("./chainlink/SoChain.sol");
+var BitBay = artifacts.require("./chainlink/BitBay.sol");
 var Coinbase = artifacts.require("./oraclize/Coinbase.sol");
 var WETH9 = artifacts.require("./WETH9.sol");
 var Medianizer = artifacts.require("./Medianizer.sol");
@@ -44,7 +44,7 @@ contract("Chainlink", accounts => {
     this.coinMarketCap = await CoinMarketCap.deployed()
     this.cryptoCompare = await CryptoCompare.deployed()
     this.gemini = await Gemini.deployed()
-    this.soChain = await SoChain.deployed()
+    this.bitBay = await BitBay.deployed()
     this.coinbase = await Coinbase.deployed()
     this.med = await Medianizer.deployed()
 

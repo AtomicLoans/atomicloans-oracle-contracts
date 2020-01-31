@@ -14,7 +14,7 @@ var BlockchainInfo = artifacts.require("./chainlink/BlockchainInfo.sol");
 var CoinMarketCap = artifacts.require("./chainlink/CoinMarketCap.sol");
 var CryptoCompare = artifacts.require("./chainlink/CryptoCompare.sol");
 var Gemini = artifacts.require("./chainlink/Gemini.sol");
-var SoChain = artifacts.require("./chainlink/SoChain.sol");
+var BitBay = artifacts.require("./chainlink/BitBay.sol");
 var Bitstamp = artifacts.require("./oraclize/Bitstamp.sol");
 var Coinbase = artifacts.require("./oraclize/Coinbase.sol");
 var CryptoWatch = artifacts.require("./oraclize/CryptoWatch.sol");
@@ -52,7 +52,7 @@ contract("Medianizer", accounts => {
     this.coinMarketCap = await CoinMarketCap.deployed()
     this.cryptoCompare = await CryptoCompare.deployed()
     this.gemini = await Gemini.deployed()
-    this.soChain = await SoChain.deployed()
+    this.bitBay = await BitBay.deployed()
     this.bitstamp = await Bitstamp.deployed()
     this.coinbase = await Coinbase.deployed()
     this.cryptoWatch = await CryptoWatch.deployed()
@@ -77,7 +77,7 @@ contract("Medianizer", accounts => {
     await this.link.approve(this.coinMarketCap.address,  toWei('100', 'ether'), { from: updater })
     await this.link.approve(this.cryptoCompare.address,  toWei('100', 'ether'), { from: updater })
     await this.link.approve(this.gemini.address,         toWei('100', 'ether'), { from: updater })
-    await this.link.approve(this.soChain.address,        toWei('100', 'ether'), { from: updater })
+    await this.link.approve(this.bitBay.address,        toWei('100', 'ether'), { from: updater })
 
     await this.weth.approve(this.bitstamp.address,       toWei('1', 'ether'), { from: updater })
     await this.weth.approve(this.coinbase.address,       toWei('1', 'ether'), { from: updater })
@@ -158,9 +158,9 @@ contract("Medianizer", accounts => {
       await this.gemini.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
       await this.gemini.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
-      await this.soChain.update(this.chainlinkBill, this.token.address, { from: updater })
-      await this.soChain.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
-      await this.soChain.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
+      await this.bitBay.update(this.chainlinkBill, this.token.address, { from: updater })
+      await this.bitBay.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
+      await this.bitBay.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       await this.bitstamp.update(this.oraclizeBill, this.token.address, { from: updater })
       await this.bitstamp.__callback(padRight('0x', 64), '12529.71')
@@ -201,9 +201,9 @@ contract("Medianizer", accounts => {
       await this.gemini.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('15000', 'ether'), { from: chainlink })
       await this.gemini.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
-      await this.soChain.update(this.chainlinkBill, this.token.address, { from: updater })
-      await this.soChain.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('16000', 'ether'), { from: chainlink })
-      await this.soChain.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
+      await this.bitBay.update(this.chainlinkBill, this.token.address, { from: updater })
+      await this.bitBay.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('16000', 'ether'), { from: chainlink })
+      await this.bitBay.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       await this.bitstamp.update(this.oraclizeBill, this.token.address, { from: updater })
       await this.bitstamp.__callback(padRight('0x', 64), '17000')
@@ -244,9 +244,9 @@ contract("Medianizer", accounts => {
       await this.gemini.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
       await this.gemini.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
-      await this.soChain.update(this.chainlinkBill, this.token.address, { from: updater })
-      await this.soChain.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
-      await this.soChain.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
+      await this.bitBay.update(this.chainlinkBill, this.token.address, { from: updater })
+      await this.bitBay.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), toWei('12529.71', 'ether'), { from: chainlink })
+      await this.bitBay.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       await this.bitstamp.update(this.oraclizeBill, this.token.address, { from: updater })
       await this.bitstamp.__callback(padRight('0x', 64), '12529.71')
@@ -296,9 +296,9 @@ contract("Medianizer", accounts => {
       await this.gemini.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), BigNumber(2).pow(128).toFixed(), { from: chainlink })
       await this.gemini.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
-      await this.soChain.update(this.chainlinkBill, this.token.address, { from: updater })
-      await this.soChain.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), BigNumber(2).pow(128).toFixed(), { from: chainlink })
-      await this.soChain.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
+      await this.bitBay.update(this.chainlinkBill, this.token.address, { from: updater })
+      await this.bitBay.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), BigNumber(2).pow(128).toFixed(), { from: chainlink })
+      await this.bitBay.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       const read = await this.med.read.call()
 
@@ -324,9 +324,9 @@ contract("Medianizer", accounts => {
       await this.gemini.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), BigNumber(2).pow(128).minus(1).toFixed(), { from: chainlink })
       await this.gemini.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
-      await this.soChain.update(this.chainlinkBill, this.token.address, { from: updater })
-      await this.soChain.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), BigNumber(2).pow(128).minus(1).toFixed(), { from: chainlink })
-      await this.soChain.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
+      await this.bitBay.update(this.chainlinkBill, this.token.address, { from: updater })
+      await this.bitBay.returnAssetPrice(asciiToHex("9f0406209cf64acda32636018b33de11"), BigNumber(2).pow(128).minus(1).toFixed(), { from: chainlink })
+      await this.bitBay.returnPaymentTokenPrice(asciiToHex("35e428271aad4506afc4f4089ce98f68"), toWei('3.19', 'ether'), { from: chainlink })
 
       const read = await this.med.read.call()
 

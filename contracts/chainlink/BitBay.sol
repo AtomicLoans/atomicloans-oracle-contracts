@@ -2,11 +2,11 @@ pragma solidity ^0.4.26;
 
 import "./ChainLink.sol";
 
-contract SoChain is ChainLink {
-    bytes32 constant UINT256_MUL_JOB = bytes32("80fecd06d2e14c67a22cee5f9728e067"); // FIEWS ROPSTEN
-    // bytes32 constant UINT256_MUL_JOB = bytes32("98839fc3b550436bbe752f82d7521843"); // FIEWS MAINNET
-    bytes32 constant UINT256_MUL_JOB__LINK = bytes32("35e428271aad4506afc4f4089ce98f68"); // CRYPTOCOMPARE CHAINLINK ROPSTEN
-    // bytes32 constant UINT256_MUL_JOB__LINK = bytes32("513907f96955437a8ac02a5d70e5bdea"); // CRYPTOCOMPARE CHAINLINK MAINNET
+contract BitBay is ChainLink {
+    bytes32 constant UINT256_MUL_JOB = bytes32("f291f8597d174f4aa1983b0e27ae160f"); // CHAINLINK MAINNET https://docs.chain.link/docs/decentralized-oracles-ethereum-mainnet HttpGet JsonParse Multiply EthUint256
+    // bytes32 constant UINT256_MUL_JOB = bytes32("29fa9aa13bf1468788b7cc4a500a45b8"); // CHAINLINK KOVAN https://docs.chain.link/docs/testnet-oracles HttpGet JsonParse Multiply EthUint256
+    bytes32 constant UINT256_MUL_JOB__LINK = bytes32("513907f96955437a8ac02a5d70e5bdea"); // CRYPTOCOMPARE CHAINLINK MAINNET https://docs.chain.link/docs/cryptocompare-chainlink-ethereum-mainnet Chainlink JobID
+    // bytes32 constant UINT256_MUL_JOB__LINK = bytes32("7f350c947b0d4d758aadd5acb41d2474"); // CRYPTOCOMPARE CHAINLINK KOVAN https://docs.chain.link/docs/cryptocompare Kovan JobID
 
     constructor(Medianizer med_, ERC20 link_, address oracle_)
         public
@@ -15,8 +15,8 @@ contract SoChain is ChainLink {
 
     function getAssetPrice(uint128 payment) internal returns (bytes32 queryId) {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.returnAssetPrice.selector);
-        req.add("get", "https://chain.so/api/v2/get_info/BTC");
-        req.add("path", "data.price");
+        req.add("get", "https://bitbay.net/API/Public/btcusd/ticker.json");
+        req.add("path", "last");
         req.addInt("times", WAD); // Convert string from API to WAD
         queryId = sendChainlinkRequest(req, div(payment, 2)); // Divide by 2 so that payment covers both asset price and asset token price
     }
