@@ -42,10 +42,10 @@
     bs58 "^4.0.1"
     crypto-hashing "^1.0.0"
 
-"@liquality/crypto@^0.3.0":
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/@liquality/crypto/-/crypto-0.3.9.tgz#83b7da2016cf2af380bbaa6478091f7ba430ca33"
-  integrity sha512-LSsi8LoarvnyAKJMrnLRgjAtVG83WrVXxygLkXrprmwlhx+F2/kOyq7Ix04B0pgN55+40i0Hn4o71k5yWpCD4A==
+"@liquality/crypto@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@liquality/crypto/-/crypto-0.4.0.tgz#63ed7803027884f837c2efaea361fb3788d361b1"
+  integrity sha512-t8+zR0j3qzXwmxrKt4X21dUD5/ZglcYI+gokwx9Ga9YDae5JIXnLZcxuuNel5SKXTXRp8Wu0uygH/rqUSRlrcQ==
   dependencies:
     "@babel/runtime" "^7.4.3"
     bech32 "^1.1.3"
