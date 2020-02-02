@@ -270,6 +270,10 @@ contract("Medianizer", accounts => {
       const peek = await this.med.peek.call()
       assert.equal(peek[1], false)
     })
+
+    it('should fail if amount is greater than 2**128-1', async function() {
+      await expectRevert(this.med.fund(BigNumber(2).pow(128).toFixed(), this.token.address), 'VM Exception while processing transaction: revert')
+    })
   })
 
   describe('compute', function() {
