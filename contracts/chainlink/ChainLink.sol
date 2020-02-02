@@ -11,6 +11,9 @@ contract ChainLink is ChainlinkClient, Oracle {
 
     bytes32 public lastQueryId;
 
+    uint256 public constant DEFAULT_LINK_PAYMENT = 2 * LINK; // Default link payment
+    uint256 public constant ORACLE_EXPIRY = 12 hours; // Oracle expiry (price needs to be updated every 12 hours to be considered up to date)
+
     mapping(bytes32 => bytes32) linkIdToQueryId;
 
     constructor(Medianizer med_, ERC20 link_, address oracle_)
@@ -20,7 +23,7 @@ contract ChainLink is ChainlinkClient, Oracle {
         link = link_;
         setChainlinkToken(address(link_));
         setChainlinkOracle(oracle_);
-        asyncRequests[lastQueryId].payment = uint128(2 * LINK);
+        asyncRequests[lastQueryId].payment = uint128(DEFAULT_LINK_PAYMENT);
     }
 
     function bill() public view returns (uint256) {
@@ -48,7 +51,7 @@ contract ChainLink is ChainlinkClient, Oracle {
         public
         recordChainlinkFulfillment(_requestId)
     {
-        setAssetPrice(_requestId, uint128(_price), uint32(now + 43200));
+        setAssetPrice(_requestId, uint128(_price), uint32(now + ORACLE_EXPIRY));
     }
     
     function returnPaymentTokenPrice(bytes32 _requestId, uint256 _price) // Supply Currency

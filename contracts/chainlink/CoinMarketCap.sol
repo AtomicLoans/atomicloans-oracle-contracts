@@ -22,8 +22,8 @@ contract CoinMarketCap is ChainLink {
         path[3] = "USD";
         path[4] = "price";
         req.addStringArray("copyPath", path);
-        req.addInt("times", 1000000000000000000);
-        queryId = sendChainlinkRequest(req, div(payment, 2));
+        req.addInt("times", WAD); // Convert string from API to WAD
+        queryId = sendChainlinkRequest(req, div(payment, 2)); // Divide by 2 so that payment covers both asset price and asset token price
     }
 
     function getPaymentTokenPrice(uint128 payment, bytes32 queryId) internal returns (bytes32) {
@@ -37,8 +37,8 @@ contract CoinMarketCap is ChainLink {
         path[3] = "USD";
         path[4] = "price";
         req.addStringArray("copyPath", path);
-        req.addInt("times", 1000000000000000000);
-        bytes32 linkId = sendChainlinkRequest(req, div(payment, 2));
+        req.addInt("times", WAD); // Convert string from API to WAD
+        bytes32 linkId = sendChainlinkRequest(req, div(payment, 2)); // Divide by 2 so that payment covers both asset price and asset token price
         linkIdToQueryId[linkId] = queryId;
         return linkId;
     }
