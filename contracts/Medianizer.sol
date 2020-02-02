@@ -59,8 +59,9 @@ contract Medianizer is DSMath {
     }
 
     function fund (uint256 amount, ERC20 token) {
+      require(amount < 2**128-1); // Ensure amount fits in uint128
       for (uint256 i = 0; i < oracles.length; i++) {
-        require(token.transferFrom(msg.sender, address(oracles[i]), uint(div(uint128(amount), uint128(oracles.length)))));
+        require(token.transferFrom(msg.sender, address(oracles[i]), uint(hdiv(uint128(amount), uint128(oracles.length)))));
       }
     }
 
