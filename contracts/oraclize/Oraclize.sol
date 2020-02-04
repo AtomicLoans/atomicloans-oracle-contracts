@@ -1,7 +1,7 @@
 pragma solidity ^0.4.26;
 
 // import "./OraclizeAPI.sol"; // MAINNET
-import "./OraclizeAPITesting.sol"; // TESTING
+import "../test/OraclizeAPITesting.sol"; // TESTING
 import "../Oracle.sol";
 import "../WETH.sol";
 

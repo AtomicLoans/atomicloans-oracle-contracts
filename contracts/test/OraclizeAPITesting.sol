@@ -142,7 +142,7 @@ contract usingOraclize {
       // this is just a placeholder function, ideally meant to be defined in
       // child contract when proofs are used
       myid; result; proof; // Silence compiler warnings
-      oraclize = OraclizeI(0); // Additional compiler silence about making function pure/view. 
+      oraclize = OraclizeI(0); // Additional compiler silence about making function pure/view.
     }
 
     function oraclize_getPrice(string datasource) oraclizeAPI internal returns (uint){
