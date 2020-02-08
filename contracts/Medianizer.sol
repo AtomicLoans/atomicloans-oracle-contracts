@@ -17,36 +17,52 @@ contract Medianizer is DSMath {
     	deployer = msg.sender;
     }
 
+    // NOTE: THE FOLLOWING FUNCTION CAN ONLY BE CALLED BY THE DEPLOYER OF THE
+    //       CONTRACT ONCE. THIS IS TO ALLOW FOR MEDIANIZER AND ORACLE
+    //       CONTRACTS TO BE DEPLOYED SEPARATELY (DUE TO GAS LIMIT RESTRICTIONS).
+    //       IF YOU ARE USING THIS CONTRACT, ENSURE THAT THESE FUNCTIONS HAVE
+    //       ALREADY BEEN CALLED BEFORE USING.
+    // ======================================================================
+
     function setOracles(address[10] addrs) {
     	require(!on);
-        require(msg.sender == deployer);
-        oracles.push(Oracle(addrs[0]));
-        oracles.push(Oracle(addrs[1]));
-        oracles.push(Oracle(addrs[2]));
-        oracles.push(Oracle(addrs[3]));
-        oracles.push(Oracle(addrs[4]));
-        oracles.push(Oracle(addrs[5]));
-        oracles.push(Oracle(addrs[6]));
-        oracles.push(Oracle(addrs[7]));
-        oracles.push(Oracle(addrs[8]));
-        oracles.push(Oracle(addrs[9]));
+      require(msg.sender == deployer);
+      oracles.push(Oracle(addrs[0]));
+      oracles.push(Oracle(addrs[1]));
+      oracles.push(Oracle(addrs[2]));
+      oracles.push(Oracle(addrs[3]));
+      oracles.push(Oracle(addrs[4]));
+      oracles.push(Oracle(addrs[5]));
+      oracles.push(Oracle(addrs[6]));
+      oracles.push(Oracle(addrs[7]));
+      oracles.push(Oracle(addrs[8]));
+      oracles.push(Oracle(addrs[9]));
     	on = true;
     }
+    // ======================================================================
+
+    // NOTE: THE FOLLOWING FUNCTION ALLOW THE MAX REWARD TO BE MODIFIED BY THE
+    //       DEPLOYER, SINCE CHAINLINK ORACLES DON'T HAVE A SET PAYMENT
+    //       AND CHAINLINK OPERATORS CAN INDEPENDENTLY SET THEIR OWN LINK PRICES.
+    //       ADDITIONALLY EVEN IF THE MAX REWARD IS SET TO ZERO, THE ORACLES
+    //       CAN STILL BE UPDATED.
+    // ======================================================================
 
     function setMaxReward(uint256 maxReward_) {
     	require(on);
     	require(msg.sender == deployer);
-        oracles[0].setMaxReward(maxReward_);
-        oracles[1].setMaxReward(maxReward_);
-        oracles[2].setMaxReward(maxReward_);
-        oracles[3].setMaxReward(maxReward_);
-        oracles[4].setMaxReward(maxReward_);
-        oracles[5].setMaxReward(maxReward_);
-        oracles[6].setMaxReward(maxReward_);
-        oracles[7].setMaxReward(maxReward_);
-        oracles[8].setMaxReward(maxReward_);
-        oracles[9].setMaxReward(maxReward_);
+      oracles[0].setMaxReward(maxReward_);
+      oracles[1].setMaxReward(maxReward_);
+      oracles[2].setMaxReward(maxReward_);
+      oracles[3].setMaxReward(maxReward_);
+      oracles[4].setMaxReward(maxReward_);
+      oracles[5].setMaxReward(maxReward_);
+      oracles[6].setMaxReward(maxReward_);
+      oracles[7].setMaxReward(maxReward_);
+      oracles[8].setMaxReward(maxReward_);
+      oracles[9].setMaxReward(maxReward_);
     }
+    // ======================================================================
 
     function peek() public view returns (bytes32, bool) {
         return (assetPrice,hasPrice);
