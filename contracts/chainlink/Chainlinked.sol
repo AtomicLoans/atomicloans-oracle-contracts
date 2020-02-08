@@ -1,6 +1,6 @@
 // File: contracts/Chainlink.sol
 
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 import "../Buffer.sol";
 
@@ -129,7 +129,7 @@ library Chainlink {
 
 // File: contracts/ENSResolver.sol
 
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 contract ENSResolver {
   function addr(bytes32 node) public view returns (address);
@@ -137,7 +137,7 @@ contract ENSResolver {
 
 // File: contracts/interfaces/ENSInterface.sol
 
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 interface ENSInterface {
 
@@ -166,7 +166,7 @@ interface ENSInterface {
 
 // File: contracts/interfaces/LinkTokenInterface.sol
 
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 interface LinkTokenInterface {
   function allowance(address owner, address spender) external returns (bool success);
@@ -185,7 +185,7 @@ interface LinkTokenInterface {
 
 // File: contracts/interfaces/ChainlinkRequestInterface.sol
 
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 interface ChainlinkRequestInterface {
   function oracleRequest(
@@ -209,7 +209,7 @@ interface ChainlinkRequestInterface {
 
 // File: contracts/interfaces/PointerInterface.sol
 
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 interface PointerInterface {
   function getAddress() external view returns (address);
@@ -217,7 +217,7 @@ interface PointerInterface {
 
 // File: openzeppelin-solidity/contracts/math/SafeMath.sol
 
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 
 /**
@@ -272,7 +272,7 @@ library SafeMath {
 
 // File: contracts/ChainlinkClient.sol
 
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 
 

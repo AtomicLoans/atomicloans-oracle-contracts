@@ -1,6 +1,6 @@
 import 'chainlink/node_modules/openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol';
 
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 contract ExampleLinkCoin is StandardToken {
   string public name = "ExampleLinkCoin"; 

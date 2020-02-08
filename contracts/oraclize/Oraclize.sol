@@ -1,4 +1,4 @@
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 // import "./OraclizeAPI.sol"; // MAINNET
 import "../test/OraclizeAPITesting.sol"; // TESTING

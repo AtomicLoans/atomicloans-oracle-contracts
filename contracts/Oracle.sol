@@ -1,4 +1,4 @@
-pragma solidity ^0.4.26;
+pragma solidity 0.4.26;
 
 import "./DSMath.sol";
 import "./ERC20.sol";
