@@ -72,4 +72,8 @@ contract ChainLink is ChainlinkClient, Oracle {
         require(msg.sender == address(med), "ChainLink.setMaxReward: msg.sender isn't medianizer address");
         maxReward = maxReward_;
     }
+
+    function setGasLimit(uint256 gasLimit_) public {
+        require(msg.sender == address(med), "Oraclize.setGasLimit: msg.sender isn't medianizer address");
+    }
 }

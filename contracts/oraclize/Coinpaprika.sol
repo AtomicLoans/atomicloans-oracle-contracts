@@ -12,7 +12,7 @@ contract Coinpaprika is Oraclize {
         internal returns (bytes32 queryId)
     {
         weth.withdraw(payment_);
-        require(oraclize_getPrice("URL") <= address(this).balance, "Coinpaprika.getAssetPrice: Ether balance is less than oraclize price");
-        queryId = oraclize_query("URL", "json(https://api.coinpaprika.com/v1/tickers/btc-bitcoin).quotes.USD.price");
+        require(oraclize_getPrice("URL", gasLimit) <= address(this).balance, "Coinpaprika.getAssetPrice: Ether balance is less than oraclize price");
+        queryId = oraclize_query("URL", "json(https://api.coinpaprika.com/v1/tickers/btc-bitcoin).quotes.USD.price", gasLimit);
     }
 }

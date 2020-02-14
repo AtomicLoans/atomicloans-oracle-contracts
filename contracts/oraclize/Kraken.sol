@@ -12,7 +12,7 @@ contract Kraken is Oraclize {
         internal returns (bytes32 queryId)
     {
         weth.withdraw(payment_);
-        require(oraclize_getPrice("URL") <= address(this).balance, "Kraken.getAssetPrice: Ether balance is less than oraclize price");
-        queryId = oraclize_query("URL", "json(https://api.kraken.com/0/public/Ticker?pair=XBTUSD).result.XXBTZUSD.c.0");
+        require(oraclize_getPrice("URL", gasLimit) <= address(this).balance, "Kraken.getAssetPrice: Ether balance is less than oraclize price");
+        queryId = oraclize_query("URL", "json(https://api.kraken.com/0/public/Ticker?pair=XBTUSD).result.XXBTZUSD.c.0", gasLimit);
     }
 }
