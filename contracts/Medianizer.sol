@@ -78,7 +78,7 @@ contract Medianizer is DSMath {
         require(amount_ < 2**128-1, "Medianizer.fund: amount is greater than max uint128"); // Ensure amount fits in uint128
         for (uint256 i = 0; i < oracles.length; i++) {
             require(
-                token_.transferFrom(msg.sender, address(oracles[i]), uint(hdiv(uint128(amount_), uint128(oracles.length)))),
+                token_.transferFrom(msg.sender, address(oracles[i]), uint256(hdiv(uint128(amount_), uint128(oracles.length)))),
                 "Medianizer.fund: failed to transfer tokens to oracles"
             );
         }
