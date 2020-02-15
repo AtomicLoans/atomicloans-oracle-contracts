@@ -135,4 +135,22 @@ contract("Oraclize", accounts => {
       assert.equal(balAfter2 - balBefore2, 0)
     })
   })
+
+  describe('setGasLimit', function() {
+    it('should properly set gas limit', async function() {
+      const gasLimitBefore = 200000
+      const gasLimitAfter = 500000
+
+      await this.med.setGasLimit(gasLimitBefore, { from: own })
+
+      const actualGasLimitBefore = await this.coinbase.gasLimit.call()
+
+      await this.med.setGasLimit(gasLimitAfter, { from: own })
+
+      const actualGasLimitAfter = await this.coinbase.gasLimit.call()
+
+      expect(gasLimitBefore).to.equal(actualGasLimitBefore.toNumber())
+      expect(gasLimitAfter).to.equal(actualGasLimitAfter.toNumber())
+    })
+  })
 })
