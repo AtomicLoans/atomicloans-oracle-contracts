@@ -1,7 +1,7 @@
+pragma solidity 0.4.26;
+
 import "./DSMath.sol";
 import "./ERC20.sol";
-
-pragma solidity 0.4.26;
 
 contract DSValue is DSMath {
     bool    has;
@@ -9,14 +9,15 @@ contract DSValue is DSMath {
     function peek() public view returns (bytes32, bool) {
         return (val,has);
     }
-    
+
     function read() public returns (bytes32) {
-        var (wut, has) = peek();
+        bytes32 wut;
+        (wut, has) = peek();
         assert(has);
         return wut;
     }
 
-    function poke(bytes32 wut) {
+    function poke(bytes32 wut) public {
         val = wut;
         has = true;
     }

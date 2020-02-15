@@ -1,9 +1,9 @@
-import 'chainlink/node_modules/openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol';
-
 pragma solidity 0.4.26;
 
+import 'chainlink/node_modules/openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol';
+
 contract ExampleDaiCoin is StandardToken {
-  string public name = "ExampleDAICoin"; 
+  string public name = "ExampleDAICoin";
   string public symbol = "DAI";
   uint public decimals = 18;
 

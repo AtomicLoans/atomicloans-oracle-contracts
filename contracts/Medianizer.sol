@@ -1,8 +1,8 @@
+pragma solidity 0.4.26;
+
 import "./ERC20.sol";
 import "./Oracle.sol";
 import "./DSMath.sol";
-
-pragma solidity 0.4.26;
 
 contract Medianizer is DSMath {
     bool    hasPrice;
@@ -13,7 +13,7 @@ contract Medianizer is DSMath {
 
     Oracle[] public oracles;
 
-    constructor() {
+    constructor() public {
     	deployer = msg.sender;
     }
 
@@ -24,19 +24,19 @@ contract Medianizer is DSMath {
     //       ALREADY BEEN CALLED BEFORE USING.
     // ======================================================================
 
-    function setOracles(address[10] addrs) {
-    	require(!on);
-      require(msg.sender == deployer);
-      oracles.push(Oracle(addrs[0]));
-      oracles.push(Oracle(addrs[1]));
-      oracles.push(Oracle(addrs[2]));
-      oracles.push(Oracle(addrs[3]));
-      oracles.push(Oracle(addrs[4]));
-      oracles.push(Oracle(addrs[5]));
-      oracles.push(Oracle(addrs[6]));
-      oracles.push(Oracle(addrs[7]));
-      oracles.push(Oracle(addrs[8]));
-      oracles.push(Oracle(addrs[9]));
+    function setOracles(address[10] addrs) public {
+        require(!on, "Funds.setOracles: Oracles already set");
+        require(msg.sender == deployer, "Funds.setOracles: msg.sender isn't deployer");
+        oracles.push(Oracle(addrs[0]));
+        oracles.push(Oracle(addrs[1]));
+        oracles.push(Oracle(addrs[2]));
+        oracles.push(Oracle(addrs[3]));
+        oracles.push(Oracle(addrs[4]));
+        oracles.push(Oracle(addrs[5]));
+        oracles.push(Oracle(addrs[6]));
+        oracles.push(Oracle(addrs[7]));
+        oracles.push(Oracle(addrs[8]));
+        oracles.push(Oracle(addrs[9]));
     	on = true;
     }
     // ======================================================================
@@ -48,19 +48,19 @@ contract Medianizer is DSMath {
     //       CAN STILL BE UPDATED.
     // ======================================================================
 
-    function setMaxReward(uint256 maxReward_) {
-    	require(on);
-    	require(msg.sender == deployer);
-      oracles[0].setMaxReward(maxReward_);
-      oracles[1].setMaxReward(maxReward_);
-      oracles[2].setMaxReward(maxReward_);
-      oracles[3].setMaxReward(maxReward_);
-      oracles[4].setMaxReward(maxReward_);
-      oracles[5].setMaxReward(maxReward_);
-      oracles[6].setMaxReward(maxReward_);
-      oracles[7].setMaxReward(maxReward_);
-      oracles[8].setMaxReward(maxReward_);
-      oracles[9].setMaxReward(maxReward_);
+    function setMaxReward(uint256 maxReward_) public {
+        require(on, "Funds.setMaxReward: Oracles not set");
+        require(msg.sender == deployer, "Funds.setMaxReward: msg.sender isn't deployer");
+        oracles[0].setMaxReward(maxReward_);
+        oracles[1].setMaxReward(maxReward_);
+        oracles[2].setMaxReward(maxReward_);
+        oracles[3].setMaxReward(maxReward_);
+        oracles[4].setMaxReward(maxReward_);
+        oracles[5].setMaxReward(maxReward_);
+        oracles[6].setMaxReward(maxReward_);
+        oracles[7].setMaxReward(maxReward_);
+        oracles[8].setMaxReward(maxReward_);
+        oracles[9].setMaxReward(maxReward_);
     }
     // ======================================================================
 
@@ -69,32 +69,37 @@ contract Medianizer is DSMath {
     }
 
     function read() public returns (bytes32) {
-        var (assetPrice, hasPrice) = peek();
+        (assetPrice, hasPrice) = peek();
         assert(hasPrice);
         return assetPrice;
     }
 
-    function fund (uint256 amount, ERC20 token) {
-      require(amount < 2**128-1); // Ensure amount fits in uint128
-      for (uint256 i = 0; i < oracles.length; i++) {
-        require(token.transferFrom(msg.sender, address(oracles[i]), uint(hdiv(uint128(amount), uint128(oracles.length)))));
-      }
+    function fund (uint256 amount_, ERC20 token_) public {
+        require(amount_ < 2**128-1, "Medianizer.fund: amount is greater than max uint128"); // Ensure amount fits in uint128
+        for (uint256 i = 0; i < oracles.length; i++) {
+            require(
+                token_.transferFrom(msg.sender, address(oracles[i]), uint256(hdiv(uint128(amount_), uint128(oracles.length)))),
+                "Medianizer.fund: failed to transfer tokens to oracles"
+            );
+        }
     }
 
-    function poke() {
+    function poke() public {
         poke(0);
     }
 
-    function poke(bytes32) {
+    function poke(bytes32) public {
         (assetPrice, hasPrice) = compute();
     }
 
-    function compute() public returns (bytes32, bool) {
+    function compute() public view returns (bytes32, bool) {
+        bytes32 wut;
+        bool wuz;
         bytes32[] memory wuts = new bytes32[](oracles.length);
         uint256 ctr = 0;
         for (uint256 i = 0; i < oracles.length; i++) {
             if (address(oracles[i]) != 0) {
-                var (wut, wuz) = oracles[i].peek();
+                (wut, wuz) = oracles[i].peek();
                 if (wuz) {
                     if (ctr == 0 || wut >= wuts[ctr - 1]) {
                         wuts[ctr] = wut;
