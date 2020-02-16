@@ -4,6 +4,10 @@ import "./ERC20.sol";
 import "./Oracle.sol";
 import "./DSMath.sol";
 
+/**
+ * @title Atomic Loans Medianizer Contract
+ * @author Atomic Loans
+ */
 contract Medianizer is DSMath {
     bool    hasPrice;
     bytes32 assetPrice;
@@ -16,6 +20,9 @@ contract Medianizer is DSMath {
 
     Oracle[] public oracles;
 
+    /**
+     * @notice Construct a new Medianizer
+     */
     constructor() public {
     	deployer = msg.sender;
     }
@@ -27,6 +34,10 @@ contract Medianizer is DSMath {
     //       ALREADY BEEN CALLED BEFORE USING.
     // ======================================================================
 
+    /**
+     * @notice Sets Oracle contracts
+     * @param addrs Addresses of Oracle contracts
+     */
     function setOracles(address[10] addrs) public {
         require(!on, "Funds.setOracles: Oracles already set");
         require(msg.sender == deployer, "Funds.setOracles: msg.sender isn't deployer");
@@ -51,6 +62,10 @@ contract Medianizer is DSMath {
     //       CAN STILL BE UPDATED.
     // ======================================================================
 
+    /**
+     * @notice Sets Max Reward for Chainlink Contracts
+     * @param maxReward_ Max Reward amount that can be awarded for updating Chainlink Oracle
+     */
     function setMaxReward(uint256 maxReward_) public {
         require(on, "Funds.setMaxReward: Oracles not set");
         require(msg.sender == deployer, "Funds.setMaxReward: msg.sender isn't deployer");
@@ -74,6 +89,10 @@ contract Medianizer is DSMath {
     //       A MINIMUM OF 200,000 GAS AND A MAXIMUM OF 1,000,000 GAS.
     // ======================================================================
 
+    /**
+     * @notice Sets Gas Limit for Oraclize Contracts
+     * @param gasLimit_ Gas Limit that Oraclize will use when updating the contracts
+     */
     function setGasLimit(uint256 gasLimit_) public {
         require(on, "Funds.setGasLimit: Oracles not set");
         require(msg.sender == deployer, "Funds.setGasLimit: msg.sender isn't deployer");
@@ -92,16 +111,28 @@ contract Medianizer is DSMath {
     }
     // ======================================================================
 
+    /**
+     * @notice Return Medianizer price without asserting
+     */
     function peek() public view returns (bytes32, bool) {
         return (assetPrice,hasPrice);
     }
 
+    /**
+     * @notice Return Medianizer price and assert that value has been set recently
+     * @dev Reverts if price is not set or has not been set within expiry for enough Oracles
+     */
     function read() public returns (bytes32) {
         (assetPrice, hasPrice) = peek();
         assert(hasPrice);
         return assetPrice;
     }
 
+    /**
+     * @notice Add funds to oracle reserve that is used to compensate users to updating oracles
+     * @param amount_ Amount of ERC20 stablecoin token to fund
+     * @param token_ Address of ERC20 stablecoin token
+     */
     function fund (uint256 amount_, ERC20 token_) public {
         require(amount_ < 2**128-1, "Medianizer.fund: amount is greater than max uint128"); // Ensure amount fits in uint128
         for (uint256 i = 0; i < oracles.length; i++) {
@@ -112,14 +143,24 @@ contract Medianizer is DSMath {
         }
     }
 
+    /**
+     * @notice Compute and set Medianizer price
+     */
     function poke() public {
         poke(0);
     }
 
+    /**
+     * @notice Compute and set Medianizer price
+     */
     function poke(bytes32) public {
         (assetPrice, hasPrice) = compute();
     }
 
+    /**
+     * @notice Compute Medianizer price based on current price of oracles
+     * @return Asset price and bool true if price is set
+     */
     function compute() public view returns (bytes32, bool) {
         bytes32 wut;
         bool wuz;
