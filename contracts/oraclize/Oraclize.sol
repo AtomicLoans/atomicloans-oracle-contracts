@@ -9,6 +9,8 @@ contract Oraclize is usingOraclize, Oracle {
     WETH weth;
     MedianizerInterface medm;
 
+    uint256 public gasLimit = 200000;
+
     constructor(MedianizerInterface med_, MedianizerInterface medm_, WETH weth_)
         public
     {
@@ -24,12 +26,12 @@ contract Oraclize is usingOraclize, Oracle {
     function () public payable { }
 
     function bill() public view returns (uint256) {
-        return oraclize_getPrice("URL");
+        return oraclize_getPrice("URL", gasLimit);
     }
 
     function update(uint128 payment_, ERC20 token_) public { // payment
         require(uint32(now) > timeout, "Oraclize.update: now is less than timeout");
-        require(payment_ == oraclize_getPrice("URL"), "Oraclize.update: payment doesn't equal oraclize_getPrice");
+        require(payment_ == oraclize_getPrice("URL", gasLimit), "Oraclize.update: payment doesn't equal oraclize_getPrice");
         require(weth.transferFrom(msg.sender, address(this), uint(payment_)), "Oraclize.update: failed to transfer weth from msg.sender");
         bytes32 queryId = getAssetPrice(payment_);
         setPaymentTokenPrice(queryId, uint128(medm.read()));
@@ -50,5 +52,10 @@ contract Oraclize is usingOraclize, Oracle {
 
     function setMaxReward(uint256) public {
         require(msg.sender == address(med), "Oraclize.setMaxReward: msg.sender isn't medianizer address");
+    }
+
+    function setGasLimit(uint256 gasLimit_) public {
+        require(msg.sender == address(med), "Oraclize.setGasLimit: msg.sender isn't medianizer address");
+        gasLimit = gasLimit_;
     }
 }

@@ -12,7 +12,7 @@ contract Bitstamp is Oraclize {
         internal returns (bytes32 queryId)
     {
         weth.withdraw(payment_);
-        require(oraclize_getPrice("URL") <= address(this).balance, "Bitstamp.getAssetPrice: Ether balance is less than oraclize price");
-        queryId = oraclize_query("URL", "json(https://www.bitstamp.net/api/v2/ticker/btcusd).last");
+        require(oraclize_getPrice("URL", gasLimit) <= address(this).balance, "Bitstamp.getAssetPrice: Ether balance is less than oraclize price");
+        queryId = oraclize_query("URL", "json(https://www.bitstamp.net/api/v2/ticker/btcusd).last", gasLimit);
     }
 }

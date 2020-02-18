@@ -12,7 +12,7 @@ contract CryptoWatch is Oraclize {
         internal returns (bytes32 queryId)
     {
         weth.withdraw(payment_);
-        require(oraclize_getPrice("URL") <= address(this).balance, "CryptoWatch.getAssetPrice: Ether balance is less than oraclize price");
-        queryId = oraclize_query("URL", "json(https://api.cryptowat.ch/markets/coinbase-pro/btcusd/price).result.price");
+        require(oraclize_getPrice("URL", gasLimit) <= address(this).balance, "CryptoWatch.getAssetPrice: Ether balance is less than oraclize price");
+        queryId = oraclize_query("URL", "json(https://api.cryptowat.ch/markets/coinbase-pro/btcusd/price).result.price", gasLimit);
     }
 }

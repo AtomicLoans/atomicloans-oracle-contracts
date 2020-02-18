@@ -69,4 +69,6 @@ contract Oracle is DSMath {
     }
 
     function setMaxReward(uint256 maxReward_) public;
+
+    function setGasLimit(uint256 gasLimit_) public;
 }

@@ -11,6 +11,9 @@ contract Medianizer is DSMath {
     bool on;
     address deployer;
 
+    uint256 constant public MIN_ORACLIZE_GAS_LIMIT = 200000;
+    uint256 constant public MAX_ORACLIZE_GAS_LIMIT = 1000000;
+
     Oracle[] public oracles;
 
     constructor() public {
@@ -61,6 +64,31 @@ contract Medianizer is DSMath {
         oracles[7].setMaxReward(maxReward_);
         oracles[8].setMaxReward(maxReward_);
         oracles[9].setMaxReward(maxReward_);
+    }
+    // ======================================================================
+
+    // NOTE: THE FOLLOWING FUNCTION ALLOW THE GAS LIMIT TO BE MODIFIED BY THE
+    //       DEPLOYER, SINCE ORACLIZE ORACLES HAVE A MINIMUM GAS LIMIT OF
+    //       200,000 AND THERE COULD BE CASES WHERE THERE IS NOT ENOUGH GAS TO
+    //       COVER UPDATING THE PRICE. THE GAS LIMIT CAN BE CHANGED BETWEEN
+    //       A MINIMUM OF 200,000 GAS AND A MAXIMUM OF 1,000,000 GAS.
+    // ======================================================================
+
+    function setGasLimit(uint256 gasLimit_) public {
+        require(on, "Funds.setGasLimit: Oracles not set");
+        require(msg.sender == deployer, "Funds.setGasLimit: msg.sender isn't deployer");
+        require(gasLimit_ >= MIN_ORACLIZE_GAS_LIMIT, "Funds.setGasLimit: gasLimit_ cannot be less than min oraclize gas limit");
+        require(gasLimit_ <= MAX_ORACLIZE_GAS_LIMIT, "Funds.setGasLimit: gasLimit_ cannot be greater than max oraclize gas limit");
+        oracles[0].setGasLimit(gasLimit_);
+        oracles[1].setGasLimit(gasLimit_);
+        oracles[2].setGasLimit(gasLimit_);
+        oracles[3].setGasLimit(gasLimit_);
+        oracles[4].setGasLimit(gasLimit_);
+        oracles[5].setGasLimit(gasLimit_);
+        oracles[6].setGasLimit(gasLimit_);
+        oracles[7].setGasLimit(gasLimit_);
+        oracles[8].setGasLimit(gasLimit_);
+        oracles[9].setGasLimit(gasLimit_);
     }
     // ======================================================================
 
