@@ -2,6 +2,10 @@ pragma solidity 0.4.26;
 
 import "./ChainLink.sol";
 
+/**
+ * @title Atomic Loans BlockchainInfo Chainlink Contract
+ * @author Atomic Loans
+ */
 contract BlockchainInfo is ChainLink {
     /**
      * CHAINLINK MAINNET
@@ -31,11 +35,18 @@ contract BlockchainInfo is ChainLink {
      */
     // bytes32 constant UINT256_MUL_JOB__LINK = bytes32("7f350c947b0d4d758aadd5acb41d2474");
 
-    constructor(MedianizerInterface med_, ERC20 link_, address oracle_)
-        public
-        ChainLink(med_, link_, oracle_)
-    {}
+    /**
+     * @notice Construct a new BlockchainInfo Chainlink Oracle
+     * @param med_ The address of the Medianizer
+     * @param link_ The LINK token address
+     * @param oracle_ The Chainlink Oracle address
+     */
+    constructor(MedianizerInterface med_, ERC20 link_, address oracle_) public ChainLink(med_, link_, oracle_) {}
 
+    /**
+     * @notice Creates request for Chainlink to get the BTC price
+     * @param payment_ The amount of LINK used as payment for Oraclize
+     */
     function getAssetPrice(uint128 payment_) internal returns (bytes32 queryId) {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB, this, this.returnAssetPrice.selector);
         req.add("get", "https://blockchain.info/ticker?currency=USD");
@@ -44,6 +55,11 @@ contract BlockchainInfo is ChainLink {
         queryId = sendChainlinkRequest(req, div(payment_, 2)); // Divide by 2 so that payment covers both asset price and token price
     }
 
+    /**
+     * @notice Creates request for Chainlink to get the LINK price
+     * @param payment_ The amount of LINK used as payment for Chainlink
+     * @param queryId ID of the query from Chainlink
+     */
     function getPaymentTokenPrice(uint128 payment_, bytes32 queryId) internal returns (bytes32) {
         Chainlink.Request memory req = buildChainlinkRequest(UINT256_MUL_JOB__LINK, this, this.returnPaymentTokenPrice.selector);
         req.add("endpoint", "price");
