@@ -20,6 +20,10 @@ contract Medianizer is DSMath {
 
     Oracle[] public oracles;
 
+    event Fund(uint256 amount_, ERC20 token_);
+
+    event Poke(bytes32 assetPrice, bool hasPrice);
+
     /**
      * @notice Construct a new Medianizer
      */
@@ -133,7 +137,7 @@ contract Medianizer is DSMath {
      * @param amount_ Amount of ERC20 stablecoin token to fund
      * @param token_ Address of ERC20 stablecoin token
      */
-    function fund (uint256 amount_, ERC20 token_) public {
+    function fund(uint256 amount_, ERC20 token_) public {
         require(amount_ < 2**128-1, "Medianizer.fund: amount is greater than max uint128"); // Ensure amount fits in uint128
         for (uint256 i = 0; i < oracles.length; i++) {
             require(
@@ -141,6 +145,8 @@ contract Medianizer is DSMath {
                 "Medianizer.fund: failed to transfer tokens to oracles"
             );
         }
+
+        emit Fund(amount_, token_);
     }
 
     /**
@@ -155,6 +161,8 @@ contract Medianizer is DSMath {
      */
     function poke(bytes32) public {
         (assetPrice, hasPrice) = compute();
+
+        emit Poke(assetPrice, hasPrice);
     }
 
     /**
