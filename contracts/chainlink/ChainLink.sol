@@ -20,6 +20,14 @@ contract ChainLink is ChainlinkClient, Oracle {
 
     mapping(bytes32 => bytes32) linkIdToQueryId;
 
+    event Update(uint128 payment_, ERC20 token_);
+
+    event ReturnAssetPrice(bytes32 requestId_, uint256 price_);
+
+    event ReturnPaymentTokenPrice(bytes32 requestId_, uint256 price_);
+
+    event Reward(bytes32 queryId);
+
     /**
      * @notice Construct a new Chainlink Oracle
      * @param med_ The address of the Medianizer
@@ -58,6 +66,8 @@ contract ChainLink is ChainlinkClient, Oracle {
         asyncRequests[queryId].payment = payment_;
         asyncRequests[queryId].token = token_;
         timeout = uint32(now) + DELAY;
+
+        emit Update(payment_, token_);
     }
 
     function getAssetPrice(uint128) internal returns (bytes32);
@@ -71,6 +81,8 @@ contract ChainLink is ChainlinkClient, Oracle {
      */
     function returnAssetPrice(bytes32 requestId_, uint256 price_) public recordChainlinkFulfillment(requestId_) {
         setAssetPrice(requestId_, uint128(price_), uint32(now + ORACLE_EXPIRY));
+
+        emit ReturnAssetPrice(requestId_, price_);
     }
 
     /**
@@ -80,6 +92,8 @@ contract ChainLink is ChainlinkClient, Oracle {
      */
     function returnPaymentTokenPrice(bytes32 requestId_, uint256 price_) public recordChainlinkFulfillment(requestId_) {
         setPaymentTokenPrice(linkIdToQueryId[requestId_], uint128(price_));
+
+        emit ReturnPaymentTokenPrice(requestId_, price_);
     }
 
     /**
@@ -91,6 +105,8 @@ contract ChainLink is ChainlinkClient, Oracle {
         if (asyncRequests[queryId].token.balanceOf(address(this)) >= min(maxReward, rewardAmount) && asyncRequests[queryId].disbursement > 0) {
             require(asyncRequests[queryId].token.transfer(asyncRequests[queryId].rewardee, min(maxReward, rewardAmount)), "ChainLink.reward: token transfer failed");
         }
+
+        emit Reward(queryId);
     }
 
     /**

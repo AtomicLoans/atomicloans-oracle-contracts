@@ -15,6 +15,10 @@ contract Oraclize is usingOraclize, Oracle {
 
     uint256 public gasLimit = 200000;
 
+    event Update(uint128 payment_, ERC20 token_);
+
+    event __Callback(bytes32 queryId, string result_);
+
     /**
      * @notice Construct a new Oraclize Oracle
      * @param med_ The address of the Medianizer
@@ -56,6 +60,8 @@ contract Oraclize is usingOraclize, Oracle {
         asyncRequests[queryId].payment = payment_;
         asyncRequests[queryId].token = token_;
         timeout = uint32(now) + DELAY;
+
+        emit Update(payment_, token_);
     }
 
     /**
@@ -73,6 +79,8 @@ contract Oraclize is usingOraclize, Oracle {
         require(asyncRequests[queryId].rewardee != address(0), "Oraclize.__callback: rewardee is not zero address");
         uint128 res = uint128(parseInt(result_, 18));
         setAssetPrice(queryId, res, uint32(now + 43200));
+
+        emit __Callback(queryId, result_);
     }
 
     /**

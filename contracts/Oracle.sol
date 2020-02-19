@@ -41,6 +41,12 @@ contract Oracle is DSMath {
         bool paymentTokenPriceSet;
     }
 
+    event SetAssetPrice(bytes32 queryId, uint128 assetPrice_, uint32 expiry_);
+
+    event SetPaymentTokenPrice(bytes32 queryId, uint128 paymentTokenPrice_);
+
+    event Reward(bytes32 queryId);
+
     /**
      * @notice Return Oracle price without asserting
      */
@@ -72,6 +78,8 @@ contract Oracle is DSMath {
         med.poke();
         asyncRequests[queryId].assetPriceSet = true;
         if (asyncRequests[queryId].paymentTokenPriceSet) {reward(queryId);}
+
+        emit SetAssetPrice(queryId, assetPrice_, expiry_);
     }
 
     /**
@@ -83,6 +91,8 @@ contract Oracle is DSMath {
         paymentTokenPrice = paymentTokenPrice_;
         asyncRequests[queryId].paymentTokenPriceSet = true;
         if (asyncRequests[queryId].assetPriceSet) {reward(queryId);}
+
+        emit SetPaymentTokenPrice(queryId, paymentTokenPrice_);
     }
 
     /**
@@ -95,6 +105,8 @@ contract Oracle is DSMath {
             require(asyncRequests[queryId].token.transfer(asyncRequests[queryId].rewardee, rewardAmount), "Oracle.reward: token transfer failed");
         }
         delete(asyncRequests[queryId]);
+
+        emit Reward(queryId);
     }
 
     /**
