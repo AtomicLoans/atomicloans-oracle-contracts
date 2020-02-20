@@ -8,6 +8,11 @@ import "./UniswapExchangeInterface.sol";
 import "./OracleInterface.sol";
 import "./MedianizerInterface.sol";
 
+/**
+ * @title Atomic Loans Fund Oracles Contract
+ * @notice Contract for interfacing with Oracles using only ETH
+ * @author Atomic Loans
+ */
 contract FundOracles is DSMath {
   ERC20 link;
   WETH weth;
@@ -15,6 +20,13 @@ contract FundOracles is DSMath {
 
   MedianizerInterface med;
 
+  /**
+    * @notice Construct a new Fund Oracles contract
+    * @param med_ The address of the Medianizer
+    * @param link_ The LINK token address
+    * @param weth_ The WETH token address
+    * @param uniswapExchange_ The address of the LINK to ETH Uniswap Exchange
+    */
   constructor(MedianizerInterface med_, ERC20 link_, WETH weth_, UniswapExchangeInterface uniswapExchange_) public {
     med = med_;
     link = link_;
@@ -22,10 +34,21 @@ contract FundOracles is DSMath {
     uniswapExchange = uniswapExchange_;
   }
 
+  /**
+    * @notice Determines the last oracle token payment
+    * @param oracle_ Index of oracle
+    * @return Last payment to oracle in token (LINK for Chainlink, WETH for Oraclize)
+    */
   function billWithEth(uint256 oracle_) public view returns (uint256) {
       return OracleInterface(med.oracles(oracle_)).bill();
   }
 
+  /**
+    * @notice Determines the payment amount in ETH
+    * @param oracle_ Index of oracle
+    * @param payment_ Payment amount in tokens (LINK or WETH)
+    * @return Amount of ETH to pay in updateWithEth to update Oracle
+    */
   function paymentWithEth(uint256 oracle_, uint128 payment_) public view returns(uint256) {
       if (oracle_ < 5) {
           return uniswapExchange.getEthToTokenOutputPrice(payment_);
@@ -34,6 +57,12 @@ contract FundOracles is DSMath {
       }
   }
 
+  /**
+    * @notice Update the Oracle using ETH
+    * @param oracle_ Index of oracle
+    * @param payment_ Payment amount in tokens (LINK or WETH)
+    * @param token_ Address of token to receive as a reward for updating Oracle
+    */
   function updateWithEth(uint256 oracle_, uint128 payment_, address token_) public payable {
     address oracleAddress = med.oracles(oracle_);
     OracleInterface oracle = OracleInterface(oracleAddress);
