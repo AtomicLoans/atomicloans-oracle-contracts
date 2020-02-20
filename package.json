@@ -20,7 +20,8 @@
     "test:medianizer": "truffle test ./test/medianizer.js",
     "test:chainlink": "truffle test ./test/chainlink.js",
     "test:oraclize": "truffle test ./test/oraclize.js",
-    "coverage": "npx solidity-coverage"
+    "coverage": "npx solidity-coverage",
+    "build-contracts": "sol-merger \"./contracts/*.sol\" ./build"
   },
   "devDependencies": {
     "chai": "^4.2.0",
