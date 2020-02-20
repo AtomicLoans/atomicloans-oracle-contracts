@@ -13,6 +13,7 @@ var Kraken = artifacts.require("./oraclize/Kraken.sol");
 var WETH9 = artifacts.require("./WETH9.sol");
 var Medianizer = artifacts.require("./Medianizer.sol");
 var MakerMedianizer = artifacts.require("./DSValue.sol");
+var FundOracles = artifacts.require("./FundOracles.sol");
 
 module.exports = function(deployer) {
   deployer.then(async () => {
